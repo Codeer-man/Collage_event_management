@@ -1,6 +1,6 @@
-docs basic idea
-
 # MERN Collage Event Management Website
+
+A online platform for managing collage events
 
 ## Feature
 
@@ -15,10 +15,10 @@ docs basic idea
     - React : Frontend
     - Typescript : JS types
     - Express : Backend
-    - MongoDB : Database
-        - mongoose : framework
+    - Postgress : Database
     - Node.js
-    - Cloudinary : Image
+    - Cloudinary : Image upload
+    - shadcn : for design
 
 ## Installation
 
@@ -36,6 +36,10 @@ docs basic idea
         - on going
 
 ## Environment variables
+
+    -- Backend
+        - PORT=
+        - CORS_ORIGIN="http://localhost:5173"
 
 ## How to run the project
 
@@ -65,7 +69,7 @@ docs basic idea
 
 NOT AVAILABLE
 
-## Folder structure (optional)
+## Folder structure
 
     coming soon
 
