@@ -4,6 +4,8 @@ import morgan from "morgan";
 import { errorHandler } from "./middleware/errorHandler.js";
 import { notfound } from "./middleware/not-found.js";
 import cors from "cors";
+import { authRoute } from "./routes/auth/auth.route.js";
+import { facultyRoute } from "./routes/admin/faculty.route.js";
 
 const app = express();
 
@@ -18,9 +20,13 @@ app.use(
 );
 
 app.use(morgan("dev"));
+app.use(express.json());
 app.use("/health", (_req, res) => {
   res.status(200).json({ message: "Server is healthy in running state" });
 });
+
+// auth
+app.use("/auth", authRoute);
 
 app.use(notfound);
 app.use(errorHandler);
