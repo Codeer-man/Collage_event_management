@@ -2,11 +2,10 @@ import { Router } from "express";
 import asyncHandler from "../../utils/asyncHandler.js";
 import { requireFound, textRequired } from "../../utils/helper.js";
 import { AppError } from "../../utils/AppError.js";
-import { UserModel } from "../../model/user.model.js";
+import { UserModel } from "../../model/auth/user.model.js";
 import { comaprePassword, hashPassword } from "../../lib/hash.js";
 import { ok } from "../../utils/envolve.js";
 import { getUrl } from "../../lib/getUrl.js";
-import crypto from "crypto";
 import {
   createAccessToken,
   createVerifyToken,
@@ -55,7 +54,7 @@ authRoute.post(
       throw new AppError(400, "Email already exist please try different email");
     }
 
-    const findFaculty = await facultyModel.findFaculty("faculty", faculty);
+    const findFaculty = await facultyModel.findFaculty("faculty_name", faculty);
 
     const existingFaculty = requireFound(findFaculty, "faculty not found");
 
@@ -179,10 +178,8 @@ authRoute.get(
     textRequired(token, "Token not found in the url");
 
     const payload = verifyToken(token);
-    console.log(payload, "payload");
 
     const verifyUser = await UserModel.emailVerified(String(payload.id));
-    console.log(verifyUser, "user");
 
     requireFound(verifyUser, "User does not exists");
 
@@ -196,7 +193,7 @@ authRoute.get(
 
 //logout user
 authRoute.get(
-  "/auth/logout",
+  "/logout",
   requireAuth,
   asyncHandler(async (_req, res) => {
     res.clearCookie("accessToken", { path: "/" });
@@ -215,7 +212,6 @@ authRoute.get(
   requireAuth,
   asyncHandler(async (req, res) => {
     const user = (req as any).user;
-    console.log(user, "user");
 
     res.json(
       ok({

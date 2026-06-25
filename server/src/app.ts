@@ -28,6 +28,9 @@ app.use("/health", (_req, res) => {
 // auth
 app.use("/auth", authRoute);
 
+//admin
+app.use("/admin", facultyRoute);
+
 app.use(notfound);
 app.use(errorHandler);
 

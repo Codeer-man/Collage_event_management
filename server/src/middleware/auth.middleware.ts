@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 
 import { verifyAccessToken } from "../lib/token.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import { UserModel } from "../model/user.model.js";
+import { UserModel } from "../model/auth/user.model.js";
 import { requireFound } from "../utils/helper.js";
 import { AppError } from "../utils/AppError.js";
 
@@ -16,7 +16,7 @@ export async function requireAuth(
 
     if (req.headers.authorization?.startsWith("Bearer ")) {
       token = req.headers.authorization.split(" ")[1].trim();
-    } else if (req.cookies.accessToken) {
+    } else if (req.cookies?.accessToken) {
       token = String(req.cookies.accessToken).trim();
     }
 
@@ -25,7 +25,6 @@ export async function requireAuth(
     }
 
     let claims = verifyAccessToken(token);
-    console.log(claims.payload.id);
 
     const user = await UserModel.findByField("id", claims.payload.id);
 
@@ -48,11 +47,11 @@ export async function requireAuth(
 }
 
 export const reqireAdmin = asyncHandler(async (req, _res, next) => {
-  const userId = (req as any).userId;
+  const user = (req as any).user;
 
-  const user = await UserModel.findByField("id", userId);
+  const findUser = await UserModel.findByField("id", user.id);
 
-  const existingUser = requireFound(user, "User not found");
+  const existingUser = requireFound(findUser, "User not found");
 
   if (existingUser.role !== "admin") {
     throw new AppError(403, "Admin access only");

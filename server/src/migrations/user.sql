@@ -1,11 +1,4 @@
 
-CREATE TABLE IF NOT EXISTS faculty (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-
-    faculty TEXT NOT NULL
-
-);
-
 CREATE TABLE IF NOT EXISTS users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
