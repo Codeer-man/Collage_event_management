@@ -1,4 +1,4 @@
-import { pool } from "../config/pool.js";
+import { pool } from "../../config/pool.js";
 
 interface createUser {
   full_name: string;

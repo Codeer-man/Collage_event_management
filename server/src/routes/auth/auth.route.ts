@@ -2,18 +2,18 @@ import { Router } from "express";
 import asyncHandler from "../../utils/asyncHandler.js";
 import { requireFound, textRequired } from "../../utils/helper.js";
 import { AppError } from "../../utils/AppError.js";
-import { UserModel } from "../../model/user.model.js";
+
 import { comaprePassword, hashPassword } from "../../lib/hash.js";
 import { ok } from "../../utils/envolve.js";
 import { getUrl } from "../../lib/getUrl.js";
-import crypto from "crypto";
+
 import {
   createAccessToken,
   createVerifyToken,
   verifyToken,
 } from "../../lib/token.js";
 import { sendEmail } from "../../lib/sendEmail.js";
-import { facultyModel } from "../../model/admin/faculty.model.js";
+
 import { requireAuth } from "../../middleware/auth.middleware.js";
 import multer, { memoryStorage } from "multer";
 import { uploadImage } from "../../utils/cloudinary.js";
