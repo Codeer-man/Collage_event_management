@@ -2,7 +2,7 @@ import { Router } from "express";
 import asyncHandler from "../../utils/asyncHandler.js";
 import { requireFound, textRequired } from "../../utils/helper.js";
 import { AppError } from "../../utils/AppError.js";
-import { UserModel } from "../../model/auth/user.model.js";
+import { createUser, UserModel } from "../../model/auth/user.model.js";
 import { comaprePassword, hashPassword } from "../../lib/hash.js";
 import { ok } from "../../utils/envolve.js";
 import { getUrl } from "../../lib/getUrl.js";
@@ -16,6 +16,7 @@ import { facultyModel } from "../../model/admin/faculty.model.js";
 import { requireAuth } from "../../middleware/auth.middleware.js";
 import multer, { memoryStorage } from "multer";
 import { uploadImage } from "../../utils/cloudinary.js";
+import { User } from "../../types/auth.types.js";
 
 export const authRoute = Router();
 
@@ -30,6 +31,7 @@ const upload = multer({
 // user register account
 authRoute.post(
   "/register",
+  upload.single("/image"),
   asyncHandler(async (req, res) => {
     const fullName = String(req.body.fullName).trim();
     const email = String(req.body.email).trim();
@@ -110,9 +112,13 @@ authRoute.post(
     textRequired(email, "Email is requried");
     textRequired(password, "Password is required");
 
-    const user = await UserModel.findByField("email", email);
+    const user: User = await UserModel.findByField("email", email);
 
-    const exisitingUser = requireFound(user, "user does not exist", 404);
+    const exisitingUser = requireFound(
+      user,
+      "user does not  exists exist",
+      404,
+    );
 
     const pwd = await comaprePassword(password, exisitingUser.password);
 
@@ -146,7 +152,7 @@ authRoute.post(
     //create jwt accessToken to stay logged in every refresh using cookies
     const accessToken = createAccessToken(user.id, user.role);
 
-    const isProd = process.env.NODE_ENV === "production";
+    const isProd = process.env.NODE_ENV === "production" ? false : true;
 
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
@@ -193,7 +199,7 @@ authRoute.get(
 
 //logout user
 authRoute.get(
-  "/logout",
+  "/auth/logout",
   requireAuth,
   asyncHandler(async (_req, res) => {
     res.clearCookie("accessToken", { path: "/" });
