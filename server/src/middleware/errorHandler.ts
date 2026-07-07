@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { AppError } from "../utils/AppError.js";
-import { fail } from "node:assert";
+import { fail } from "../utils/envolve.js";
 
 export function errorHandler(
   error: unknown,
