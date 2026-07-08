@@ -22,10 +22,13 @@ CREATE TABLE IF NOT EXISTS users (
 
     is_email_verified BOOLEAN DEFAULT false,
       
-    is_approved_stident BOOLEAN DEFAULT false ,
+    is_approved_student BOOLEAN DEFAULT false ,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+--  index 
+CREATE INDEX idx_users_faculty_id
+ON users(faculty_id)

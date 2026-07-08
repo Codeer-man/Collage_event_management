@@ -1,22 +1,18 @@
 import { Router } from "express";
 import asyncHandler from "../../utils/asyncHandler.js";
 import { requireFound, textRequired } from "../../utils/helper.js";
-import { AppError } from "../../utils/AppError.js";
-import { createUser, UserModel } from "../../model/auth/user.model.js";
-import { comaprePassword, hashPassword } from "../../lib/hash.js";
+
+import { UserModel } from "../../model/auth/user.model.js";
+
 import { ok } from "../../utils/envolve.js";
-import { getUrl } from "../../lib/getUrl.js";
-import {
-  createAccessToken,
-  createVerifyToken,
-  verifyToken,
-} from "../../lib/token.js";
-import { sendEmail } from "../../lib/sendEmail.js";
-import { facultyModel } from "../../model/admin/faculty.model.js";
+
+import { verifyToken } from "../../lib/token.js";
+
 import { requireAuth } from "../../middleware/auth.middleware.js";
 import multer, { memoryStorage } from "multer";
-import { uploadImage } from "../../utils/cloudinary.js";
-import { User } from "../../types/auth.types.js";
+
+import { AuthService } from "../../service/auth.service.js";
+import { AppError } from "../../utils/AppError.js";
 
 export const authRoute = Router();
 
@@ -31,7 +27,7 @@ const upload = multer({
 // user register account
 authRoute.post(
   "/register",
-  upload.single("/image"),
+  upload.single("image"),
   asyncHandler(async (req, res) => {
     const fullName = String(req.body.fullName).trim();
     const email = String(req.body.email).trim();
@@ -46,49 +42,7 @@ authRoute.post(
     textRequired(faculty, "faculty is required");
     textRequired(contactNumber, "contact number is required");
 
-    if (password.length < 6) {
-      throw new AppError(400, "Password must be 6 character long");
-    }
-
-    const exisitingUser = await UserModel.findByField("email", email);
-
-    if (exisitingUser) {
-      throw new AppError(400, "Email already exist please try different email");
-    }
-
-    const findFaculty = await facultyModel.findFaculty("faculty_name", faculty);
-
-    const existingFaculty = requireFound(findFaculty, "faculty not found");
-
-    const imageUpload = await uploadImage(file.buffer, "profile_publicId");
-
-    const passwordHash = await hashPassword(password);
-
-    const newlyCreatedUser = await UserModel.create({
-      full_name: fullName,
-      email: email,
-      password: passwordHash,
-      role: "student",
-      faculty_id: existingFaculty.id,
-      image_url: imageUpload.url,
-      public_id: imageUpload.public_id,
-      contact_number: contactNumber,
-      is_email_verified: false,
-    });
-
-    //verify email using nodemailer
-    const verifyToken = createVerifyToken(newlyCreatedUser.id);
-
-    const verifyUrl = `${getUrl()}/api/auth/verify-email?token=${verifyToken}`;
-
-    await sendEmail({
-      to: newlyCreatedUser.email,
-      subject: "verify your Email",
-      html: `
-    <p>Pleaes verify your email </p> </br>
-    <p><a href="${verifyUrl}"> ${verifyUrl} <a/> <p/>
-    `,
-    });
+    const newlyCreatedUser = await AuthService.register(req.body, file);
 
     res.json(
       ok({
@@ -112,63 +66,38 @@ authRoute.post(
     textRequired(email, "Email is requried");
     textRequired(password, "Password is required");
 
-    const user: User = await UserModel.findByField("email", email);
+    const result = await AuthService.login(email, password);
 
-    const exisitingUser = requireFound(
-      user,
-      "user does not  exists exist",
-      404,
-    );
-
-    const pwd = await comaprePassword(password, exisitingUser.password);
-
-    if (!pwd) {
-      throw new AppError(400, "Password does not match");
+    if (!result.user) {
+      throw new AppError(500, "Authentication failed unexpectedly");
     }
 
-    //verify email using resend if the email is not verified
-    if (user.is_email_verified === false) {
-      const verifyToken = createVerifyToken(user.id);
-
-      const verifyUrl = `${getUrl()}/api/auth/verify-email?token=${verifyToken}`;
-
-      await sendEmail({
-        to: user.email,
-        subject: "verify your Email",
-        html: `
-    <p>Pleaes verify your email </p> </br>
-    <p><a href="${verifyUrl}"> ${verifyUrl} <a/> <p/>
-    `,
-      });
-
+    // Handle unverified email
+    if (!result.verified) {
       res.json(
-        ok({
-          message:
-            "Please verify your email first link has been sent to your email",
-        }),
+        ok({ message: "Please verify your email first. Link has been sent." }),
       );
+      return;
     }
 
-    //create jwt accessToken to stay logged in every refresh using cookies
-    const accessToken = createAccessToken(user.id, user.role);
+    const isProd = process.env.NODE_ENV === "production";
 
-    const isProd = process.env.NODE_ENV === "production" ? false : true;
-
-    res.cookie("accessToken", accessToken, {
+    // Set HTTP-only cookie
+    res.cookie("accessToken", result.accessToken, {
       httpOnly: true,
       sameSite: "lax",
-      secure: isProd,
+      secure: isProd, // true in production, false in development
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
     res.json(
       ok({
-        accessToken,
+        accessToken: result.accessToken,
         user: {
-          id: user.id,
-          email: user.email,
-          role: user.role,
-          isEmailVerified: user.is_email_verified,
+          id: result.user.id,
+          email: result.user.email,
+          role: result.user.role,
+          isEmailVerified: result.user.is_email_verified,
         },
       }),
     );
