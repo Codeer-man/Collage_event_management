@@ -29,18 +29,18 @@ authRoute.post(
   "/register",
   upload.single("image"),
   asyncHandler(async (req, res) => {
-    const fullName = String(req.body.fullName).trim();
+    const full_name = String(req.body.full_name).trim();
     const email = String(req.body.email).trim();
     const password = String(req.body.password).trim();
-    const faculty = String(req.body.faculty || "").trim();
-    const contactNumber = String(req.body.contactNumber || "").trim();
+    const faculty_id = String(req.body.faculty_id || "").trim();
+    const contact_number = String(req.body.contact_number || "").trim();
     const file = req.file as Express.Multer.File;
 
-    textRequired(fullName, "Full name is required");
+    textRequired(full_name, "Full name is required");
     textRequired(email, "email is required");
     textRequired(password, "password is required");
-    textRequired(faculty, "faculty is required");
-    textRequired(contactNumber, "contact number is required");
+    textRequired(faculty_id, "faculty id is required");
+    textRequired(contact_number, "contact number is required");
 
     const newlyCreatedUser = await AuthService.register(req.body, file);
 

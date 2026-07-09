@@ -2,7 +2,7 @@ import { getUrl } from "../lib/getUrl.js";
 import { comaprePassword, hashPassword } from "../lib/hash.js";
 import { sendEmail } from "../lib/sendEmail.js";
 import { createAccessToken, createVerifyToken } from "../lib/token.js";
-import { facultyModel } from "../model/admin/faculty.model.js";
+import { facultyModel } from "../model/faculty/faculty.model.js";
 import { createUser, UserModel } from "../model/auth/user.model.js";
 import { User } from "../types/auth/auth.types.js";
 import { AppError } from "../utils/AppError.js";
@@ -16,7 +16,7 @@ async function sendVerificationEmail(userId: string, email: string) {
   await sendEmail({
     to: email,
     subject: "Verify your Email",
-    html: `<p>Please verify your email</p><br/><p><a href="${verifyUrl}">${verifyUrl}</a></p>`,
+    html: `<p>Please verify your email</p><br/><p><a href="${verifyUrl}">Click here</a></p>`,
   });
 }
 
@@ -28,6 +28,10 @@ export const AuthService = {
       throw new AppError(400, "Password must be 6 character long");
     }
 
+    if (userData.contact_number.length !== 10) {
+      throw new AppError(500, "contact number must be 10 character long");
+    }
+
     const exisitingUser = await UserModel.findByField("email", userData.email);
 
     if (exisitingUser) {
@@ -35,7 +39,7 @@ export const AuthService = {
     }
 
     const findFaculty = await facultyModel.findFaculty(
-      "faculty_name",
+      "id",
       userData.faculty_id,
     );
 
@@ -55,6 +59,7 @@ export const AuthService = {
       public_id: imageUpload.public_id,
       contact_number: userData.contact_number,
       is_email_verified: false,
+      is_approved_student: false,
     });
 
     await sendVerificationEmail(newlyCreatedUser.id, newlyCreatedUser.email);

@@ -14,10 +14,10 @@ export async function requireAuth(
   try {
     let token: string | undefined;
 
-    if (req.headers.authorization?.startsWith("Bearer ")) {
-      token = req.headers.authorization.split(" ")[1].trim();
-    } else if (req.cookies?.accessToken) {
+    if (req.cookies?.accessToken) {
       token = String(req.cookies.accessToken).trim();
+    } else if (req.headers.authorization?.startsWith("Bearer ")) {
+      token = req.headers.authorization.split(" ")[1].trim();
     }
 
     if (!token || token.trim() === "") {
@@ -55,6 +55,20 @@ export const reqireAdmin = asyncHandler(async (req, _res, next) => {
 
   if (existingUser.role !== "admin") {
     throw new AppError(403, "Admin access only");
+  }
+
+  next();
+});
+
+export const requireAdministrative = asyncHandler(async (req, _res, next) => {
+  const user = (req as any).user;
+
+  const findUser = await UserModel.findByField("id", user.id);
+
+  const existingUser = requireFound(findUser, "User not found");
+
+  if (existingUser.role !== "administrative") {
+    throw new AppError(403, "administrative access only");
   }
 
   next();

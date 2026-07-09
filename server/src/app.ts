@@ -5,7 +5,8 @@ import { errorHandler } from "./middleware/errorHandler.js";
 import { notfound } from "./middleware/not-found.js";
 import cors from "cors";
 import { authRoute } from "./routes/auth/auth.route.js";
-import { facultyRoute } from "./routes/admin/faculty.route.js";
+import { superRoute } from "./routes/administrative/administrative.route.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -18,7 +19,7 @@ app.use(
     credentials: true,
   }),
 );
-
+app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use("/health", (_req, res) => {
@@ -28,8 +29,8 @@ app.use("/health", (_req, res) => {
 // auth
 app.use("/auth", authRoute);
 
-//admin
-app.use("/admin", facultyRoute);
+//administrative
+app.use("/super", superRoute);
 
 app.use(notfound);
 app.use(errorHandler);

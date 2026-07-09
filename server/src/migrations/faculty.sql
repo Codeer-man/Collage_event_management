@@ -5,6 +5,11 @@ CREATE TABLE  IF NOT EXISTS faculty (
     
     faculty_name TEXT NOT NULL,
 
+    user_id UUID UNIQUE DEFAULT NULL,
+    CONSTRAINT fk_users
+        FOREIGN KEY (user_id)
+        REFERENCES users(id),
+
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

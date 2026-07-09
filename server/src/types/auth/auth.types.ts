@@ -12,6 +12,4 @@ export interface User {
   contact_number: string;
   is_email_verified: boolean;
   is_approved_student: boolean;
-  created_at: Date;
-  updated_at: Date;
 }

@@ -30,5 +30,5 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 --  index 
-CREATE INDEX idx_users_faculty_id
+CREATE INDEX IF NOT EXISTS idx_users_faculty_id
 ON users(faculty_id)
