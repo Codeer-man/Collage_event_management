@@ -15,8 +15,31 @@ async function sendVerificationEmail(userId: string, email: string) {
 
   await sendEmail({
     to: email,
-    subject: "Verify your Email",
-    html: `<p>Please verify your email</p><br/><p><a href="${verifyUrl}">Click here</a></p>`,
+    subject: "Verify Your Email",
+    html: `
+      <div style="max-width:420px;margin:40px auto;padding:24px;border:1px solid #e5e7eb;border-radius:12px;font-family:Arial,sans-serif;text-align:center;background:#fff;">
+        <h2 style="margin:0 0 12px;color:#111827;">Verify Your Email</h2>
+
+        <p style="color:#4b5563;font-size:14px;line-height:1.6;">
+          Thanks for signing up! Please verify your email to activate your account.
+        </p>
+
+        <a
+          href="${verifyUrl}"
+          style="display:inline-block;margin-top:12px;padding:10px 22px;background:#2563eb;color:#fff;text-decoration:none;border-radius:8px;font-weight:600;"
+        >
+          Verify Email
+        </a>
+
+        <p style="margin:20px 0 10px;color:#9ca3af;font-size:13px;">
+          or
+        </p>
+
+        <p style="margin-top:20px;font-size:12px;color:#9ca3af;">
+          If you didn't create this account, you can ignore this email.
+        </p>
+      </div>
+    `,
   });
 }
 

@@ -43,42 +43,46 @@ export default function SignUp() {
           }
         }}
       >
-        <DialogTrigger className={"cursor-pointer font-semibold"}>
-          SignUp{" "}
+        <DialogTrigger className=" rounded-md  px-3 py-2 font-medium transition-colors hover:bg-primary  hover:text-primary-foreground cursor-pointer">
+          Sign Up
         </DialogTrigger>
-        <DialogContent className=" max-h-[90vh]  overflow-auto border-border bg-background sm:max-w-3xl ">
-          <DialogHeader>
-            <DialogTitle
-              className={
-                "text-2xl font-semibold text-secondary-foreground mx-auto"
-              }
-            >
+
+        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-3xl rounded-xl p-6">
+          <DialogHeader className="space-y-2 text-center">
+            <DialogTitle className="text-3xl font-bold tracking-tight text-foreground">
               Create Your Account
             </DialogTitle>
+
+            <p className="text-sm text-muted-foreground">
+              Join the College Event Management System.
+            </p>
           </DialogHeader>
-          <div className=" grid grid-6">
-            <div className=" grid  gap-4 md:grid-cols-2">
-              {/* full name */}
-              <div className=" space-y-3">
-                <Label>Full Name</Label>
+
+          <div className="  mt-6 rounded-xl border border-border bg-secondary/40 p-6 backdrop-blur-sm">
+            {/* Row 1 */}
+            <div className="grid gap-5 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="fullName">Full Name</Label>
                 <Input
+                  id="fullName"
+                  placeholder="John Doe"
                   value={register.full_name}
                   onChange={(e) =>
                     updateField(setRegister, "full_name", e.target.value)
                   }
-                  placeholder="Full name"
                 />
               </div>
-              {/* faculty */}
-              <div className=" space-y-3 ">
+
+              <div className="space-y-2">
                 <Label>Faculty</Label>
+
                 <Select
                   value={register.faculty_id}
                   onValueChange={(value) =>
                     updateField(setRegister, "faculty_id", value)
                   }
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className=" bg-background transition-colors hover:border-primary">
                     <SelectValue placeholder="Select Faculty" />
                   </SelectTrigger>
 
@@ -94,49 +98,61 @@ export default function SignUp() {
                 </Select>
               </div>
             </div>
-            <div className=" grid  gap-4 md:grid-cols-2">
-              <div className=" space-y-3">
-                {/* email */}
-                <Label>Email</Label>
+
+            {/* Row 2 */}
+            <div className="grid gap-5 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+
                 <Input
-                  value={register.email}
+                  id="email"
                   type="email"
+                  placeholder="example@gmail.com"
+                  value={register.email}
                   onChange={(e) =>
                     updateField(setRegister, "email", e.target.value)
                   }
-                  placeholder="exampl@gmail.com"
                 />
               </div>
-              <div className=" space-y-3">
-                <Label>Password</Label>
+
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+
                 <Input
-                  value={register.password}
+                  id="password"
                   type="password"
+                  placeholder="Enter your password"
+                  value={register.password}
                   onChange={(e) =>
                     updateField(setRegister, "password", e.target.value)
                   }
-                  placeholder="Password"
                 />
               </div>
             </div>
-            <div className=" grid  gap-4 md:grid-cols-2 mt-3">
-              <div className=" space-y-3">
-                {/* email */}
-                <Label>Contact Number</Label>
+
+            {/* Row 3 */}
+            <div className="grid gap-5 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="contact">Contact Number</Label>
+
                 <Input
-                  value={register.contact_number}
+                  id="contact"
                   type="tel"
+                  placeholder="98XXXXXXXX"
+                  value={register.contact_number}
                   onChange={(e) =>
                     updateField(setRegister, "contact_number", e.target.value)
                   }
-                  placeholder="9876543219"
                 />
               </div>
-              <div className=" space-y-3">
-                <Label>Image</Label>
+
+              <div className="space-y-2">
+                <Label htmlFor="image">Profile Image</Label>
+
                 <Input
+                  id="image"
                   type="file"
-                  accept="images/*"
+                  accept="image/*"
                   onChange={(e) =>
                     updateField(
                       setRegister,
@@ -147,16 +163,15 @@ export default function SignUp() {
                 />
               </div>
             </div>
-          </div>
 
-          <Button
-            className={"cursor-pointer"}
-            variant={"default"}
-            onClick={submitRegister}
-            disabled={saving}
-          >
-            {saving ? "submiting.." : "submit"}
-          </Button>
+            <Button
+              className=" mt-6 w-full rounded-lg   font-semibold transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+              onClick={submitRegister}
+              disabled={saving}
+            >
+              {saving ? "Creating Account..." : "Create Account"}
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

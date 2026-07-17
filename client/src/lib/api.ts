@@ -39,7 +39,7 @@ export async function apiGet<T>(url: string, config?: AxiosRequestConfig) {
       throw new Error(response.data.errors?.message || "request failed");
     }
 
-    return response.data;
+    return response.data.data;
   } catch (error) {
     throw new Error(getError(error));
   }
@@ -57,7 +57,7 @@ export async function apiPost<TResponse, TBody = unknown>(
       throw new Error(respoones.data.errors?.message || "request failed");
     }
 
-    return respoones.data;
+    return respoones.data.data;
   } catch (error) {
     throw new Error(getError(error));
   }
@@ -75,7 +75,7 @@ export async function getPut<TRespons, TBody = unknown>(
       throw new Error(respones.data.errors?.message || "request failed");
     }
 
-    return respones.data;
+    return respones.data.data;
   } catch (error) {
     throw new Error(getError(error));
   }
@@ -93,7 +93,7 @@ export async function getPatch<TRespons, TBody = unknown>(
       throw new Error(respones.data.errors?.message || "request failed");
     }
 
-    return respones.data;
+    return respones.data.data;
   } catch (error) {
     throw new Error(getError(error));
   }
@@ -111,7 +111,7 @@ export async function getDelete<TRespons>(
       throw new Error(respones.data.errors?.message || "request failed");
     }
 
-    return respones.data;
+    return respones.data.data;
   } catch (error) {
     throw new Error(getError(error));
   }

@@ -33,10 +33,19 @@ export const facultyModel = {
     return result.rows[0] as faculty;
   },
 
-  //get all faculty
+  //get all facluty
   async getAllFaculty() {
     const query = `
-    SELECT f.*,u.id, u.full_name, u.image_url,u.contact_number 
+    SELECT id,faculty_name FROM faculty
+    `;
+    const result = await pool.query(query);
+    return result.rows;
+  },
+
+  //get all faculty for administrative
+  async getAllFacultyForAdministrative() {
+    const query = `
+    SELECT f.id,f.faculty_name,f.user_id as admin_id, u.full_name, u.image_url,u.contact_number 
     FROM faculty as f 
     LEFT JOIN users as u 
     ON f.user_id = u.id

@@ -4,8 +4,9 @@ import type {
   loginUserFormBody,
   registerUserFormBody,
 } from "./type";
-import { createUser, fetchFacluty, loginUser } from "./api";
+import { createUser, fetchFacluty, loginUser, logoutUser } from "./api";
 import { toast } from "sonner";
+import { useAuthStore } from "../../store/auth.store";
 
 function registerInitialState(): registerUserFormBody {
   return {
@@ -26,6 +27,8 @@ function loginInitialState(): loginUserFormBody {
 }
 
 export default function useAuthForm() {
+  const { cleanAuth, setUser } = useAuthStore();
+
   const [register, setRegister] =
     useState<registerUserFormBody>(registerInitialState);
   const [login, setLogin] = useState<loginUserFormBody>(loginInitialState);
@@ -86,7 +89,8 @@ export default function useAuthForm() {
     try {
       toast.promise(response, {
         loading: "Logging in...",
-        success: () => {
+        success: (userData) => {
+          setUser(userData.user);
           setDialogOpen(false);
           setLogin(loginInitialState);
           return "You have successfully logged in";
@@ -109,6 +113,26 @@ export default function useAuthForm() {
     }
   }
 
+  //logout
+  async function logout() {
+    setSaving(true);
+    const response = logoutUser();
+    try {
+      toast.promise(response, {
+        loading: "logging out",
+        success: () => {
+          cleanAuth();
+          return "You have successfully logout";
+        },
+        error: (error) => {
+          error instanceof Error ? error.message : "something went worng";
+        },
+      });
+    } finally {
+      setSaving(false);
+    }
+  }
+
   return {
     register,
     login,
@@ -122,5 +146,6 @@ export default function useAuthForm() {
     fetchFaculty,
     open,
     setDialogOpen,
+    logout,
   };
 }

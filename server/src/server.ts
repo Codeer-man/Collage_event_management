@@ -1,6 +1,7 @@
 import http from "http";
 import app from "./app.js";
 import { testToConnect } from "./config/pool.js";
+import { frontendUrl } from "./lib/getUrl.js";
 
 const PORT = process.env.PORT;
 

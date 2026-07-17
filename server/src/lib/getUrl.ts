@@ -3,5 +3,5 @@ export function getUrl() {
 }
 
 export function frontendUrl() {
-  return process.env.FRONTEND_URL;
+  return process.env.FRONTEND_URL!;
 }

@@ -251,7 +251,7 @@ Create a `.env` file inside the **server** directory.
 PORT=5000
 
 # Frontend URL
-CORS_ORIGIN=http://localhost:5173
+FRONTEND_URL=http://localhost:5173
 
 # PostgreSQL Database
 DATABASE_HOST=localhost
@@ -369,7 +369,7 @@ Feel free to use it as a learning resource.
 
 # 👨‍💻 Author
 
-**Manish Manandhar**
+**Manish Manandhar** <br/>
 **Anup Bhujel**
 
 MERN Stack Developer

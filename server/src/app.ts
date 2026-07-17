@@ -7,14 +7,13 @@ import cors from "cors";
 import { authRoute } from "./routes/auth/auth.route.js";
 import { superRoute } from "./routes/administrative/administrative.route.js";
 import cookieParser from "cookie-parser";
+import { frontendUrl } from "./lib/getUrl.js";
 
 const app = express();
 
-const corsorigin = process.env.CORS_ORIGIN;
-
 app.use(
   cors({
-    origin: corsorigin,
+    origin: frontendUrl(),
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   }),

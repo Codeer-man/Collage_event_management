@@ -13,6 +13,9 @@ import multer, { memoryStorage } from "multer";
 
 import { AuthService } from "../../service/auth.service.js";
 import { AppError } from "../../utils/AppError.js";
+import { facultyService } from "../../service/faculty.service.js";
+import { facultyModel } from "../../model/faculty/faculty.model.js";
+import { frontendUrl } from "../../lib/getUrl.js";
 
 export const authRoute = Router();
 
@@ -95,6 +98,8 @@ authRoute.post(
         accessToken: result.accessToken,
         user: {
           id: result.user.id,
+          full_name: result.user.full_name,
+          image_url: result.user.image_url,
           email: result.user.email,
           role: result.user.role,
           isEmailVerified: result.user.is_email_verified,
@@ -118,17 +123,13 @@ authRoute.get(
 
     requireFound(verifyUser, "User does not exists");
 
-    res.json(
-      ok({
-        message: "User verified",
-      }),
-    );
+    res.redirect(frontendUrl());
   }),
 );
 
 //logout user
 authRoute.get(
-  "/auth/logout",
+  "/logout",
   requireAuth,
   asyncHandler(async (_req, res) => {
     res.clearCookie("accessToken", { path: "/" });
@@ -152,6 +153,19 @@ authRoute.get(
       ok({
         message: "You are authenticated",
         user,
+      }),
+    );
+  }),
+);
+
+authRoute.get(
+  "/faculty",
+  asyncHandler(async (_req, res) => {
+    const fauclty = await facultyModel.getAllFaculty();
+
+    res.json(
+      ok({
+        faculty: fauclty,
       }),
     );
   }),

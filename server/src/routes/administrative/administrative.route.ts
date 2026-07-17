@@ -45,7 +45,7 @@ superRoute.post(
 superRoute.get(
   "/faculty",
   asyncHandler(async (_req, res) => {
-    const faculty = await facultyModel.getAllFaculty();
+    const faculty = await facultyModel.getAllFacultyForAdministrative();
 
     res.json(
       ok({

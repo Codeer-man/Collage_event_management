@@ -32,6 +32,8 @@ export async function requireAuth(
 
     (req as any).user = {
       id: foundUser.id,
+      full_name: foundUser.full_name,
+      image_url: foundUser.image_url,
       role: foundUser.role,
       isEmailVerified: foundUser.is_email_verified,
     };

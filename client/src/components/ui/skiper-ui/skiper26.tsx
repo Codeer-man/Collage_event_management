@@ -1,9 +1,11 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { GripHorizontal } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
-import { cn } from "../../../lib/utils";
+import { cn } from "@/lib/utils";
 
 const Skiper26 = () => {
   const [variant, setVariant] = useState<AnimationVariant>("rectangle");
