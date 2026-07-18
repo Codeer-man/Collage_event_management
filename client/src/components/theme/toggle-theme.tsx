@@ -1,15 +1,8 @@
-// import { useTheme } from "next-themes";
-
 import { ThemeToggleButton } from "../ui/skiper-ui/skiper26";
 
 export function ThemeToggle() {
-  // const { resolvedTheme, setTheme } = useTheme();
-
-  // const toggleTheme = () => {
-  //   setTheme(resolvedTheme === "dark" ? "light" : "dark");
-  // };
   return (
-    <div className="flex items-center justify-center p-6">
+    <div className="">
       <ThemeToggleButton
         variant="gif"
         gifUrl="https://media.giphy.com/media/5PncuvcXbBuIZcSiQo/giphy.gif?cid=ecf05e47j7vdjtytp3fu84rslaivdun4zvfhej6wlvl6qqsz&ep=v1_stickers_search&rid=giphy.gif&ct=s"

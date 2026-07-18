@@ -1,4 +1,4 @@
-import { Button } from "@base-ui/react";
+import { Button } from "../../components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -23,55 +23,82 @@ export default function Login() {
 
   return (
     <Dialog open={open} onOpenChange={setDialogOpen}>
-      <DialogTrigger className=" rounded-md  px-3 py-2 font-medium transition-colors hover:bg-primary  hover:text-primary-foreground cursor-pointer">
-        Login
+      <DialogTrigger asChild>
+        <Button variant="ghost">Login</Button>
       </DialogTrigger>
 
-      <DialogContent className="  sm:max-w-2xl rounded-2xl border border-border bg-background p-6 shadow-xl">
-        <DialogHeader className="space-y-2">
-          <DialogTitle className="text-center text-2xl font-bold">
-            Welcome Back 👋
-          </DialogTitle>
+      <DialogContent className="overflow-hidden rounded-3xl border p-0 sm:max-w-md">
+        {/* Top Section */}
+        <div className="bg-primary px-8 py-8 text-center text-primary-foreground">
+          <h2 className="text-3xl font-bold tracking-tight">Welcome Back 👋</h2>
 
-          <p className="text-center text-sm text-muted-foreground">
-            Sign in to continue to your account.
+          <p className="mt-2 text-sm text-primary-foreground/80">
+            Sign in to continue shopping.
           </p>
-        </DialogHeader>
+        </div>
 
-        <div className="mt-6 space-y-5">
+        {/* Form */}
+        <div className="space-y-6 px-6 py-8 sm:px-8">
+          <DialogHeader className="hidden">
+            <DialogTitle>Login</DialogTitle>
+          </DialogHeader>
+
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">Email Address</Label>
 
             <Input
               id="email"
               type="email"
-              placeholder="Enter your email"
+              placeholder="john@example.com"
               value={login.email}
               onChange={(e) => updateField(setLogin, "email", e.target.value)}
+              className="h-11"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="password">Password</Label>
+
+              <button
+                type="button"
+                className="text-xs text-primary hover:underline"
+              >
+                Forgot Password?
+              </button>
+            </div>
 
             <Input
               id="password"
               type="password"
-              placeholder="Enter your password"
+              placeholder="••••••••"
               value={login.password}
               onChange={(e) =>
                 updateField(setLogin, "password", e.target.value)
               }
+              className="h-11"
             />
           </div>
 
           <Button
             onClick={submitLogin}
             disabled={saving}
-            className=" mt-6 w-full rounded-lg   font-semibold transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+            className="h-11 w-full rounded-xl text-base font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
           >
-            {saving ? "Logging in..." : "Login"}
+            {saving ? "Signing In..." : "Sign In"}
           </Button>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-3 text-muted-foreground">
+                Secure Login
+              </span>
+            </div>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

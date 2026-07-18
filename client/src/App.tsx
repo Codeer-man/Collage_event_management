@@ -5,7 +5,7 @@ import { useAuthStore } from "./store/auth.store";
 import CommonLoader from "./components/common/loader";
 
 export default function () {
-  const { status, user } = useAuthStore();
+  const { status } = useAuthStore();
 
   useBootStrapAuth();
   if (status === "loading") {

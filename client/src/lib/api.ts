@@ -4,9 +4,9 @@ import type { ApiEnvolve } from "./type";
 
 const api = axios.create({
   baseURL: env.backendUrl,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  // headers: {
+  //   "Content-Type": "application/json",
+  // },
   withCredentials: true,
 });
 

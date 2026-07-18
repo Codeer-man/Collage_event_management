@@ -11,7 +11,7 @@ import { requireFound } from "../utils/helper.js";
 
 async function sendVerificationEmail(userId: string, email: string) {
   const token = createVerifyToken(userId);
-  const verifyUrl = `${getUrl()}/api/auth/verify-email?token=${token}`;
+  const verifyUrl = `${getUrl()}/auth/verify-email?token=${token}`;
 
   await sendEmail({
     to: email,

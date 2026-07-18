@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ThemeToggle } from "../theme/toggle-theme";
-import { TestTube, UserIcon, LogOutIcon, type LucideIcon } from "lucide-react";
+import { LogOutIcon, type LucideIcon, Home } from "lucide-react";
 import { useAuthStore } from "../../store/auth.store";
 import {
   DropdownMenu,
@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import Login from "../../page/auth/login";
 import SignUp from "../../page/auth/register";
 import useAuthForm from "../../feature/auth/use-auth-form";
+import MobileNavbar from "./mobile-navbar";
 
 function NavTextLink({
   href,
@@ -39,61 +40,79 @@ export default function DesktopNavBar() {
 
   return (
     <div className="sticky top-0 z-50 border-b border-border/70 bg-secondary/60 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl h-18 items-center gap-3 px-4 sm:px-6 lg:px-8">
-        <Link to={"/"} className="font-semibold text-lg mr-4">
+      <div className="mx-auto flex   max-w-7xl h-18 items-center gap-3 px-4 sm:px-6 lg:px-8">
+        <Link to={"/"} className="font-semibold text-lg mr-4 flex-1">
           <span>Title and logo</span>
         </Link>
+        <div className=" flex gap-5">
+          {/* Navigation Links */}
+          <div className=" lg:block hidden">
+            <NavTextLink href="/" label="Home" icon={Home} />
+          </div>
 
-        {/* Navigation Links */}
-        <div className="hidden lg:block ml-2 flex-1">
-          <NavTextLink href="test" label="test" icon={TestTube} />
+          {/* Theme changer */}
+          <div className=" hidden lg:block ">
+            <ThemeToggle />~
+          </div>
+
+          <nav className=" hidden lg:block">
+            {/* Conditional Auth UI */}
+            {user ? (
+              /* AUTHENTICATED: Show Account Dropdown Menu */
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="rounded-full cursor-pointer"
+                  >
+                    <img
+                      src={user.image_url}
+                      alt="Profile pic"
+                      className="rounded-full w-8 h-8 object-cover"
+                    />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem asChild>
+                    <Link
+                      to="/administrative"
+                      className="w-full cursor-pointer"
+                    >
+                      Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/settings" className="w-full cursor-pointer">
+                      Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/settings" className="w-full cursor-pointer">
+                      Setting
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={logout}
+                    className="text-destructive focus:text-destructive cursor-pointer"
+                  >
+                    <LogOutIcon className="mr-2 h-4 w-4" />
+                    <span>Log Out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              /* UNAUTHENTICATED: Show Inline Buttons triggering Modals */
+              <div className="flex items-center gap-2">
+                <Login />
+
+                <SignUp />
+              </div>
+            )}
+          </nav>
         </div>
 
-        {/* Global Utilities */}
-        <ThemeToggle />
-
-        {/* Conditional Auth UI */}
-        {user ? (
-          /* AUTHENTICATED: Show Account Dropdown Menu */
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="rounded-full gap-2 ">
-                <img src={user.image_url} alt="Profile pic" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem asChild>
-                <Link to="/administrative" className="w-full cursor-pointer">
-                  Dashboard
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/settings" className="w-full cursor-pointer">
-                  Profile
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/settings" className="w-full cursor-pointer">
-                  Setting
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={logout}
-                className="text-destructive focus:text-destructive cursor-pointer"
-              >
-                <LogOutIcon className="mr-2 h-4 w-4" />
-                <span>Log Out</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        ) : (
-          /* UNAUTHENTICATED: Show Inline Buttons triggering Modals */
-          <div className="flex items-center gap-2">
-            <Login />
-
-            <SignUp />
-          </div>
-        )}
+        <MobileNavbar />
       </div>
     </div>
   );

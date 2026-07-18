@@ -32,10 +32,12 @@ export async function requireAuth(
 
     (req as any).user = {
       id: foundUser.id,
+      email: foundUser.email,
       full_name: foundUser.full_name,
       image_url: foundUser.image_url,
       role: foundUser.role,
-      isEmailVerified: foundUser.is_email_verified,
+      is_email_verified: foundUser.is_email_verified,
+      is_approved_student: foundUser.is_approved_student,
     };
 
     next();
