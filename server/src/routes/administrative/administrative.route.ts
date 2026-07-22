@@ -64,6 +64,11 @@ superRoute.patch(
     textRequired(faculty, "Faculty name is required");
     textRequired(facultyId, "Faculty id is required");
 
+    const findFauclty = await facultyModel.findFaculty("faculty_name", faculty);
+    if (findFauclty) {
+      throw new AppError(401, "Faculty already exists");
+    }
+
     await facultyModel.updateFacultyName(facultyId, faculty);
 
     res.json(
@@ -74,6 +79,24 @@ superRoute.patch(
   }),
 );
 
+//get user for admin role
+superRoute.get(
+  "/user/:facultyId",
+  asyncHandler(async (req, res) => {
+    const facultyId = String(req.params.facultyId || "").trim();
+    const search = String(req.query.search || "").trim();
+
+    textRequired(facultyId, "faculty id not found");
+
+    const user = await UserModel.adminUser(facultyId, search);
+
+    res.json(
+      ok({
+        user,
+      }),
+    );
+  }),
+);
 //asign admin
 superRoute.patch(
   "/asign/faculty",

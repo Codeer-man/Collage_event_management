@@ -66,4 +66,24 @@ export const UserModel = {
     const data = await pool.query<User>(query, [id]);
     return data.rows[0] || null;
   },
+
+  //get user for admin role
+  async adminUser(facultyId: string, search: string) {
+    const query = `
+    SELECT id,full_name,email,image_url
+    FROM users
+    WHERE faculty_id = $1
+
+    AND (
+        $2 = ''
+        OR full_name ILIKE '%' || $2 || '%'
+        OR email ILIKE '%' || $2 || '%'
+      )
+    LIMIT 10;
+    `;
+
+    const data = await pool.query(query, [facultyId, search]);
+    return data.rows;
+  },
 };
+// AND role <> 'admin'

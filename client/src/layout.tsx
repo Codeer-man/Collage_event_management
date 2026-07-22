@@ -5,6 +5,7 @@ import RoleGuard from "./components/auth/roleGuard";
 import ProtectedLayout from "./components/auth/protectedLayout";
 import AdministrativeDashboard from "./page/administrative/dashboard";
 import HomeLayout from "./layout/home/home.layout";
+import Faculty from "./page/administrative/faculty";
 
 export const route = createBrowserRouter([
   // public or home
@@ -32,6 +33,10 @@ export const route = createBrowserRouter([
               {
                 index: true,
                 element: <AdministrativeDashboard />,
+              },
+              {
+                path: "faculty",
+                element: <Faculty />,
               },
             ],
           },

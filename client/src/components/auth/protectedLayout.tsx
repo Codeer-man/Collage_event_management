@@ -18,7 +18,6 @@ export default function ProtectedLayout() {
       </div>
     );
   }
-  console.log(user);
 
   // if email not verified
   if (user.role === "student" && user.is_email_verified === false) {

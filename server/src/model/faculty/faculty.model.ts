@@ -69,15 +69,29 @@ export const facultyModel = {
 
   // asign faculty admin
   async asignFacultyAdmin(userId: string, facultyId: string) {
+    //remove old admin
+    // const oldAdmin = `
+    //   update user
+    //   SET role = 'student'
+    //   WHERE id =(
+    //     SELECT user_id
+    //     FROM faculty
+    //     WHERE id = $1
+    //   );
+    // `;
+    // await pool.query(oldAdmin, [facultyId]);
+
+    // update user
     const userQuery = `
       UPDATE users
       SET role = 'admin',
-          faculty_id = $1
+        faculty_id = $1
       WHERE id = $2
       RETURNING id,full_name,image_url;
     `;
     const userData = await pool.query(userQuery, [facultyId, userId]);
 
+    // update faculty
     const facultyQuery = `
       UPDATE faculty
       SET user_id = $1

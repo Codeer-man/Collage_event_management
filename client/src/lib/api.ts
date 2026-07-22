@@ -63,7 +63,7 @@ export async function apiPost<TResponse, TBody = unknown>(
   }
 }
 
-export async function getPut<TRespons, TBody = unknown>(
+export async function apiPut<TRespons, TBody = unknown>(
   url: string,
   body: TBody,
   config?: AxiosRequestConfig,
@@ -81,7 +81,7 @@ export async function getPut<TRespons, TBody = unknown>(
   }
 }
 
-export async function getPatch<TRespons, TBody = unknown>(
+export async function apiPatch<TRespons, TBody = unknown>(
   url: string,
   body: TBody,
   config?: AxiosRequestConfig,
@@ -99,7 +99,7 @@ export async function getPatch<TRespons, TBody = unknown>(
   }
 }
 
-export async function getDelete<TRespons>(
+export async function apiDelete<TRespons>(
   url: string,
 
   config?: AxiosRequestConfig,

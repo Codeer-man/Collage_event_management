@@ -1,18 +1,12 @@
 import { Link } from "react-router-dom";
 import { ThemeToggle } from "../theme/toggle-theme";
-import { LogOutIcon, type LucideIcon, Home } from "lucide-react";
 import { useAuthStore } from "../../store/auth.store";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
+
 import Login from "../../page/auth/login";
 import SignUp from "../../page/auth/register";
-import useAuthForm from "../../feature/auth/use-auth-form";
 import MobileNavbar from "./mobile-navbar";
+import Profile from "./profileIcons";
+import { Home, type LucideIcon } from "lucide-react";
 
 function NavTextLink({
   href,
@@ -36,7 +30,6 @@ const textLink =
 
 export default function DesktopNavBar() {
   const { user } = useAuthStore();
-  const { logout } = useAuthForm();
 
   return (
     <div className="sticky top-0 z-50 border-b border-border/70 bg-secondary/60 backdrop-blur-xl">
@@ -52,55 +45,13 @@ export default function DesktopNavBar() {
 
           {/* Theme changer */}
           <div className=" hidden lg:block ">
-            <ThemeToggle />~
+            <ThemeToggle />
           </div>
 
           <nav className=" hidden lg:block">
             {/* Conditional Auth UI */}
             {user ? (
-              /* AUTHENTICATED: Show Account Dropdown Menu */
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="rounded-full cursor-pointer"
-                  >
-                    <img
-                      src={user.image_url}
-                      alt="Profile pic"
-                      className="rounded-full w-8 h-8 object-cover"
-                    />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem asChild>
-                    <Link
-                      to="/administrative"
-                      className="w-full cursor-pointer"
-                    >
-                      Dashboard
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/settings" className="w-full cursor-pointer">
-                      Profile
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/settings" className="w-full cursor-pointer">
-                      Setting
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={logout}
-                    className="text-destructive focus:text-destructive cursor-pointer"
-                  >
-                    <LogOutIcon className="mr-2 h-4 w-4" />
-                    <span>Log Out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <Profile image={user.image_url} />
             ) : (
               /* UNAUTHENTICATED: Show Inline Buttons triggering Modals */
               <div className="flex items-center gap-2">
