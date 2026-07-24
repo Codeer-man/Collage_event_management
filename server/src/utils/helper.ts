@@ -19,6 +19,15 @@ export function numberRequires(
     throw new AppError(statusCode, message);
   }
 }
+export function booleanRequires(
+  value: unknown,
+  message: string,
+  statusCode = 400,
+) {
+  if (!Boolean(value)) {
+    throw new AppError(statusCode, message);
+  }
+}
 
 export function requireFound<T>(
   value: T | null,

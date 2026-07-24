@@ -51,7 +51,7 @@ export default function DesktopNavBar() {
           <nav className=" hidden lg:block">
             {/* Conditional Auth UI */}
             {user ? (
-              <Profile image={user.image_url} />
+              <Profile image={user.image_url} role={user.role} />
             ) : (
               /* UNAUTHENTICATED: Show Inline Buttons triggering Modals */
               <div className="flex items-center gap-2">

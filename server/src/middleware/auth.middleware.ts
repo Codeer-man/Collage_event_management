@@ -34,6 +34,7 @@ export async function requireAuth(
       id: foundUser.id,
       email: foundUser.email,
       full_name: foundUser.full_name,
+      faculty: foundUser.faculty_id,
       image_url: foundUser.image_url,
       role: foundUser.role,
       is_email_verified: foundUser.is_email_verified,
@@ -50,7 +51,7 @@ export async function requireAuth(
   }
 }
 
-export const reqireAdmin = asyncHandler(async (req, _res, next) => {
+export const requireAdmin = asyncHandler(async (req, _res, next) => {
   const user = (req as any).user;
 
   const findUser = await UserModel.findByField("id", user.id);
