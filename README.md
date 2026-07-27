@@ -163,6 +163,18 @@ College-Event-Management/
 ├── client/
 │   ├── public/
 │   ├── src/
+│   │      ├── assets/
+│   │      ├── components/
+│   │      ├── feature/
+│   │      ├── hooks/
+│   │      ├── layers/
+│   │      ├── lib/
+│   │      ├── page/
+│   │      └── store/
+│   ├── App.tsx
+│   ├── index.css
+│   ├── layout.tsx
+│   ├── main.tsx
 │   ├── package.json
 │   └── vite.config.ts
 │
@@ -313,14 +325,7 @@ Example endpoints include:
 Project screenshots will be added as development progresses.
 
 ```text
-docs/
-└── images/
-    ├── login.png
-    ├── register.png
-    ├── dashboard.png
-    ├── event-list.png
-    ├── event-details.png
-    └── admin-dashboard.png
+
 ```
 
 ---

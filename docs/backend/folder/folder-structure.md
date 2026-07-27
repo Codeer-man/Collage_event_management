@@ -2,6 +2,7 @@ server/
 ├── src/
 │ ├── config/
 │ │ ├── migrate.ts
+│ │ ├── seed.ts
 │ │ └── pool.ts
 │ ├── lib/
 │ │ ├── getUrl.ts
