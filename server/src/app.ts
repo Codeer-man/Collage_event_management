@@ -8,6 +8,7 @@ import { authRoute } from "./routes/auth/auth.route.js";
 import { superRoute } from "./routes/administrative/administrative.route.js";
 import cookieParser from "cookie-parser";
 import { frontendUrl } from "./lib/getUrl.js";
+import { userRoute } from "./routes/students/student.route.js";
 
 const app = express();
 
@@ -30,6 +31,9 @@ app.use("/auth", authRoute);
 
 //administrative
 app.use("/super", superRoute);
+
+//student
+app.use("/user", userRoute);
 
 app.use(notfound);
 app.use(errorHandler);

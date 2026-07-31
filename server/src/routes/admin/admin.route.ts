@@ -5,6 +5,7 @@ import { AdminService } from "../../service/admin.service.js";
 import { ok } from "../../utils/envolve.js";
 import { AppError } from "../../utils/AppError.js";
 import { booleanRequires, textRequired } from "../../utils/helper.js";
+import { AdminEventModel } from "../../model/events/admin-event.model.js";
 
 const adminRoute = express.Router();
 
@@ -15,13 +16,11 @@ adminRoute.use(requireAdmin);
 adminRoute.get(
   "/students",
   asyncHandler(async (req, res) => {
-    const facultyId = (req as any).user;
+    const facultyId = (req as any).user.faculty;
+
+    textRequired(facultyId, "faculty id is required");
 
     const getUnApprovedSts = await AdminService.getUnapprovedSts(facultyId);
-
-    if (getUnApprovedSts.length === 0) {
-      throw new AppError(200, "All students are approved");
-    }
 
     res.json(
       ok({
@@ -47,6 +46,46 @@ adminRoute.patch(
       ok({
         user: approveStudent.success,
         message: approveStudent.action,
+      }),
+    );
+  }),
+);
+
+//get events
+adminRoute.get(
+  "/event",
+  asyncHandler(async (req, res) => {
+    const facultyId = (req as any).user.faculty;
+
+    textRequired(facultyId, "faculty id is required");
+
+    const getEvents = await AdminEventModel.getEvents(facultyId);
+
+    res.json(
+      ok({
+        events: getEvents,
+      }),
+    );
+  }),
+);
+
+//approve event
+adminRoute.patch(
+  "/event/:status",
+  asyncHandler(async (req, res) => {
+    const eventId = String(req.body.eventId || "").trim();
+    const status = Boolean(req.params.approve);
+    textRequired(eventId, "eventId id is required");
+    booleanRequires(status, "status boolean is required");
+
+    const update = AdminEventModel.approveEvent(eventId, status);
+
+    res.json(
+      ok({
+        message: status
+          ? "The event has be aproved"
+          : "The event have been rejected",
+        event: update,
       }),
     );
   }),

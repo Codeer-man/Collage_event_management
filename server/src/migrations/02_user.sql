@@ -31,4 +31,12 @@ CREATE TABLE IF NOT EXISTS users (
 
 --  index 
 CREATE INDEX IF NOT EXISTS idx_users_faculty_id
-ON users(faculty_id)
+ON users(faculty_id);
+
+-- ALTER TABLE faculty
+-- ADD user_id UUID UNIQUE DEFAULT NULL;
+
+-- ALTER TABLE faculty
+-- ADD CONSTRAINT fk_users
+--     FOREIGN KEY (user_id)
+--     REFERENCES users(id);
