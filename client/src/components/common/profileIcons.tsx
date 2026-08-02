@@ -9,7 +9,13 @@ import { Link } from "react-router-dom";
 import { LogOutIcon } from "lucide-react";
 import useAuthForm from "../../feature/auth/use-auth-form";
 
-export default function Profile({ image }: { image: string }) {
+export default function Profile({
+  image,
+  role,
+}: {
+  image: string;
+  role: string;
+}) {
   const { logout } = useAuthForm();
   return (
     <DropdownMenu>
@@ -28,7 +34,7 @@ export default function Profile({ image }: { image: string }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuItem asChild>
-          <Link to="/administrative" className="w-full cursor-pointer">
+          <Link to={role} className="w-full cursor-pointer">
             Dashboard
           </Link>
         </DropdownMenuItem>

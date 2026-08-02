@@ -21,3 +21,11 @@ export async function testToConnect(): Promise<void> {
     client.release();
   }
 }
+
+// online database
+// export const pool = new Pool({
+//   connectionString: process.env.DATABASE_URL!,
+//   ssl: {
+//     rejectUnauthorized: false,
+//   },
+// });

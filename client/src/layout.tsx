@@ -6,6 +6,7 @@ import ProtectedLayout from "./components/auth/protectedLayout";
 import AdministrativeDashboard from "./page/administrative/dashboard";
 import HomeLayout from "./layout/home/home.layout";
 import Faculty from "./page/administrative/faculty";
+import AdminLayout from "./layout/admin/admin.layout";
 
 export const route = createBrowserRouter([
   // public or home
@@ -45,7 +46,26 @@ export const route = createBrowserRouter([
     ],
   },
   //admin
-  {},
+  {
+    element: <ProtectedLayout />,
+    children: [
+      {
+        element: <RoleGuard allow={["admin"]} />,
+        children: [
+          {
+            path: "/admin",
+            element: <AdminLayout />,
+            children: [
+              {
+                index: true,
+                element: <></>,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
   //student
   {},
   {
