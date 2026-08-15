@@ -5,8 +5,9 @@ export const adminModel = {
     const query = `
         SELECT * FROM users
         WHERE 
-            faculty_id = '$1' AND
-            is_approved_student = false
+            faculty_id = $1 AND
+            is_approved_student = false AND
+            role = 'student'
         LIMIT 20;
         `;
     const result = await pool.query(query, [facultyId]);

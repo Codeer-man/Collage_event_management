@@ -7,11 +7,13 @@ export type facluty = {
 
 export type createFacultyForm = {
   faculty: string;
+  programCode: string;
 };
 
 export type GetAllFaculty = {
   id: string;
   faculty_name: string;
+  program_code: string;
   admin_id: string | null;
   full_name: string | null;
   image_url: string | null;
@@ -25,6 +27,7 @@ export type getAllFacultyRes = {
 export type updateFacultyBody = {
   facultyId: string;
   faculty: string;
+  programCode: string;
 };
 
 export type getUser = {

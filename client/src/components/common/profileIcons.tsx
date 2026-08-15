@@ -9,6 +9,16 @@ import { Link } from "react-router-dom";
 import { LogOutIcon } from "lucide-react";
 import useAuthForm from "../../feature/auth/use-auth-form";
 
+function dashBoardRoute(role: string) {
+  const path = window.location.pathname;
+
+  if (path !== `/${role}`) {
+    return `/${role}`;
+  }
+
+  return path;
+}
+
 export default function Profile({
   image,
   role,
@@ -34,7 +44,7 @@ export default function Profile({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuItem asChild>
-          <Link to={role} className="w-full cursor-pointer">
+          <Link to={dashBoardRoute(role)} className="w-full cursor-pointer">
             Dashboard
           </Link>
         </DropdownMenuItem>

@@ -5,6 +5,8 @@ CREATE TABLE  IF NOT EXISTS faculty (
     
     faculty_name TEXT NOT NULL,
 
+    program_code TEXT NOT NULL UNIQUE,
+
     user_id UUID UNIQUE DEFAULT NULL,
     CONSTRAINT fk_users
         FOREIGN KEY (user_id)

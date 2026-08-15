@@ -9,6 +9,7 @@ import { superRoute } from "./routes/administrative/administrative.route.js";
 import cookieParser from "cookie-parser";
 import { frontendUrl } from "./lib/getUrl.js";
 import { userRoute } from "./routes/students/student.route.js";
+import { adminRoute } from "./routes/admin/admin.route.js";
 
 const app = express();
 
@@ -31,6 +32,9 @@ app.use("/auth", authRoute);
 
 //administrative
 app.use("/super", superRoute);
+
+//admin
+app.use("/admin", adminRoute);
 
 //student
 app.use("/user", userRoute);

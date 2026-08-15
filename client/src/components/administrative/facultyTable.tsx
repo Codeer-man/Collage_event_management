@@ -97,6 +97,7 @@ export default function FacultyTable({
                       onEdit({
                         faculty: faculty.faculty_name,
                         facultyId: faculty.id,
+                        programCode: faculty.program_code,
                       })
                     }
                   >

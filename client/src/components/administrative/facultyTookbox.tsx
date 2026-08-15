@@ -14,17 +14,17 @@ export default function FacultyToolBar({
   search,
 }: facultyToolbar) {
   return (
-    <div className=" flex items-center justify-between ">
+    <div className="relative flex items-center justify-between ">
       <Search
         className={
-          "pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+          "pointer-events-none absolute left-1/2 mt-4  h-4 w-4 -translate-y-1/2 text-muted-foreground"
         }
       />
 
       <Input
         value={search}
         onChange={(e) => onSearchChange(e.target.value)}
-        className=" w-xl"
+        className=" w-xl ml-2"
         placeholder="Search Faculty, Ignore bachelour in"
       />
 

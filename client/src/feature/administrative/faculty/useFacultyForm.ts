@@ -69,13 +69,16 @@ export default function UseFacultyForm() {
     setSelectedFacultyId(facultyId);
   }
   async function saveFaculty(value: createFacultyForm) {
-    if (selectFacultyId.trim() === "") return;
+    /** the below line code bring bug of the create/update feature of faulcty I do not know why I wrote it */
+    // if (selectFacultyId.trim() === "") return;
+
     setLoading(true);
     try {
       const response = editFaculty
         ? updateFacultyName({
             faculty: value.faculty,
             facultyId: editFaculty.facultyId,
+            programCode: value.programCode,
           })
         : createFaculty(value);
 

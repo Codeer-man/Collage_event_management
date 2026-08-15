@@ -16,7 +16,7 @@ export default function AdministrativeLayout() {
     const timer = setTimeout(() => {
       navigate("/", { replace: true });
       toast.warning("Please login ");
-    }, 5000);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [user, navigate]);
@@ -34,7 +34,7 @@ export default function AdministrativeLayout() {
           <header className="sticky top-0 z-30 flex h-20 items-center gap-4 border-b-8 border-border/20 px-4 backdrop-blur lg:px-6">
             <div className="ml-auto flex  items-center gap-2 ">
               {/* <UserButton /> */}
-              <Profile image={user?.image_url} />
+              <Profile role={user.role} image={user?.image_url} />
             </div>
           </header>
 

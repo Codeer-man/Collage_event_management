@@ -10,14 +10,14 @@ export type faculty = {
 export const facultyModel = {
   //create faculty
 
-  async createFaculty(faculty: string) {
+  async createFaculty(faculty: string, programCode: string) {
     const query = `
-    INSERT INTO faculty (faculty_name)
-    VALUES ($1)
+    INSERT INTO faculty (faculty_name,program_code)
+    VALUES ($1,$2)
     RETURNING *;
   `;
 
-    const result = await pool.query(query, [faculty]);
+    const result = await pool.query(query, [faculty, programCode]);
     return result.rows[0] as faculty;
   },
 
@@ -36,7 +36,8 @@ export const facultyModel = {
   //get all facluty
   async getAllFaculty() {
     const query = `
-    SELECT id,faculty_name FROM faculty
+    SELECT id,faculty_name,program_code
+     FROM faculty
     `;
     const result = await pool.query(query);
     return result.rows;
@@ -45,7 +46,7 @@ export const facultyModel = {
   //get all faculty for administrative
   async getAllFacultyForAdministrative() {
     const query = `
-    SELECT f.id,f.faculty_name,f.user_id as admin_id, u.full_name, u.image_url,u.contact_number 
+    SELECT f.id,f.faculty_name,f.program_code,f.user_id as admin_id, u.full_name, u.image_url,u.contact_number 
     FROM faculty as f 
     LEFT JOIN users as u 
     ON f.user_id = u.id

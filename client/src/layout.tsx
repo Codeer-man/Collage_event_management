@@ -7,6 +7,9 @@ import AdministrativeDashboard from "./page/administrative/dashboard";
 import HomeLayout from "./layout/home/home.layout";
 import Faculty from "./page/administrative/faculty";
 import AdminLayout from "./layout/admin/admin.layout";
+import Students from "./page/admin/students";
+import ApproveStudents from "./page/admin/approveSts";
+import Event from "./page/admin/event";
 
 export const route = createBrowserRouter([
   // public or home
@@ -31,12 +34,13 @@ export const route = createBrowserRouter([
             path: "/administrative",
             element: <AdministrativeLayout />,
             children: [
+              // {
+              //   index: true,
+              //   element: <AdministrativeDashboard />,
+              // },
               {
+                // path: "faculty",
                 index: true,
-                element: <AdministrativeDashboard />,
-              },
-              {
-                path: "faculty",
                 element: <Faculty />,
               },
             ],
@@ -58,7 +62,15 @@ export const route = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <></>,
+                element: <Students />,
+              },
+              {
+                path: "approve",
+                element: <ApproveStudents />,
+              },
+              {
+                path: "event",
+                element: <Event />,
               },
             ],
           },

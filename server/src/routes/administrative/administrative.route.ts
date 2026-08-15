@@ -22,15 +22,20 @@ superRoute.post(
   "/faculty/create",
   asyncHandler(async (req, res) => {
     const faculty = String(req.body.faculty || "").trim();
+    const programCode = String(req.body.programCode || "").trim();
 
     textRequired(faculty, "Faculty name is required");
+    textRequired(programCode, "program code is required");
 
     const findFaculty = await facultyService.findFacultyByName(faculty);
     if (findFaculty) {
       throw new AppError(500, "faculty name already exists");
     }
 
-    const createFaculty = await facultyModel.createFaculty(faculty);
+    const createFaculty = await facultyModel.createFaculty(
+      faculty,
+      programCode.toUpperCase(),
+    );
 
     res.json(
       ok({

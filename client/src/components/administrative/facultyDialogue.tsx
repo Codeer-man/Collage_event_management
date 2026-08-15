@@ -21,17 +21,19 @@ export default function FacultyDialogue({
   open,
 }: dialogProps) {
   const [name, setName] = useState<string>("");
+  const [program, setProgram] = useState<string>("");
   const editMode = !!faculty;
 
   useEffect(() => {
     if (!open) {
       setName("");
+      setProgram("");
       return;
     }
 
     if (faculty) {
       setName(faculty.faculty);
-
+      setProgram(faculty.programCode);
       return;
     }
 
@@ -42,6 +44,7 @@ export default function FacultyDialogue({
     try {
       await onSave({
         faculty: name,
+        programCode: program,
       });
     } catch (error) {
       console.error(error);
@@ -61,6 +64,13 @@ export default function FacultyDialogue({
             placeholder="Enter faculty name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div>
+          <Input
+            placeholder="Enter Program code"
+            value={program}
+            onChange={(e) => setProgram(e.target.value)}
           />
         </div>
         <Button onClick={submit}>{editMode ? "Edit" : "Add"} </Button>

@@ -1,9 +1,4 @@
-import {
-  Folder,
-  LayoutDashboard,
-  ShoppingBag,
-  type LucideIcon,
-} from "lucide-react";
+import { Folder, ShoppingBag, type LucideIcon } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { ThemeToggle } from "../theme/toggle-theme";
 import { ThemeToggleButton } from "../ui/skiper-ui/skiper26";
@@ -15,8 +10,8 @@ type administrativeNavItem = {
 };
 
 const items: administrativeNavItem[] = [
-  { label: "Dashboard", href: "/administrative", icon: LayoutDashboard },
-  { label: "Faculty", href: "/administrative/faculty", icon: Folder },
+  // { label: "Dashboard", href: "/administrative", icon: LayoutDashboard },
+  { label: "Faculty", href: "/administrative", icon: Folder },
 ];
 
 const navItemBase =

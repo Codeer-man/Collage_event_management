@@ -42,7 +42,7 @@ export default function FacultyAdminAsignDialogue({
   useEffect(() => {
     if (!open) return;
 
-    if (debouncedSearch.trim() === "") {
+    if (debouncedSearch.trim() === "" || debouncedSearch.trim().length <= 3) {
       setUsers([]);
       return;
     }
