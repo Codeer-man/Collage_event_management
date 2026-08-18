@@ -19,7 +19,7 @@ export type AppUser = {
   email: string;
   password: string;
   role: UserRole;
-  faculty_id: uuid;
+  faculty: uuid;
   image_url: string;
   public_id: string;
   contact_number: string;

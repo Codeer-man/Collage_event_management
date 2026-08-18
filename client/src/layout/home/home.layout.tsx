@@ -5,7 +5,6 @@ export default function HomeLayout() {
   return (
     <div>
       <DesktopNavBar />
-      <div>Home</div>
       <Outlet />
     </div>
   );

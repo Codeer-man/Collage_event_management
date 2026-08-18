@@ -4,7 +4,7 @@ import Profile from "../../components/common/profileIcons";
 import { useAuthStore } from "../../store/auth.store";
 import CommonLoader from "../../components/common/loader";
 import { toast } from "sonner";
-import AdminSidebar from "../../components/student/sidebar";
+import AdminSidebar from "../../components/admin/sidebar";
 
 export default function AdminLayout() {
   const user = useAuthStore((state) => state.user);

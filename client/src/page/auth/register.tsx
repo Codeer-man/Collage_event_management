@@ -1,10 +1,20 @@
 import {
+  CalendarDays,
+  Eye,
+  EyeOff,
+  ImagePlus,
+  LockKeyhole,
+  Mail,
+  Phone,
+  UserRound,
+} from "lucide-react";
+
+import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog";
+
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import {
@@ -18,6 +28,7 @@ import {
 import { Button } from "../../components/ui/button";
 
 import useAuthForm from "../../feature/auth/use-auth-form";
+import { useState } from "react";
 
 export default function SignUp() {
   const {
@@ -32,64 +43,62 @@ export default function SignUp() {
     setDialogOpen,
   } = useAuthForm();
 
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <Dialog
       open={open}
       onOpenChange={(isOpen) => {
         setDialogOpen(isOpen);
 
-        if (isOpen) {
-          fetchFaculty();
-        }
+        if (isOpen) fetchFaculty();
       }}
     >
       <DialogTrigger asChild>
-        <Button variant="default">Sign Up</Button>
+        <Button className="rounded-xl px-5">Sign Up</Button>
       </DialogTrigger>
 
-      <DialogContent className="max-h-[90vh] overflow-y-auto rounded-3xl p-0 sm:max-w-lg lg:max-w-2xl">
+      <DialogContent className="max-h-[95vh] overflow-y-auto rounded-3xl p-0 sm:max-w-2xl">
         {/* Header */}
-        <div className="bg-primary px-8 py-8 text-center text-primary-foreground">
-          <DialogHeader className="space-y-2">
-            <DialogTitle className="text-3xl font-bold">
-              Create Account
-            </DialogTitle>
+        <div className="border-b bg-muted/30 px-6 py-5 sm:px-7">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+              <CalendarDays className="h-5 w-5" />
+            </div>
 
-            <p className="text-sm text-primary-foreground/80">
-              Join the College Event Management System
-            </p>
-          </DialogHeader>
+            <div>
+              <p className="font-semibold">Create your account</p>
+              <p className="text-xs text-muted-foreground">
+                Join the CEMS community
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Form */}
-        <div className="space-y-6 px-6 py-8 sm:px-8">
+        <div className="space-y-5 px-6 py-6 sm:px-7">
           {/* Name + Faculty */}
-          <div className="grid gap-5 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="fullName">Full Name</Label>
-
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Full Name" icon={<UserRound />}>
               <Input
-                id="fullName"
-                className="h-11"
-                placeholder="John Doe"
+                className="h-10 rounded-xl pl-9"
+                placeholder="Hari bahadur shyam"
                 value={register.full_name}
                 onChange={(e) =>
                   updateField(setRegister, "full_name", e.target.value)
                 }
               />
-            </div>
+            </Field>
 
-            <div className="space-y-2">
-              <Label>Faculty</Label>
-
+            <Field label="Faculty" icon={<CalendarDays />}>
               <Select
                 value={register.faculty_id}
                 onValueChange={(value) =>
                   updateField(setRegister, "faculty_id", value)
                 }
               >
-                <SelectTrigger className="h-11">
-                  <SelectValue placeholder="Select Faculty" />
+                <SelectTrigger className="h-10 rounded-xl pl-9">
+                  <SelectValue placeholder="Select faculty" />
                 </SelectTrigger>
 
                 <SelectContent>
@@ -102,94 +111,128 @@ export default function SignUp() {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            </div>
+            </Field>
           </div>
 
           {/* Email + Password */}
-          <div className="grid gap-5 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Email" icon={<Mail />}>
               <Input
-                id="email"
-                className="h-11"
                 type="email"
-                placeholder="john@example.com"
+                className="h-10 rounded-xl pl-9"
+                placeholder="you@example.com"
                 value={register.email}
                 onChange={(e) =>
                   updateField(setRegister, "email", e.target.value)
                 }
               />
-            </div>
+            </Field>
 
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-
+            <Field label="Password" icon={<LockKeyhole />}>
               <Input
-                id="password"
-                className="h-11"
-                type="password"
+                type={showPassword ? "text" : "password"}
+                className="h-10 rounded-xl pl-9"
                 placeholder="••••••••"
                 value={register.password}
                 onChange={(e) =>
                   updateField(setRegister, "password", e.target.value)
                 }
               />
-            </div>
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
+            </Field>
           </div>
 
           {/* Contact + Image */}
-          <div className="grid gap-5 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="contact">Contact Number</Label>
-
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Contact Number" icon={<Phone />}>
               <Input
-                id="contact"
-                className="h-11"
+                type="tel"
+                className="h-10 rounded-xl pl-9"
                 placeholder="98XXXXXXXX"
                 value={register.contact_number}
                 onChange={(e) =>
                   updateField(setRegister, "contact_number", e.target.value)
                 }
               />
-            </div>
+            </Field>
 
             <div className="space-y-2">
-              <Label htmlFor="image">Profile Image</Label>
+              <Label className="text-sm">Profile Image</Label>
 
-              <Input
-                id="image"
-                type="file"
-                accept="image/*"
-                className="h-11 cursor-pointer file:mr-4 file:rounded-md file:border-0 file:bg-primary file:px-3 file:py-2 file:text-sm file:font-medium file:text-primary-foreground hover:file:opacity-90"
-                onChange={(e) =>
-                  updateField(setRegister, "file", e.target.files?.[0] ?? null)
-                }
-              />
+              <label
+                htmlFor="image"
+                className="flex h-10 cursor-pointer items-center gap-2 rounded-xl border px-3 text-sm text-muted-foreground transition hover:bg-muted"
+              >
+                <ImagePlus className="h-4 w-4" />
+                <span className="truncate">
+                  {register.file?.name || "Choose image"}
+                </span>
+
+                <Input
+                  id="image"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) =>
+                    updateField(
+                      setRegister,
+                      "file",
+                      e.target.files?.[0] ?? null,
+                    )
+                  }
+                />
+              </label>
             </div>
           </div>
 
+          {/* Submit */}
           <Button
             onClick={submitRegister}
             disabled={saving}
-            className="h-11 w-full rounded-xl text-base font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+            className="h-11 w-full rounded-xl font-semibold"
           >
             {saving ? "Creating Account..." : "Create Account"}
           </Button>
 
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-3 text-muted-foreground">
-                Secure Registration
-              </span>
-            </div>
-          </div>
+          <p className="text-center text-xs text-muted-foreground">
+            Your account will be reviewed before student access is approved.
+          </p>
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function Field({
+  label,
+  icon,
+  children,
+}: {
+  label: string;
+  icon: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="space-y-2">
+      <Label className="text-sm">{label}</Label>
+
+      <div className="relative">
+        <div className="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-muted-foreground">
+          {icon}
+        </div>
+
+        {children}
+      </div>
+    </div>
   );
 }

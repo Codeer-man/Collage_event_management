@@ -1,5 +1,6 @@
-import { LogOutIcon, Menu, Store, User } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Home, Info, LogOut, Menu, Settings, User } from "lucide-react";
+
+import { Link, NavLink } from "react-router-dom";
 
 import {
   Sheet,
@@ -23,155 +24,162 @@ export default function MobileNavbar() {
   const { user } = useAuthStore();
   const { logout } = useAuthForm();
 
-  function roleNav(): string {
-    if (user?.role === "administrative") {
-      return "/administrative";
-    }
-    if (user?.role === "admin") {
-      return "/admin";
-    }
-    if (user?.role === "student") {
-      return "/student";
-    }
-    if (user?.role === "organizer") {
-      return "/organizer";
-    }
+  function roleNav() {
+    switch (user?.role) {
+      case "administrative":
+        return "/administrative";
 
-    // Fallback route for guests or fallback roles
-    return "/";
+      case "admin":
+        return "/admin";
+
+      case "student":
+        return "/student";
+
+      case "organizer":
+        return "/organizer";
+
+      default:
+        return "/";
+    }
   }
 
   return (
-    <div className="lg:hidden">
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="rounded-full hover:bg-primary/10"
-          >
-            <Menu className="h-5 w-5" />
-          </Button>
-        </SheetTrigger>
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="ghost" size="icon" className="rounded-xl">
+          <Menu className="h-5 w-5" />
+          <span className="sr-only">Open navigation menu</span>
+        </Button>
+      </SheetTrigger>
 
-        <SheetContent side="left" className="flex w-[320px] flex-col p-0">
-          {/* Header */}
-          <SheetHeader className="border-b p-6  ">
-            <SheetTitle asChild>
-              <Link to="/" className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-                  <Store className="h-6 w-6" />
-                </div>
+      <SheetContent
+        side="right"
+        className="flex w-[320px] flex-col p-0 sm:w-95"
+      >
+        {/* Header */}
+        <SheetHeader className="border-b px-6 py-5">
+          <SheetTitle asChild>
+            <Link to="/" className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary font-bold text-primary-foreground">
+                C
+              </div>
 
-                <div className="flex flex-col text-left">
-                  <span className="font-semibold text-lg">CEMS</span>
-                  <span className="text-xs text-muted-foreground">
-                    Event Management
-                  </span>
-                </div>
-              </Link>
-            </SheetTitle>
-          </SheetHeader>
+              <div className="flex flex-col text-left">
+                <span className="font-semibold">CEMS</span>
 
-          {/* User */}
+                <span className="text-xs text-muted-foreground">
+                  College Event Management System
+                </span>
+              </div>
+            </Link>
+          </SheetTitle>
+        </SheetHeader>
+
+        {/* User section */}
+        {user && (
+          <>
+            <div className="flex items-center gap-3 px-6 py-5">
+              <img
+                src={user.image_url}
+                alt={user.full_name}
+                className="h-11 w-11 rounded-full border object-cover"
+              />
+
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-semibold">
+                  {user.full_name}
+                </p>
+
+                <p className="truncate text-xs text-muted-foreground">
+                  {user.email}
+                </p>
+              </div>
+
+              <ThemeToggleButton />
+            </div>
+
+            <Separator />
+          </>
+        )}
+
+        {/* Navigation */}
+        <nav className="flex flex-1 flex-col gap-1 px-4 py-5">
+          <MobileNavLink to="/" icon={<Home />} label="Home" />
+
+          <MobileNavLink to="/about" icon={<Info />} label="About" />
+
           {user && (
             <>
-              <div className="flex items-center gap-3 p-6">
-                <img
-                  src={user.image_url}
-                  alt={user.full_name}
-                  className="h-14 w-14 rounded-full border object-cover"
-                />
+              <Separator className="my-4" />
 
-                <div className="overflow-hidden flex-1">
-                  <p className="truncate font-medium">{user.full_name}</p>
+              <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Account
+              </p>
 
-                  <p className="truncate text-sm text-muted-foreground">
-                    {user.email}
-                  </p>
-                </div>
-                <ThemeToggleButton />
-              </div>
+              <MobileNavLink
+                to={roleNav()}
+                label="Dashboard"
+                icon={<Settings />}
+              />
 
-              <Separator />
+              <MobileNavLink to="/profile" label="Profile" icon={<User />} />
             </>
           )}
+        </nav>
 
-          {/* Navigation */}
-          <nav className="flex flex-1 flex-col gap-2 p-4">
-            <Link
-              to="/"
-              className="rounded-lg px-4 py-3 transition-colors hover:bg-accent hover:text-accent-foreground"
+        {/* Bottom */}
+        <div className="border-t p-4">
+          {user ? (
+            <Button
+              variant="outline"
+              className="w-full rounded-xl text-destructive hover:bg-destructive/10 hover:text-destructive"
+              onClick={logout}
             >
-              Home
-            </Link>
+              <LogOut className="mr-2 h-4 w-4" />
+              Log Out
+            </Button>
+          ) : (
+            <div className="flex flex-col gap-2">
+              <Login />
+              <SignUp />
+            </div>
+          )}
+        </div>
+      </SheetContent>
+    </Sheet>
+  );
+}
 
-            <Link
-              to="#"
-              className="rounded-lg px-4 py-3 transition-colors hover:bg-accent hover:text-accent-foreground"
-            >
-              Coming
-            </Link>
+function MobileNavLink({
+  to,
+  label,
+  icon,
+}: {
+  to: string;
+  label: string;
+  icon: React.ReactNode;
+}) {
+  return (
+    <NavLink
+      to={to}
+      className={({ isActive }) =>
+        `
+        flex items-center gap-3 rounded-xl px-3 py-3
+        text-sm font-medium
+        transition-all
+        ${
+          isActive
+            ? "bg-primary/10 text-primary"
+            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+        }
+        `
+      }
+    >
+      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted/70">
+        {icon}
+      </span>
 
-            <Link
-              to="#"
-              className="rounded-lg px-4 py-3 transition-colors hover:bg-accent hover:text-accent-foreground"
-            >
-              coming
-            </Link>
-
-            <Link
-              to="#"
-              className="rounded-lg px-4 py-3 transition-colors hover:bg-accent hover:text-accent-foreground"
-            >
-              cmoing
-            </Link>
-
-            {user && (
-              <>
-                <Separator className="my-2" />
-
-                <Link
-                  to={roleNav()}
-                  className="rounded-lg px-4 py-3 transition-colors hover:bg-primary hover:text-primary-foreground"
-                >
-                  Dashboard
-                </Link>
-
-                <Link
-                  to="/profile"
-                  className="flex items-center gap-2 rounded-lg px-4 py-3 transition-colors hover:bg-accent"
-                >
-                  <User className="h-4 w-4" />
-                  Profile
-                </Link>
-
-                <Link
-                  to="/settings"
-                  className="rounded-lg px-4 py-3 transition-colors hover:bg-accent"
-                >
-                  Settings
-                </Link>
-              </>
-            )}
-          </nav>
-
-          {/* Bottom */}
-          <div className="border-t p-4">
-            {user ? (
-              <Button variant="destructive" className="w-full" onClick={logout}>
-                <LogOutIcon className="mr-2 h-4 w-4" />
-                Log Out
-              </Button>
-            ) : (
-              <div className="flex flex-col gap-3">
-                <Login />
-                <SignUp />
-              </div>
-            )}
-          </div>
-        </SheetContent>
-      </Sheet>
-    </div>
+      {label}
+    </NavLink>
   );
 }

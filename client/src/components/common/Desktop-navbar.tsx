@@ -1,70 +1,97 @@
-import { Link } from "react-router-dom";
-import { ThemeToggle } from "../theme/toggle-theme";
+import { Home, Info, type LucideIcon } from "lucide-react";
+import { NavLink } from "react-router-dom";
 import { useAuthStore } from "../../store/auth.store";
 
 import Login from "../../page/auth/login";
 import SignUp from "../../page/auth/register";
 import MobileNavbar from "./mobile-navbar";
 import Profile from "./profileIcons";
-import { Home, type LucideIcon } from "lucide-react";
+import { ThemeToggleButton } from "../ui/skiper-ui/skiper26";
 
-function NavTextLink({
-  href,
-  label,
-  icon: Icon,
-}: {
+type NavTextLinkProps = {
   href: string;
   label: string;
   icon: LucideIcon;
-}) {
+};
+
+function NavTextLink({ href, label, icon: Icon }: NavTextLinkProps) {
   return (
-    <Link to={href} className={textLink}>
-      <Icon className="h-4.5 w-4.5" />
+    <NavLink
+      to={href}
+      className={({ isActive }) =>
+        `
+        inline-flex h-10 items-center gap-2 rounded-xl px-3
+        text-sm font-medium
+        transition-all duration-200
+        ${
+          isActive
+            ? "bg-primary/10 text-primary"
+            : "text-muted-foreground hover:bg-primary/5 hover:text-foreground"
+        }
+        `
+      }
+    >
+      <Icon className="h-4 w-4" />
       <span>{label}</span>
-    </Link>
+    </NavLink>
   );
 }
-
-const textLink =
-  "inline-flex h-10 items-center gap-2 rounded-xl px-3 text-[15px] font-medium text-foreground/90 transition hover:bg-primary/5 hover:text-foreground";
 
 export default function DesktopNavBar() {
   const { user } = useAuthStore();
 
   return (
-    <div className="sticky top-0 z-50 border-b border-border/70 bg-secondary/60 backdrop-blur-xl">
-      <div className="mx-auto flex   max-w-7xl h-18 items-center gap-3 px-4 sm:px-6 lg:px-8">
-        <Link to={"/"} className="font-semibold text-lg mr-4 flex-1">
-          <span>Title and logo</span>
-        </Link>
-        <div className=" flex gap-5">
-          {/* Navigation Links */}
-          <div className=" lg:block hidden">
-            <NavTextLink href="/" label="Home" icon={Home} />
+    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
+      <div className="mx-auto flex h-18 max-w-7xl items-center px-4 sm:px-6 lg:px-8">
+        {/* Logo */}
+        <NavLink to="/" className="group flex items-center gap-3">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-sm font-bold text-primary-foreground shadow-sm transition-transform duration-200 group-hover:scale-105">
+            C
           </div>
 
-          {/* Theme changer */}
-          <div className=" hidden lg:block ">
-            <ThemeToggle />
+          <div className="hidden sm:flex flex-col leading-none">
+            <span className="text-base font-semibold tracking-tight">CEMS</span>
+
+            <span className="mt-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+              College Events
+            </span>
           </div>
+        </NavLink>
 
-          <nav className=" hidden lg:block">
-            {/* Conditional Auth UI */}
-            {user ? (
-              <Profile image={user.image_url} role={user.role} />
-            ) : (
-              /* UNAUTHENTICATED: Show Inline Buttons triggering Modals */
-              <div className="flex items-center gap-2">
-                <Login />
+        {/* Desktop Navigation */}
+        <nav className="ml-10 hidden items-center gap-1 lg:flex">
+          <NavTextLink href="/" label="Home" icon={Home} />
 
-                <SignUp />
-              </div>
-            )}
-          </nav>
+          <a
+            href="#about"
+            className=" bg-primary/10 text-primary  inline-flex h-10 items-center gap-2 rounded-xl px-3 text-sm font-medium  transition hover:bg-primary/5 hover:text-foreground"
+          >
+            <Info className="h-4 w-4" />
+            <span>About</span>
+          </a>
+        </nav>
+
+        {/* Right side */}
+        <div className="ml-auto hidden items-center gap-2 lg:flex">
+          <ThemeToggleButton />
+
+          <div className="mx-1 h-7 w-px bg-border" />
+
+          {user ? (
+            <Profile image={user.image_url} role={user.role} />
+          ) : (
+            <div className="flex items-center gap-2">
+              <Login />
+              <SignUp />
+            </div>
+          )}
         </div>
 
-        <MobileNavbar />
+        {/* Mobile */}
+        <div className="ml-auto lg:hidden">
+          <MobileNavbar />
+        </div>
       </div>
-    </div>
+    </header>
   );
 }

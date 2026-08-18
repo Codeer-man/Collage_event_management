@@ -48,7 +48,6 @@ The platform is designed with **role-based access control**, ensuring that every
 ## 👨‍🏫 Faculty Admin
 
 - Verify Newly Registered Students & Approve Student Accounts
-- Assign Organizer Role
 - Approve or Reject Events
 - Manage Faculty Events
 
@@ -60,23 +59,9 @@ The platform is designed with **role-based access control**, ensuring that every
 - Verify Email
 - Join Events
 - View Faculty Events
-
----
-
-## 🎯 Organizer
-
-Organizer is **not a separate account type**.
-
-A student becomes an organizer after being granted permission by the Faculty Admin.
-
-Organizers can:
-
 - Create Events
-- Upload Event Banner
-- Edit Events
+- create and join teams
 - Manage Event Participants
-
----
 
 # 🏛 Role Hierarchy
 
@@ -88,9 +73,7 @@ Administrative
       │
       ▼
     Student
-      │
-      ▼
-   Organizer
+
 ```
 
 ---
@@ -98,7 +81,7 @@ Administrative
 # 🔄 Event Approval Workflow
 
 ```text
-Organizer
+student
      │
 Create Event
      │
@@ -131,7 +114,7 @@ Students can only view events belonging to their own faculty.
         ┌────────────────┼────────────────┐
         ▼                ▼                ▼
  PostgreSQL         Cloudinary         Redis
-        │
+        │                         (not implemented yet)
         ▼
  Raw SQL + SQL Migrations
 ```
@@ -294,14 +277,14 @@ Example endpoints include:
 
 ### Authentication
 
-- POST `/auth/register`
-- POST `/auth/login`
-- GET `/auth/verify-email`
+- POST `/auth/register` - Create account
+- POST `/auth/login` - login
+- GET `/auth/verify-email` - verify email
 
 ### Student
 
-- GET `/student/profile`
-- PUT `/student/profile`
+- GET `/user/profile`
+- PUT `/user/profile`
 
 ### Events
 
@@ -313,22 +296,22 @@ Example endpoints include:
 
 ### Faculty Admin
 
-- GET `/admin/students`
-- PUT `/admin/verify-student`
-- PUT `/admin/assign-organizer`
-- PUT `/admin/approve-event`
+- GET `/admin/students` - get all students
+- GET `/admin/notApproved` - get all unapproved students only
+- PATCH `/admin/approve` - aprove or reject student
+- GET `/admin//event/pending` - get pending or unapproved events
+- GET `/admin/events` - get all events \*
+- PATCH `/admin/event` - aprove or reject events
 
 ---
 
-# 📷 Screenshots
+### Administrative
 
-Project screenshots will be added as development progresses.
-
-```text
-
-```
-
----
+- POST `/super/faculty/create` - create faulty
+- GET `/super/faculty` - get all faculty
+- GET `/super/faculty/edit` - update faculty
+- GET `/super/user/:facultyId` - get user for admin
+- GET `/super/asign/faculty` - asign admin
 
 # 🚀 Planned Features
 
