@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type {
   allFaculty,
   loginUserFormBody,
@@ -7,6 +7,7 @@ import type {
 import { createUser, fetchFacluty, loginUser, logoutUser } from "./api";
 import { toast } from "sonner";
 import { useAuthStore } from "../../store/auth.store";
+import { useNavigate } from "react-router-dom";
 
 function registerInitialState(): registerUserFormBody {
   return {
@@ -28,6 +29,7 @@ function loginInitialState(): loginUserFormBody {
 
 export default function useAuthForm() {
   const { cleanAuth, setUser } = useAuthStore();
+  const navigate = useNavigate();
 
   const [register, setRegister] =
     useState<registerUserFormBody>(registerInitialState);
@@ -93,6 +95,7 @@ export default function useAuthForm() {
           setUser(userData.user);
           setDialogOpen(false);
           setLogin(loginInitialState);
+          navigate(`/${userData.user.role}`);
           return "You have successfully logged in";
         },
         error: (error) =>
@@ -132,6 +135,10 @@ export default function useAuthForm() {
       setSaving(false);
     }
   }
+
+  useEffect(() => {
+    fetchFaculty();
+  }, []);
 
   return {
     register,

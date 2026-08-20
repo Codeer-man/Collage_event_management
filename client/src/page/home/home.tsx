@@ -3,17 +3,20 @@ import {
   CalendarDays,
   ChevronDown,
   GraduationCap,
-  MapPin,
   Users,
-  BookOpen,
   Sparkles,
-  Building2,
   Trophy,
 } from "lucide-react";
 import { Badge } from "../../components/ui/badge";
 import { Button } from "../../components/ui/button";
+import { useNavigate } from "react-router-dom";
+
+import { useAuthStore } from "../../store/auth.store";
 
 export default function HomePage() {
+  const navigate = useNavigate();
+  const { user } = useAuthStore();
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main>
@@ -26,8 +29,8 @@ export default function HomePage() {
             className="absolute inset-0 bg-cover bg-center"
             style={{
               backgroundImage:
-                // "url('https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=2200&q=85')",
-                "url('https://portal.tu.edu.np/medias/AdministrativeBuildingPNC_2024_05_16_13_27_01.jpg')",
+                "url('https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=2200&q=85')",
+              // "url('https://portal.tu.edu.np/medias/AdministrativeBuildingPNC_2024_05_16_13_27_01.jpg')",
             }}
           />
 
@@ -59,7 +62,11 @@ export default function HomePage() {
               </p>
 
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                <Button size="lg" className="group rounded-full px-6">
+                <Button
+                  size="lg"
+                  className="group rounded-full px-6"
+                  onClick={() => (user ? navigate(`${user.role}`) : "")}
+                >
                   Explore Events
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Button>
@@ -76,23 +83,23 @@ export default function HomePage() {
               {/* Small stats */}
               <div className="mt-14 grid max-w-xl grid-cols-3 border-t border-white/20 pt-6">
                 <div>
-                  <p className="text-2xl font-semibold">60+</p>
+                  <p className="text-2xl font-semibold">25+</p>
                   <p className="mt-1 text-xs text-white/60 sm:text-sm">
-                    Years of history
+                    Faculties
                   </p>
                 </div>
 
                 <div className="border-l border-white/20 pl-5">
-                  <p className="text-2xl font-semibold">34+</p>
+                  <p className="text-2xl font-semibold">Easy</p>
                   <p className="mt-1 text-xs text-white/60 sm:text-sm">
-                    Study areas
+                    Registration
                   </p>
                 </div>
 
                 <div className="border-l border-white/20 pl-5">
-                  <p className="text-2xl font-semibold">1</p>
+                  <p className="text-2xl font-semibold">One</p>
                   <p className="mt-1 text-xs text-white/60 sm:text-sm">
-                    Campus community
+                    Event hub
                   </p>
                 </div>
               </div>
@@ -112,7 +119,7 @@ export default function HomePage() {
         {/* =========================================================
             INTRODUCTION
         ========================================================= */}
-        <section className="px-6 py-24 lg:px-8 lg:py-32">
+        <section className="px-6 py-24 lg:px-8 lg:py-32" id="about">
           <div className="mx-auto max-w-7xl">
             <div className="grid gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
               <div>
@@ -225,67 +232,6 @@ export default function HomePage() {
         {/* =========================================================
             ABOUT CAMPUS
         ========================================================= */}
-        <section
-          id="about"
-          className="border-y bg-muted/30 px-6 py-24 lg:px-8 lg:py-32"
-        >
-          <div className="mx-auto max-w-7xl">
-            <div className="grid gap-14 lg:grid-cols-[0.7fr_1.3fr]">
-              <div>
-                <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-primary">
-                  About the campus
-                </p>
-
-                <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-                  A place with history, people, and possibilities.
-                </h2>
-              </div>
-
-              <div>
-                <p className="text-lg leading-8 text-muted-foreground">
-                  Prithvi Narayan Campus is one of Tribhuvan University's
-                  constituent campuses and has a history spanning more than six
-                  decades. Located in Bagar, Pokhara, the campus has grown into
-                  a multidisciplinary institution serving students across a wide
-                  range of academic fields.
-                </p>
-
-                <p className="mt-6 leading-7 text-muted-foreground">
-                  Its academic community spans humanities and social sciences,
-                  management, education, law, and science and technology. This
-                  diversity creates an environment where students from different
-                  backgrounds can learn, collaborate, and participate together.
-                </p>
-
-                <div className="mt-10 grid gap-4 sm:grid-cols-2">
-                  <AboutStat
-                    icon={<Building2 />}
-                    title="Multidisciplinary"
-                    description="Multiple faculties and institutes under one campus."
-                  />
-
-                  <AboutStat
-                    icon={<MapPin />}
-                    title="Pokhara"
-                    description="Situated in the panoramic city of lakes."
-                  />
-
-                  <AboutStat
-                    icon={<BookOpen />}
-                    title="Learning"
-                    description="A strong focus on teaching, research, and development."
-                  />
-
-                  <AboutStat
-                    icon={<Users />}
-                    title="Community"
-                    description="A diverse student community with shared campus experiences."
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* =========================================================
             ACADEMIC COMMUNITY
@@ -498,30 +444,6 @@ function InfoRow({
           {description}
         </p>
       </div>
-    </div>
-  );
-}
-
-function AboutStat({
-  icon,
-  title,
-  description,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}) {
-  return (
-    <div className="rounded-2xl border bg-background p-5">
-      <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
-        {icon}
-      </div>
-
-      <h3 className="font-semibold">{title}</h3>
-
-      <p className="mt-2 text-sm leading-6 text-muted-foreground">
-        {description}
-      </p>
     </div>
   );
 }

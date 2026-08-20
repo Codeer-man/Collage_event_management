@@ -76,13 +76,19 @@ export default function SignUp() {
         </div>
 
         {/* Form */}
-        <div className="space-y-5 px-6 py-6 sm:px-7">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            submitRegister();
+          }}
+          className="space-y-5 px-6 py-6 sm:px-7"
+        >
           {/* Name + Faculty */}
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label="Full Name" icon={<UserRound />}>
               <Input
                 className="h-10 rounded-xl pl-9"
-                placeholder="Hari bahadur shyam"
+                placeholder="Hari Bahadur Shyam"
                 value={register.full_name}
                 onChange={(e) =>
                   updateField(setRegister, "full_name", e.target.value)
@@ -131,13 +137,14 @@ export default function SignUp() {
             <Field label="Password" icon={<LockKeyhole />}>
               <Input
                 type={showPassword ? "text" : "password"}
-                className="h-10 rounded-xl pl-9"
+                className="h-10 rounded-xl pl-9 pr-10"
                 placeholder="••••••••"
                 value={register.password}
                 onChange={(e) =>
                   updateField(setRegister, "password", e.target.value)
                 }
               />
+
               <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
@@ -174,6 +181,7 @@ export default function SignUp() {
                 className="flex h-10 cursor-pointer items-center gap-2 rounded-xl border px-3 text-sm text-muted-foreground transition hover:bg-muted"
               >
                 <ImagePlus className="h-4 w-4" />
+
                 <span className="truncate">
                   {register.file?.name || "Choose image"}
                 </span>
@@ -197,7 +205,7 @@ export default function SignUp() {
 
           {/* Submit */}
           <Button
-            onClick={submitRegister}
+            type="submit"
             disabled={saving}
             className="h-11 w-full rounded-xl font-semibold"
           >
@@ -207,7 +215,7 @@ export default function SignUp() {
           <p className="text-center text-xs text-muted-foreground">
             Your account will be reviewed before student access is approved.
           </p>
-        </div>
+        </form>
       </DialogContent>
     </Dialog>
   );

@@ -49,8 +49,8 @@ userRoute.post(
     const title = String(req.body.title || "").trim();
     const description = String(req.body.description || "").trim();
     const location = String(req.body.location || "").trim();
-    const event_date = String(req.body.event_date || "").trim();
-    const registration_deadline = String(
+    let event_date = String(req.body.event_date || "").trim();
+    let registration_deadline = String(
       req.body.registration_deadline || "",
     ).trim();
     const entry_fee = Number(req.body.entry_fee || 0);
@@ -58,6 +58,7 @@ userRoute.post(
     const max_participants = Number(req.body.max_participants || 100);
     const isTeamEvent = Boolean(req.body.isTeamEvent || false);
     const eventId = String(req.body.eventId || "").trim();
+    const faculty = JSON.parse(req.body.faculty || "[]");
     const file = req.file as Express.Multer.File;
 
     textRequired(userId, "You are not authenticated");
@@ -73,13 +74,23 @@ userRoute.post(
 
     const today = new Date().toISOString().split("T")[0];
 
-    if (event_date <= today || registration_deadline <= today) {
-      throw new AppError(
-        400,
-        "Date must be in the future (cannot be today or a past date).",
-      );
+    event_date = event_date.split("T")[0];
+    registration_deadline = registration_deadline.split("T")[0];
+
+    if (event_date <= today) {
+      throw new AppError(400, "Event date must be in the future.");
     }
 
+    if (registration_deadline <= today) {
+      throw new AppError(400, "Registration deadline must be in the future.");
+    }
+
+    if (registration_deadline >= event_date) {
+      throw new AppError(
+        400,
+        "Registration deadline must be before the event date.",
+      );
+    }
     if (!file) throw new AppError(400, "event image is required");
     const imageUpload = await uploadImage(file.buffer, "event_publicId");
 
@@ -96,12 +107,29 @@ userRoute.post(
       userId,
       isTeamEvent,
       max_participants,
-      eventId,
+      // eventId,
     );
 
     if (!newlyCreatedEvent) {
       throw new AppError(400, "failed to create event");
     }
+
+    const values: string[] = [];
+    const params: string[] = [];
+
+    faculty.forEach((facultyId: string, index: number) => {
+      const offset = index * 2;
+
+      values.push(`($${offset + 1}, $${offset + 2})`);
+      params.push(newlyCreatedEvent.rows[0].id, facultyId);
+    });
+
+    const query = `
+    INSERT INTO event_faculties (event_id, faculty_id)
+    VALUES ${values.join(", ")}
+`;
+
+    await pool.query(query, params);
 
     res.json(
       ok({
@@ -112,12 +140,35 @@ userRoute.post(
   }),
 );
 
-//cancel event
-userRoute.patch(
-  "/event/cancel/:eventId",
+// get all your events
+userRoute.get(
+  "/my/event",
   asyncHandler(async (req, res) => {
     const userId = (req as any).user.id;
-    const eventId = String(req.params.eventId);
+
+    const events = await pool.query(
+      `
+      SELECT * FROM events e
+      WHERE e.created_by = $1
+    `,
+      [userId],
+    );
+
+    res.json(
+      ok({
+        myEvent: events.rows,
+      }),
+    );
+  }),
+);
+
+//cancel event
+userRoute.patch(
+  "/event/cancel",
+  asyncHandler(async (req, res) => {
+    const userId = (req as any).user.id;
+    const eventId = String(req.body.eventId || "").trim();
+
     textRequired(userId, "User id is required");
     textRequired(eventId, "event id is required");
 
@@ -171,19 +222,19 @@ userRoute.post(
 userRoute.post(
   "/create/:eventId",
   asyncHandler(async (req, res) => {
-    const teamName = String(req.body.teamName || "").trim();
+    const teamId = +req.body.teamId;
     const userId = (req as any).user.id;
     const eventId = Number(req.params.eventId);
-    textRequired(teamName, "Team name is requierd");
+    numberRequires(teamId, "Team name is requierd");
     textRequired(userId, "User id is requierd");
 
     const createTeam = await pool.query(
       `
-      INSERT INTO teams (event_id, team_name, leader_id)
+      INSERT INTO teams (event_id, team_id, leader_id)
       VALUES ($1, $2, $3)
       RETURNING *;
   `,
-      [eventId, teamName, userId],
+      [eventId, teamId, userId],
     );
 
     res.json(

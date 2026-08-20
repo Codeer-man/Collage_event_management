@@ -624,26 +624,123 @@ export const ThemeToggleButton = ({
       aria-label="Toggle theme"
     >
       <span className="sr-only">Toggle theme</span>
-      <svg viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="size-6 mx-auto"
+      >
         <motion.g
-          animate={{ rotate: isDark ? -180 : 0 }}
+          animate={{ rotate: isDark ? 40 : 90 }}
           transition={{ ease: "easeInOut", duration: 0.5 }}
         >
-          <path
-            d="M120 67.5C149.25 67.5 172.5 90.75 172.5 120C172.5 149.25 149.25 172.5 120 172.5"
+          {/* Sun core / Moon body */}
+          <motion.circle
+            cx="12"
+            cy="12"
+            animate={{
+              r: isDark ? 8 : 5,
+            }}
+            transition={{ ease: "easeInOut", duration: 0.5 }}
             fill="white"
           />
-          <path
-            d="M120 67.5C90.75 67.5 67.5 90.75 67.5 120C67.5 149.25 90.75 172.5 120 172.5"
+
+          {/* Sun rays - fade & shrink away when dark */}
+          <motion.g
+            animate={{
+              opacity: isDark ? 0 : 1,
+              scale: isDark ? 0 : 1,
+            }}
+            transition={{ ease: "easeInOut", duration: 0.4 }}
+            style={{ originX: "12px", originY: "12px" }}
+          >
+            <line
+              x1="12"
+              y1="1"
+              x2="12"
+              y2="3"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <line
+              x1="12"
+              y1="21"
+              x2="12"
+              y2="23"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <line
+              x1="4.22"
+              y1="4.22"
+              x2="5.64"
+              y2="5.64"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <line
+              x1="18.36"
+              y1="18.36"
+              x2="19.78"
+              y2="19.78"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <line
+              x1="1"
+              y1="12"
+              x2="3"
+              y2="12"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <line
+              x1="21"
+              y1="12"
+              x2="23"
+              y2="12"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <line
+              x1="4.22"
+              y1="19.78"
+              x2="5.64"
+              y2="18.36"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <line
+              x1="18.36"
+              y1="5.64"
+              x2="19.78"
+              y2="4.22"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          </motion.g>
+
+          {/* Moon crescent cutout - fades in when dark */}
+          <motion.circle
+            cx="17"
+            cy="8"
+            r="7"
             fill="black"
+            animate={{
+              opacity: isDark ? 1 : 0,
+              cx: isDark ? 16 : 22,
+            }}
+            transition={{ ease: "easeInOut", duration: 0.5 }}
           />
         </motion.g>
-        <motion.path
-          animate={{ rotate: isDark ? 180 : 0 }}
-          transition={{ ease: "easeInOut", duration: 0.5 }}
-          d="M120 3.75C55.5 3.75 3.75 55.5 3.75 120C3.75 184.5 55.5 236.25 120 236.25C184.5 236.25 236.25 184.5 236.25 120C236.25 55.5 184.5 3.75 120 3.75ZM120 214.5V172.5C90.75 172.5 67.5 149.25 67.5 120C67.5 90.75 90.75 67.5 120 67.5V25.5C172.5 25.5 214.5 67.5 214.5 120C214.5 172.5 172.5 214.5 120 214.5Z"
-          fill="white"
-        />
       </svg>
     </button>
   );

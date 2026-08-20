@@ -13,8 +13,9 @@ import Event from "./page/admin/event";
 import MyProfile from "./page/student/student";
 import Events from "./page/student/event";
 import Team from "./page/student/team";
-import CreateEvent from "./page/student/createEvent";
 import HomePage from "./page/home/home";
+import CreateEventPage from "./page/student/createEvent";
+import MyEvents from "./page/student/myEvent";
 
 export const route = createBrowserRouter([
   // public or home
@@ -108,7 +109,11 @@ export const route = createBrowserRouter([
               },
               {
                 path: "create/events",
-                element: <CreateEvent />,
+                element: <CreateEventPage />,
+              },
+              {
+                path: "my/events",
+                element: <MyEvents />,
               },
             ],
           },
