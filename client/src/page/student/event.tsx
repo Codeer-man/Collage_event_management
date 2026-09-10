@@ -7,7 +7,7 @@ export default function Events() {
   const { events, loading } = UseStudent();
 
   return (
-    <div>
+    <div className="mx-5 mt-5">
       <EventPresentList events={events} loading={loading} />
       <EventDetail />
     </div>

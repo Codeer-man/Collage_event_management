@@ -41,6 +41,11 @@ const items: AdministrativeNavItem[] = [
     icon: Award,
   },
   {
+    label: "My team",
+    href: "/student/leader",
+    icon: Award,
+  },
+  {
     label: "Create events",
     href: "/student/create/events",
     icon: Award,

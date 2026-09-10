@@ -1,5 +1,5 @@
 export interface joinEventType {
-  id: string;
+  id: number;
   image_url: string;
   title: string;
   description: string;
@@ -47,3 +47,25 @@ export type myEventType = {
 export type myEventTypeResp = {
   myEvent: myEventType[];
 };
+
+export interface TeamMember {
+  id: number;
+  user_id: string;
+  full_name: string;
+  email: string;
+  contact_number: string;
+  joined_at: string;
+}
+
+export interface TeamType {
+  id: string;
+  event_id: string;
+  leader_id: string;
+  team_name: string;
+  members: TeamMember[];
+  created_at: string;
+}
+
+export interface TeamResp {
+  teams: TeamType[];
+}

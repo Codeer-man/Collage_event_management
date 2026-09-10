@@ -1,5 +1,10 @@
 import { apiGet, apiPatch, apiPost } from "../../lib/api";
-import type { CreateEventPayload, joinEventRes, myEventTypeResp } from "./type";
+import type {
+  CreateEventPayload,
+  joinEventRes,
+  myEventTypeResp,
+  TeamResp,
+} from "./type";
 
 export async function getAllEvents() {
   return apiGet<joinEventRes>("/user/events");
@@ -44,4 +49,30 @@ export async function getYourEvents() {
 
 export async function cancelEvent(eventId: string) {
   return apiPatch("/user/event/cancel", { eventId });
+}
+
+export async function createTeam(eventId: number, teamName: string) {
+  return apiPost("/user/create", { eventId, teamName });
+}
+
+export async function getYourTeam() {
+  return apiGet<TeamResp>("/user/your/team");
+}
+
+type manageMemberType = {
+  eventId: string;
+  teamId: string;
+  email?: string;
+  userId?: string;
+};
+
+export async function manageMember({
+  eventId,
+  teamId,
+  email,
+  userId,
+}: manageMemberType) {
+  console.log(userId);
+
+  return apiPost("/user/add/member", { email, eventId, teamId, userId });
 }

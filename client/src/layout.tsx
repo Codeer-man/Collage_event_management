@@ -16,6 +16,7 @@ import Team from "./page/student/team";
 import HomePage from "./page/home/home";
 import CreateEventPage from "./page/student/createEvent";
 import MyEvents from "./page/student/myEvent";
+import LeaderTeam from "./page/student/leaderTeam";
 
 export const route = createBrowserRouter([
   // public or home
@@ -102,6 +103,10 @@ export const route = createBrowserRouter([
               {
                 path: "join/events",
                 element: <Events />,
+              },
+              {
+                path: "leader",
+                element: <LeaderTeam />,
               },
               {
                 path: "team",

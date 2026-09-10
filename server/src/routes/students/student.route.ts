@@ -26,7 +26,7 @@ userRoute.use(requireAuth);
 userRoute.get(
   "/events",
   asyncHandler(async (req, res) => {
-    const facultyId = (req as any).user.facultyId;
+    const facultyId = (req as any).user.faculty;
 
     textRequired(facultyId, "Faculty id is reqiured");
 
@@ -163,31 +163,61 @@ userRoute.get(
 );
 
 //cancel event
-userRoute.patch(
-  "/event/cancel",
+userRoute.get(
+  "/your/team",
   asyncHandler(async (req, res) => {
     const userId = (req as any).user.id;
-    const eventId = String(req.body.eventId || "").trim();
 
-    textRequired(userId, "User id is required");
-    textRequired(eventId, "event id is required");
+    textRequired(userId, "You are not authenticated");
 
-    const cancelEvent = await pool.query(
+    const leader = await pool.query(
       `
-      UPDATE events
-      SET status = $1
-      WHERE id = $2 AND created_by = $3
-    `,
-      ["cancelled", eventId, userId],
+      SELECT * FROM teams
+      WHERE leader_id = $1
+      ORDER BY created_at DESC 
+      `,
+      [userId],
     );
 
-    if (cancelEvent.rowCount === 0) {
-      throw new AppError(404, "Event not found ");
+    if (leader.rows.length === 0) {
+      res.json(
+        ok({
+          message: "You are not the leader of any team",
+        }),
+      );
+      return;
     }
+
+    const teams = await Promise.all(
+      leader.rows.map(async (team) => {
+        const members = await pool.query(
+          `
+          SELECT
+            tm.id,
+            tm.user_id,
+            tm.joined_at,
+            u.full_name,
+            u.email,
+            u.contact_number
+          FROM team_members tm
+          JOIN users u
+            ON tm.user_id = u.id
+          WHERE tm.team_id = $1
+          ORDER BY tm.joined_at ASC
+          `,
+          [team.id],
+        );
+
+        return {
+          ...team,
+          members: members.rows,
+        };
+      }),
+    );
 
     res.json(
       ok({
-        message: "Event successfully cancelled",
+        teams,
       }),
     );
   }),
@@ -220,21 +250,37 @@ userRoute.post(
 
 // create team
 userRoute.post(
-  "/create/:eventId",
+  "/create",
   asyncHandler(async (req, res) => {
-    const teamId = +req.body.teamId;
+    const team_name = String(req.body.teamName).trim();
     const userId = (req as any).user.id;
-    const eventId = Number(req.params.eventId);
-    numberRequires(teamId, "Team name is requierd");
+    const eventId = Number(req.body.eventId);
+
+    textRequired(team_name, "Team name is requierd");
     textRequired(userId, "User id is requierd");
+
+    const findEvent = await pool.query(
+      `
+      SELECT EXISTS (
+        SELECT 1 FROM teams
+        WHERE 
+          id =$1
+      );
+      `,
+      [eventId],
+    );
+
+    if (findEvent.rows[0].exists) {
+      throw new AppError(404, "Event does not exists");
+    }
 
     const createTeam = await pool.query(
       `
-      INSERT INTO teams (event_id, team_id, leader_id)
+      INSERT INTO teams (event_id, team_name, leader_id)
       VALUES ($1, $2, $3)
       RETURNING *;
   `,
-      [eventId, teamId, userId],
+      [eventId, team_name, userId],
     );
 
     res.json(
@@ -245,14 +291,86 @@ userRoute.post(
   }),
 );
 
+//get Your tean
+userRoute.get(
+  "/your/team",
+  asyncHandler(async (req, res) => {
+    const userId = (req as any).user.id;
+
+    textRequired(userId, "You are not authenticated");
+
+    const leader = await pool.query(
+      `
+        SELECT * FROM teams
+        WHERE leader_id = $1
+      `,
+      [userId],
+    );
+
+    if (leader.rows.length <= 0) {
+      res.json(
+        ok({
+          message: "You are not leader of any team",
+        }),
+      );
+    }
+
+    res.json(
+      ok({
+        team: leader.rows[0],
+      }),
+    );
+  }),
+);
+
+// get all the team you are in
+userRoute.get(
+  "/team",
+  asyncHandler(async (req, res) => {
+    const userId = (req as any).user.id;
+
+    textRequired(userId, "You are not authenticated");
+
+    const result = await pool.query(
+      `
+          SELECT t.*
+          FROM teams t
+          INNER JOIN team_members tm
+            ON t.id = tm.team_id
+          WHERE tm.user_id = $1
+      `,
+      [userId],
+    );
+
+    if (result.rows.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: "You are not in any team.",
+      });
+    }
+
+    res.json(
+      ok({
+        success: true,
+        leader: false,
+        team: result.rows,
+      }),
+    );
+  }),
+);
+
 //  add or remove  member by email
 userRoute.post(
-  "/event/:teamId",
+  "/add/member",
   asyncHandler(async (req, res) => {
     const email = String(req.body.email || "").trim();
     const userId = String(req.body.userId || "").trim();
-    const teamId = +req.params.teamId;
+    const teamId = Number(req.body.teamId);
     const eventId = Number(req.body.eventId);
+
+    console.log(teamId);
+    console.log(eventId);
+    console.log(email);
 
     numberRequires(teamId, "team is requierd");
     numberRequires(eventId, "Event id not found");

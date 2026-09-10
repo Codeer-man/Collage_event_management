@@ -67,7 +67,7 @@ export default function HomePage() {
                   className="group rounded-full px-6"
                   onClick={() => (user ? navigate(`${user.role}`) : "")}
                 >
-                  Explore Events
+                  Explore
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Button>
 
