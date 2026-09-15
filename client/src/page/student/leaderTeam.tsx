@@ -54,7 +54,7 @@ export default function LeaderTeam() {
 
   if (teams.length === 0) {
     return (
-      <div className="flex min-h-[300px] items-center justify-center">
+      <div className="flex min-h-75 items-center justify-center">
         <Card className="w-full max-w-md text-center shadow-lg">
           <CardContent className="py-10">
             <Crown className="mx-auto mb-4 h-12 w-12 text-gray-400" />
@@ -90,6 +90,14 @@ export default function LeaderTeam() {
                 <div>
                   <CardTitle className="text-xl">{team.team_name}</CardTitle>
                   <CardDescription>Team ID: #{team.id}</CardDescription>
+                  <CardDescription>Event Name: {team.title}</CardDescription>
+                  <img
+                    src={team.image_url}
+                    width={100}
+                    height={100}
+                    alt="event image"
+                    className="mt-2"
+                  />
                 </div>
 
                 <Badge className="gap-1">

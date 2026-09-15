@@ -4,6 +4,13 @@ import {
   ShoppingBag,
   Award,
   type LucideIcon,
+  UserRound,
+  CalendarDays,
+  Users,
+  Crown,
+  CalendarPlus,
+  CalendarCheck,
+  ClipboardCheck,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
@@ -28,32 +35,37 @@ const items: AdministrativeNavItem[] = [
   {
     label: "Profile",
     href: "/student",
-    icon: Folder,
+    icon: UserRound,
   },
   {
-    label: " Join Events",
+    label: "Join Events",
     href: "/student/join/events",
-    icon: Folder,
+    icon: CalendarDays,
   },
   {
-    label: "team",
+    label: "Team",
     href: "/student/team",
-    icon: Award,
+    icon: Users,
   },
   {
-    label: "My team",
+    label: "My Team",
     href: "/student/leader",
-    icon: Award,
+    icon: Crown,
   },
   {
-    label: "Create events",
+    label: "Create Events",
     href: "/student/create/events",
-    icon: Award,
+    icon: CalendarPlus,
   },
   {
-    label: "My events",
+    label: "My Events",
     href: "/student/my/events",
-    icon: Award,
+    icon: CalendarCheck,
+  },
+  {
+    label: "Registered",
+    href: "/student/registered",
+    icon: ClipboardCheck,
   },
 ];
 
@@ -124,7 +136,7 @@ export default function StudentSidebar() {
           </SheetTrigger>
 
           {/* Mobile sidebar */}
-          <SheetContent side="left" className="w-[300px] p-0 bg-sidebar">
+          <SheetContent side="left" className="w-75 p-0 bg-sidebar">
             {/* Header */}
             <SheetHeader className="h-20 border-b border-sidebar-border px-5">
               <SheetTitle className="flex items-center gap-4">

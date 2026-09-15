@@ -56,7 +56,7 @@ userRoute.post(
     const entry_fee = Number(req.body.entry_fee || 0);
     const contact = Number(req.body.contact);
     const max_participants = Number(req.body.max_participants || 100);
-    const isTeamEvent = Boolean(req.body.isTeamEvent || false);
+    const isTeamEvent = req.body.isTeamEvent === "true";
     const eventId = String(req.body.eventId || "").trim();
     const faculty = JSON.parse(req.body.faculty || "[]");
     const file = req.file as Express.Multer.File;
@@ -162,7 +162,7 @@ userRoute.get(
   }),
 );
 
-//cancel event
+//get your team
 userRoute.get(
   "/your/team",
   asyncHandler(async (req, res) => {
@@ -172,9 +172,15 @@ userRoute.get(
 
     const leader = await pool.query(
       `
-      SELECT * FROM teams
-      WHERE leader_id = $1
-      ORDER BY created_at DESC 
+      SELECT
+        t.*,
+        e.title,
+        e.image_url
+      FROM teams t
+      JOIN events e
+        ON e.id = t.event_id
+      WHERE t.leader_id = $1
+      ORDER BY t.created_at DESC
       `,
       [userId],
     );
@@ -207,6 +213,7 @@ userRoute.get(
           `,
           [team.id],
         );
+        console.log(team);
 
         return {
           ...team,
@@ -291,37 +298,38 @@ userRoute.post(
   }),
 );
 
+//delete in test
 //get Your tean
-userRoute.get(
-  "/your/team",
-  asyncHandler(async (req, res) => {
-    const userId = (req as any).user.id;
+// userRoute.get(
+//   "/your/team",
+//   asyncHandler(async (req, res) => {
+//     const userId = (req as any).user.id;
 
-    textRequired(userId, "You are not authenticated");
+//     textRequired(userId, "You are not authenticated");
 
-    const leader = await pool.query(
-      `
-        SELECT * FROM teams
-        WHERE leader_id = $1
-      `,
-      [userId],
-    );
+//     const leader = await pool.query(
+//       `
+//         SELECT * FROM teams
+//         WHERE leader_id = $1
+//       `,
+//       [userId],
+//     );
 
-    if (leader.rows.length <= 0) {
-      res.json(
-        ok({
-          message: "You are not leader of any team",
-        }),
-      );
-    }
+//     if (leader.rows.length <= 0) {
+//       res.json(
+//         ok({
+//           message: "You are not leader of any team",
+//         }),
+//       );
+//     }
 
-    res.json(
-      ok({
-        team: leader.rows[0],
-      }),
-    );
-  }),
-);
+//     res.json(
+//       ok({
+//         team: leader.rows[0],
+//       }),
+//     );
+//   }),
+// );
 
 // get all the team you are in
 userRoute.get(
@@ -333,12 +341,30 @@ userRoute.get(
 
     const result = await pool.query(
       `
-          SELECT t.*
-          FROM teams t
-          INNER JOIN team_members tm
-            ON t.id = tm.team_id
-          WHERE tm.user_id = $1
-      `,
+      SELECT
+        t.id,
+        t.team_name,
+        t.event_id,
+
+        e.title AS event_title,
+        e.image_url AS event_image,
+        e.event_date,
+
+        u.full_name AS leader_name
+
+      FROM teams t
+
+      INNER JOIN team_members tm
+        ON t.id = tm.team_id
+
+      INNER JOIN events e
+        ON t.event_id = e.id
+
+      INNER JOIN users u
+        ON t.leader_id = u.id
+
+      WHERE tm.user_id = $1
+  `,
       [userId],
     );
 
@@ -347,6 +373,7 @@ userRoute.get(
         success: false,
         message: "You are not in any team.",
       });
+      return;
     }
 
     res.json(
@@ -367,10 +394,6 @@ userRoute.post(
     const userId = String(req.body.userId || "").trim();
     const teamId = Number(req.body.teamId);
     const eventId = Number(req.body.eventId);
-
-    console.log(teamId);
-    console.log(eventId);
-    console.log(email);
 
     numberRequires(teamId, "team is requierd");
     numberRequires(eventId, "Event id not found");

@@ -64,6 +64,8 @@ export interface TeamType {
   team_name: string;
   members: TeamMember[];
   created_at: string;
+  title: string;
+  image_url: string;
 }
 
 export interface TeamResp {
