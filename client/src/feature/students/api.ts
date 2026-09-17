@@ -11,7 +11,7 @@ export async function getAllEvents() {
 }
 
 export async function joinSingleEvent(eventId: number) {
-  return apiPost("/user/events/single", eventId);
+  return apiPost("/user/event/single", { eventId });
 }
 
 export async function joinTeamEvent(input: {
@@ -77,4 +77,12 @@ export async function manageMember({
 
 export async function getTeamYouAreIn() {
   return apiGet("/user/team");
+}
+
+export async function getSingleJoinedEvents() {
+  return apiGet<joinEventRes>("/user/event/registered/solo");
+}
+
+export async function getTeamJoinedEvents() {
+  return apiGet<joinEventRes>("/user/event/registered/team");
 }

@@ -40,6 +40,11 @@ const items: AdministrativeNavItem[] = [
     href: "/admin/event",
     icon: Award,
   },
+  {
+    label: "Event List",
+    href: "/admin/list",
+    icon: Award,
+  },
 ];
 
 const navItemBase =

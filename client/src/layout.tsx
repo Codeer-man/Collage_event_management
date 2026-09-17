@@ -3,7 +3,6 @@ import StudentLayout from "./layout/student/student.layout";
 import AdministrativeLayout from "./layout/administrative/administrative.layout";
 import RoleGuard from "./components/auth/roleGuard";
 import ProtectedLayout from "./components/auth/protectedLayout";
-import AdministrativeDashboard from "./page/administrative/dashboard";
 import HomeLayout from "./layout/home/home.layout";
 import Faculty from "./page/administrative/faculty";
 import AdminLayout from "./layout/admin/admin.layout";
@@ -17,6 +16,8 @@ import HomePage from "./page/home/home";
 import CreateEventPage from "./page/student/createEvent";
 import MyEvents from "./page/student/myEvent";
 import LeaderTeam from "./page/student/leaderTeam";
+import EventRegistered from "./page/student/eventRegistered";
+import EventList from "./page/admin/event-list";
 
 export const route = createBrowserRouter([
   // public or home
@@ -79,6 +80,10 @@ export const route = createBrowserRouter([
                 path: "event",
                 element: <Event />,
               },
+              {
+                path: "list",
+                element: <EventList />,
+              },
             ],
           },
         ],
@@ -119,6 +124,10 @@ export const route = createBrowserRouter([
               {
                 path: "my/events",
                 element: <MyEvents />,
+              },
+              {
+                path: "registered",
+                element: <EventRegistered />,
               },
             ],
           },

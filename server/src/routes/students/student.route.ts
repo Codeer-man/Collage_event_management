@@ -213,7 +213,6 @@ userRoute.get(
           `,
           [team.id],
         );
-        console.log(team);
 
         return {
           ...team,
@@ -239,6 +238,21 @@ userRoute.post(
     const userId = user.id;
     numberRequires(400, "EventId is requierd");
     textRequired(404, "user id not found");
+
+    const checkExistence = await pool.query(
+      `
+      SELECT EXISTS(
+        SELECT 1 FROM event_registrations
+          WHERE event_id = $1 AND user_id = $2
+      )
+      `,
+      [eventId, userId],
+    );
+    const rowExists = checkExistence.rows[0].exists;
+
+    if (rowExists) {
+      throw new AppError(409, "You have already registered for this event");
+    }
 
     const joinEvent = UserEventModel.joinSingleEvent(eventId, userId);
 
@@ -486,6 +500,68 @@ userRoute.post(
     res.json(
       ok({
         event: "Successfully jpind the event",
+      }),
+    );
+  }),
+);
+
+//show events where the user is participated
+userRoute.get(
+  "/event/registered/solo",
+  asyncHandler(async (req, res) => {
+    const userId = (req as any).user.id;
+
+    const events = await pool.query(
+      `
+      SELECT e.*
+      FROM event_registrations er
+      RIGHT JOIN events e
+        ON e.id = er.event_id
+      WHERE er.user_id = $1;
+      `,
+      [userId],
+    );
+
+    res.json(
+      ok({
+        events: events.rows,
+      }),
+    );
+  }),
+);
+
+//show events where the user is participated
+userRoute.get(
+  "/event/registered/team",
+  asyncHandler(async (req, res) => {
+    const userId = (req as any).user.id;
+
+    const events = await pool.query(
+      `
+    SELECT
+  e.*,
+  t.team_name,
+  t.id AS team_id
+FROM team_registrations tr
+JOIN teams t
+  ON t.id = tr.team_id
+JOIN events e
+  ON e.id = tr.event_id
+WHERE
+  t.leader_id = $1
+  OR EXISTS (
+    SELECT 1
+    FROM team_members tm
+    WHERE tm.team_id = t.id
+      AND tm.user_id = $1
+  );
+      `,
+      [userId],
+    );
+
+    res.json(
+      ok({
+        events: events.rows,
       }),
     );
   }),
