@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-header">
+            <div class="logo">CEMS Students</div>
+        </div>
+
+        <ul class="sidebar-menu">
+
+            <p class="menu-title">
+                <b>Dashboard</b>
+            </p>
+
+            <li>
+                <a class="active" onclick="showPage('Profile', this)">
+                    ● Profile
+                </a>
+            </li>
+
+            <li>
+                <a onclick="showPage('Join Events', this)">
+                    ● Join Events
+                </a>
+            </li>
+
+            <li>
+                <a onclick="showPage('Team', this)">
+                    ● Team
+                </a>
+            </li>
+
+            <li>
+                <a href="#" id="createEventBtn">• Create Events</a>
+            </li>
+            <li>
+                <a onclick="showPage('My Events', this)">
+                    ● My Events
+                </a>
+            </li>
+             <a onclick="logout()">
+                    ↪ Logout
+                </a>
+        </ul>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Navbar -->
+        <div class="top-navbar">
+
+            <div class="page-title" id="pageTitle">
+                Profile
+            </div>
+
+            <!-- Profile -->
+            <div class="profile-section">
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script src="script.js"type="module"></script>
+
+</body>
+</html>

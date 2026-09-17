@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-header">
+            <div class="logo"> CEMS Admin</div>
+        </div>
+
+        <ul class="sidebar-menu">
+            <h1>
+             <p class="menu-title" style="color: #f8f5f5;size:200px"><b>Dashboard</b></p>
+                </h1>
+            <li>
+                <a onclick="showPage('Students', this)">
+                    ● Students
+                </a>
+            </li>
+
+            <li>
+                <a onclick="showPage('Approve Students', this)">
+                    ● Approve students
+                </a>
+            </li>
+
+            <li>
+                <a onclick="showPage('Events', this)">
+                    ● Events
+                </a>
+            </li>
+
+            <li>
+                <a onclick="logout()">
+                    ↪ Logout
+                </a>
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Navbar -->
+        <div class="top-navbar">
+
+            <div class="page-title" id="pageTitle">
+               
+            </div>
+
+        </div>
+
+
+
+
+</body>
+<script type="module" src="script.js"></script>
+</html>
