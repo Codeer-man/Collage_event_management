@@ -10,15 +10,15 @@ export async function getAllEvents() {
   return apiGet<joinEventRes>("/user/events");
 }
 
-export async function joinSingleEvent(eventId: string) {
-  return apiPost("/students/events/single", eventId);
+export async function joinSingleEvent(eventId: number) {
+  return apiPost("/user/event/single", { eventId });
 }
 
 export async function joinTeamEvent(input: {
-  teamId: number;
+  teamId: string;
   eventId: number;
 }) {
-  return apiPost("/students/events/single", input);
+  return apiPost("/user/event/team", input);
 }
 
 export async function CreateEvent(data: CreateEventPayload) {
@@ -72,7 +72,17 @@ export async function manageMember({
   email,
   userId,
 }: manageMemberType) {
-  console.log(userId);
-
   return apiPost("/user/add/member", { email, eventId, teamId, userId });
+}
+
+export async function getTeamYouAreIn() {
+  return apiGet("/user/team");
+}
+
+export async function getSingleJoinedEvents() {
+  return apiGet<joinEventRes>("/user/event/registered/solo");
+}
+
+export async function getTeamJoinedEvents() {
+  return apiGet<joinEventRes>("/user/event/registered/team");
 }

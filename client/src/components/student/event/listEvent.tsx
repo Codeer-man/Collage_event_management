@@ -12,6 +12,16 @@ import { Button } from "../../ui/button";
 import { CalendarDays, MapPin, Users } from "lucide-react";
 import { useState } from "react";
 import CreateTeamDialog from "./createTeam";
+import { toast } from "sonner";
+import { joinSingleEvent, joinTeamEvent } from "../../../feature/students/api";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../../ui/dialog";
+import { Input } from "../../ui/input";
 
 type eventProps = {
   events: joinEventType[];
@@ -22,9 +32,30 @@ export default function EventPresentList({ events, loading }: eventProps) {
   const [open, setOpen] = useState(false);
   const [title, setEventTitle] = useState("");
   const [id, setEventId] = useState<number>();
+  const [teamId, setTeamId] = useState<string>("");
 
   if (loading) {
     return <CommonLoader />;
+  }
+
+  async function handleEventJoin(teamEvent = false, eventId: number) {
+    try {
+      if (teamEvent) {
+        //team event
+        await joinTeamEvent({ eventId, teamId });
+        toast.success("Your team have successfully joined the event ");
+      } else {
+        // solo event
+        await joinSingleEvent(eventId);
+        toast.success("You have successfully joined the event ");
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+
+      console.error(error);
+    }
   }
 
   return (
@@ -88,14 +119,53 @@ export default function EventPresentList({ events, loading }: eventProps) {
                 >
                   Create team{" "}
                 </Button>
-                <Button className="w-full"> Join event </Button>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      disabled={event.status !== "approved"}
+                      className=" w-full"
+                    >
+                      Join Event
+                    </Button>
+                  </DialogTrigger>
+
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Join Team Event</DialogTitle>
+                    </DialogHeader>
+
+                    <div className="space-y-4">
+                      <Input
+                        type="string"
+                        placeholder="Enter team Id"
+                        value={teamId}
+                        onChange={(e) => setTeamId(e.target.value)}
+                      />
+
+                      <Button
+                        className="w-full"
+                        onClick={() => handleEventJoin(true, event.id)}
+                      >
+                        Join Event
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
             ) : (
-              <Button className="w-full"> Join Event</Button>
+              <Button
+                disabled={event.status !== "approved"}
+                onClick={() => handleEventJoin(false, event.id)}
+                className="w-full"
+              >
+                {" "}
+                Join Event
+              </Button>
             )}
           </CardFooter>
         </Card>
       ))}
+
       <CreateTeamDialog
         open={open}
         onOpenChange={setOpen}

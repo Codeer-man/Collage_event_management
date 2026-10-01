@@ -7,6 +7,8 @@ export interface joinEventType {
   event_date: string;
   is_team_event: string;
   status: string;
+  contact: string;
+  team_name?: string;
 }
 
 export interface joinEventRes {
@@ -64,6 +66,8 @@ export interface TeamType {
   team_name: string;
   members: TeamMember[];
   created_at: string;
+  title: string;
+  image_url: string;
 }
 
 export interface TeamResp {
