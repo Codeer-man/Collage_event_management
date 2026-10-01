@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>College Event Management System</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<main>
+<nav class="navbar">
+
+    <!-- Logo -->
+    <a href="index.html" class="logo">CEMS</a>
+
+    <!-- Navigation Links -->
+    <div class="nav-links">
+        <a href="index.html" class="active">Home</a>
+        <a href="#about">About Us</a>
+    </div>
+
+    <!-- Right Side -->
+    <div class="nav-right">
+<!-- <div class="profile-container" id="profileContainer" style="display: none;"> -->
+
+        <div class="profile-button" id="homeProfileButton">
+
+            <div class="profile-avatar" id="homeProfileAvatar">
+                U
+            </div>
+
+            <!-- <span id="homeProfileName">User</span> -->
+
+            <span class="profile-arrow">▼</span>
+
+        </div>
+
+
+        <div class="profile-dropdown" id="homeProfileDropdown">
+
+            <div class="dropdown-item" id="dashboardButton">
+                🏠
+                <span>Dashboard</span>
+            </div>
+
+            <div class="dropdown-item" id="settingsButton">
+                ⚙
+                <span>Settings</span>
+            </div>
+
+            <div class="dropdown-item logout" id="homeLogoutButton">
+                ⇥
+                <span>Logout</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+   </div>
+</nav>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-gradient"></div>
+
+    <div class="wrap hero-inner">
+      <div class="hero-content">
+        <span class="badge badge-hero">
+          <svg class="icon" style="margin-right:0.5rem;" viewBox="0 0 24 24"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3z"/></svg>
+          College Event Management System
+        </span>
+
+        <h1>
+          Where campus life
+          <span>comes together.</span>
+        </h1>
+
+        <p class="lead">
+          Discover what is happening around campus, take part in student
+          activities, connect with your community, and make your college
+          experience more memorable.
+        </p>
+
+        <div class="hero-actions">
+          <a href="auth/register/reg.html" class="btn btn-primary">
+            Explore Events
+            <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+          </a>
+
+          <a href="#about" class="btn btn-outline-hero">About CEMS</a>
+        </div>
+
+        <div class="hero-stats">
+          <div>
+            <p class="stat-num">25+</p>
+            <p class="stat-label">Faculties</p>
+          </div>
+          <div>
+            <p class="stat-num">Easy</p>
+            <p class="stat-label">Registration</p>
+          </div>
+          <div>
+            <p class="stat-num">One</p>
+            <p class="stat-label">Event hub</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <span>Scroll to explore</span>
+      <svg class="icon" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+  </section>
+
+  <!-- INTRODUCTION -->
+  <section id="about">
+    <div class="wrap">
+      <div class="intro-grid">
+        <div>
+          <p class="eyebrow">More than academics</p>
+          <h2>College is also about the moments you remember.</h2>
+        </div>
+
+        <div>
+          <p>
+            CEMS brings the different sides of campus life into one place.
+            From academic programs and student activities to competitions,
+            cultural programs, and other events, the platform helps
+            students stay connected with what is happening around them.
+          </p>
+          <p>
+            Instead of searching through messages, notices, and different
+            channels, students can discover events and participate in the
+            activities that matter to them.
+          </p>
+        </div>
+      </div>
+
+      <div class="feature-cards">
+        <div class="feature-card">
+          <div class="feature-card-top">
+            <div class="feature-icon">
+              <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>
+            </div>
+            <span class="feature-number">01</span>
+          </div>
+          <h3>Discover events</h3>
+          <p>Find upcoming college events, competitions, workshops, programs, and student activities in one place.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-top">
+            <div class="feature-icon">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <span class="feature-number">02</span>
+          </div>
+          <h3>Be part of campus life</h3>
+          <p>Join activities, connect with students from different faculties, and participate beyond the classroom.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-top">
+            <div class="feature-icon">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 4h3a2 2 0 0 1-2 4"/><path d="M7 4H4a2 2 0 0 0 2 4"/></svg>
+            </div>
+            <span class="feature-number">03</span>
+          </div>
+          <h3>Create experiences</h3>
+          <p>Student organizers can bring ideas to life and create events that contribute to a stronger campus community.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAMPUS LIFE -->
+  <section class="pt-0">
+    <div class="wrap">
+      <div class="campus-panel">
+        <div class="campus-img"></div>
+
+        <div class="campus-text">
+          <span class="badge badge-solid" style="width: fit-content; margin-bottom: 1.5rem;">Campus Community</span>
+
+          <h2>Learn, participate, connect.</h2>
+
+          <p>
+            A college experience extends beyond lectures and examinations.
+            Student clubs, sports, cultural activities, competitions,
+            workshops, and social events create opportunities to discover
+            new interests and meet people across the campus.
+          </p>
+
+          <div class="info-rows">
+            <div class="info-row">
+              <div class="info-row-icon">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+              </div>
+              <div>
+                <h4>Academic community</h4>
+                <p>Students and teachers coming together across different fields.</p>
+              </div>
+            </div>
+
+            <div class="info-row">
+              <div class="info-row-icon">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div>
+                <h4>Student participation</h4>
+                <p>Opportunities to contribute, organize, compete, and collaborate.</p>
+              </div>
+            </div>
+
+            <div class="info-row">
+              <div class="info-row-icon">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>
+              </div>
+              <div>
+                <h4>One place for events</h4>
+                <p>A simpler way to discover what's happening around campus.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACADEMIC COMMUNITY -->
+  <section>
+    <div class="wrap">
+      <div class="academic-intro">
+        <p class="eyebrow">Academic community</p>
+        <h2>Different disciplines.<span>One community.</span></h2>
+        <p>The campus brings together students from a broad range of academic disciplines. CEMS provides a common space where those communities can meet through events and activities.</p>
+      </div>
+
+      <div class="academic-grid">
+        <div class="academic-card">
+          <div class="arrow-row"><svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
+          <h3>Humanities &amp; Social Sciences</h3>
+          <p>Culture, economics, geography, sociology, BCA, and more.</p>
+        </div>
+
+        <div class="academic-card">
+          <div class="arrow-row"><svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
+          <h3>Management</h3>
+          <p>Business, finance, accounting, marketing, and management.</p>
+        </div>
+
+        <div class="academic-card">
+          <div class="arrow-row"><svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
+          <h3>Education</h3>
+          <p>Education, teaching practice, social studies, and related fields.</p>
+        </div>
+
+        <div class="academic-card">
+          <div class="arrow-row"><svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
+          <h3>Science &amp; Technology</h3>
+          <p>Computer science, mathematics, biology, chemistry, and other sciences.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FACILITIES / EXPERIENCE -->
+  <section class="pt-0">
+    <div class="wrap">
+      <div class="facilities-panel">
+        <div class="facilities-bg"></div>
+        <div class="facilities-overlay"></div>
+
+        <div class="facilities-content">
+          <div>
+            <p class="eyebrow-white">The student experience</p>
+            <h2>Your campus experience doesn't end at the classroom door.</h2>
+            <p>From the library and learning spaces to student activities and campus events, the environment around students plays an important role in their college journey.</p>
+          </div>
+
+          <div class="experience-list">
+            <div class="experience-item">
+              <h3>Library &amp; learning resources</h3>
+              <p>Spaces and resources that support academic learning.</p>
+            </div>
+            <div class="experience-item">
+              <h3>Student activities</h3>
+              <p>A place for students to participate and build connections.</p>
+            </div>
+            <div class="experience-item">
+              <h3>Events &amp; competitions</h3>
+              <p>Opportunities to showcase skills and enjoy campus life.</p>
+            </div>
+            <div class="experience-item">
+              <h3>Community</h3>
+              <p>Meet people, share ideas, and create lasting memories.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="cta-section">
+    <div class="wrap">
+      <div class="cta-inner">
+        <span class="badge badge-outline">What's happening on campus?</span>
+
+        <h2>
+          There is always something
+          <span>worth being part of.</span>
+        </h2>
+
+        <p>Explore upcoming events, discover opportunities, and become an active part of your college community.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap footer-inner">
+    <div>
+      <p class="brand">College Event Management System</p>
+      <p class="tagline">Connecting students through campus life.</p>
+    </div>
+    <p>Prithvi Narayan Campus · Pokhara, Nepal</p>
+
+  </div>
+</footer>
+
+
+
+<!-- LOGIN MODAL -->
+<div class="login-overlay" id="loginOverlay">
+
+    <div class="login-modal">
+
+        <!-- Close Button -->
+        <button class="close-login" id="closeLogin">&times;</button>
+
+        <!-- Header -->
+        <div class="login-header">
+
+            <div class="login-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 3v4"></path>
+                    <path d="M12 17v4"></path>
+                    <path d="M3 12h4"></path>
+                    <path d="M17 12h4"></path>
+                    <path d="M5.6 5.6l2.8 2.8"></path>
+                    <path d="M15.6 15.6l2.8 2.8"></path>
+                    <path d="M18.4 5.6l-2.8 2.8"></path>
+                    <path d="M8.4 15.6l-2.8 2.8"></path>
+                </svg>
+            </div>
+
+            <h2>Welcome back</h2>
+
+            <p>Sign in to continue your CEMS journey.</p>
+
+        </div>
+
+
+        <!-- Login Form -->
+        <form id="loginForm">
+
+            <!-- Email -->
+            <div class="input-group">
+
+                <label for="email">Email Address</label>
+
+                <div class="input-box">
+
+                    <svg class="input-icon" viewBox="0 0 24 24">
+                        <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                        <path d="M3 7l9 6 9-6"></path>
+                    </svg>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="you@example.com"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- Password -->
+            <div class="input-group password-group">
+
+                <div class="password-label">
+
+                    <label for="password">Password</label>
+
+                    <a href="#" id="forgotPassword">
+                        Forgot password?
+                    </a>
+
+                </div>
+
+
+                <div class="input-box">
+
+                    <svg class="input-icon" viewBox="0 0 24 24">
+                        <rect x="5" y="10" width="14" height="10" rx="2"></rect>
+                        <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+                    </svg>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="••••••••"
+                        required
+                    >
+
+                    <!-- Show Password -->
+                    <button
+                        type="button"
+                        class="eye-btn"
+                        id="togglePassword"
+                    >
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Sign In -->
+            <button type="submit" class="signin-btn">
+                Sign In
+            </button>
+
+
+            <!-- Security -->
+            <div class="secure-login">
+
+                <svg viewBox="0 0 24 24">
+                    <rect x="5" y="10" width="14" height="10" rx="2"></rect>
+                    <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+                </svg>
+
+                <span>Secure CEMS login</span>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+<!-- ============================= -->
+<!-- SIGN UP MODAL -->
+<!-- ============================= -->
+
+<div class="signup-overlay" id="signupOverlay">
+
+    <div class="signup-modal">
+
+        <!-- Header -->
+        <div class="signup-header">
+
+            <div class="signup-title-area">
+
+                <div class="signup-icon">
+
+                    <svg viewBox="0 0 24 24">
+                        <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                        <path d="M16 2v4"></path>
+                        <path d="M8 2v4"></path>
+                        <path d="M3 10h18"></path>
+                    </svg>
+
+                </div>
+
+                <div>
+                    <h2>Create your account</h2>
+                    <p>Join the CEMS community</p>
+                </div>
+
+            </div>
+
+
+            <!-- Close -->
+            <button
+                type="button"
+                class="close-signup"
+                id="closeSignup">
+                &times;
+            </button>
+
+        </div>
+
+
+        <!-- Registration Form -->
+        <form id="signupForm">
+
+            <div class="signup-form-grid">
+
+                <!-- Full Name -->
+                <div class="signup-input-group">
+
+                    <label for="signupFullName">
+                        Full Name
+                    </label>
+
+                    <div class="signup-input-box">
+
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="8" r="4"></circle>
+                            <path d="M4 21c0-4 3-7 8-7s8 3 8 7"></path>
+                        </svg>
+
+                        <input
+                            type="text"
+                            id="signupFullName"
+                            placeholder="Hari Bahadur Shyam"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Faculty -->
+                <div class="signup-input-group">
+
+                    <label for="signupFaculty">
+                        Faculty
+                    </label>
+
+                    <div class="signup-input-box faculty-box">
+
+                        <svg viewBox="0 0 24 24">
+                            <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                            <path d="M16 2v4"></path>
+                            <path d="M8 2v4"></path>
+                            <path d="M3 10h18"></path>
+                        </svg>
+
+                        <select id="signupFaculty" required>
+
+                            <option value="" selected disabled>
+                                Select faculty
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Email -->
+                <div class="signup-input-group">
+
+                    <label for="signupEmail">
+                        Email
+                    </label>
+
+                    <div class="signup-input-box">
+
+                        <svg viewBox="0 0 24 24">
+                            <rect
+                                x="3"
+                                y="5"
+                                width="18"
+                                height="14"
+                                rx="2">
+                            </rect>
+
+                            <path d="M3 7l9 6 9-6"></path>
+                        </svg>
+
+                        <input
+                            type="email"
+                            id="signupEmail"
+                            placeholder="you@example.com"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Password -->
+                <div class="signup-input-group">
+
+                    <label for="signupPassword">
+                        Password
+                    </label>
+
+                    <div class="signup-input-box">
+
+                        <svg viewBox="0 0 24 24">
+                            <rect
+                                x="5"
+                                y="10"
+                                width="14"
+                                height="10"
+                                rx="2">
+                            </rect>
+
+                            <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+                        </svg>
+
+                        <input
+                            type="password"
+                            id="signupPassword"
+                            placeholder="••••••••"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="signup-eye"
+                            id="signupTogglePassword">
+
+                            <svg viewBox="0 0 24 24">
+                                <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Contact Number -->
+                <div class="signup-input-group">
+
+                    <label for="signupContact">
+                        Contact Number
+                    </label>
+
+                    <div class="signup-input-box">
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2
+                            19.79 19.79 0 0 1-8.63-3.07
+                            19.5 19.5 0 0 1-6-6
+                            19.79 19.79 0 0 1-3.07-8.67
+                            A2 2 0 0 1 4.11 2h3
+                            a2 2 0 0 1 2 1.72
+                            12.84 12.84 0 0 0 .7 2.81
+                            2 2 0 0 1-.45 2.11L8.09 9.91
+                            a16 16 0 0 0 6 6l1.27-1.27
+                            a2 2 0 0 1 2.11-.45
+                            12.84 12.84 0 0 0 2.81.7
+                            A2 2 0 0 1 22 16.92z">
+                            </path>
+                        </svg>
+
+                        <input
+                            type="tel"
+                            id="signupContact"
+                            placeholder="98XXXXXXXX"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Profile Image -->
+                <div class="signup-input-group">
+
+                    <label for="signupImage">
+                        Profile Image
+                    </label>
+
+                    <div class="signup-input-box">
+
+                        <svg viewBox="0 0 24 24">
+                            <rect
+                                x="3"
+                                y="3"
+                                width="18"
+                                height="18"
+                                rx="2">
+                            </rect>
+
+                            <circle
+                                cx="8.5"
+                                cy="8.5"
+                                r="1.5">
+                            </circle>
+
+                            <path d="M21 15l-5-5L5 21"></path>
+                        </svg>
+
+                        <input
+                            type="file"
+                            id="signupImage"
+                            accept="image/*"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Create Account -->
+            <button
+                type="submit"
+                class="create-account-btn">
+
+                Create Account
+
+            </button>
+
+
+            <!-- Message -->
+            <p id="signupMessage" class="signup-message"></p>
+
+
+            <!-- Bottom Text -->
+            <p class="signup-footer-text">
+                Your account will be reviewed before student access is approved.
+            </p>
+
+        </form>
+
+    </div>
+
+</div>
+<script type="module" src="script2.js"></script>
+<!-- <script>
+import { checkAuth } from "../utils/checkauth.js";
+
+
+// =====================================================
+// API CONFIGURATION
+// =====================================================
+
+const API_URL = "http://localhost:5000";
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // ==============================
+    // PROFILE DROPDOWN
+    // ==============================
+
+    const profileButton =
+        document.getElementById("homeProfileButton");
+
+    const profileDropdown =
+        document.getElementById("homeProfileDropdown");
+
+    const dashboardButton =
+        document.getElementById("dashboardButton");
+
+    const homeButton =
+        document.getElementById("homeDropdownItem");
+
+    const settingsButton =
+        document.getElementById("settingsButton");
+
+    const logoutButton =
+        document.getElementById("homeLogoutButton");
+
+
+    // Check elements
+    if (!profileButton || !profileDropdown) {
+        console.error("Profile dropdown elements not found");
+        return;
+    }
+
+
+    // ==============================
+    // OPEN / CLOSE DROPDOWN
+    // ==============================
+
+    profileButton.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+        profileDropdown.classList.toggle("show");
+
+        profileButton.classList.toggle("open");
+
+    });
+
+
+    // ==============================
+    // CLOSE WHEN CLICKING OUTSIDE
+    // ==============================
+
+    document.addEventListener("click", function (event) {
+
+        if (
+            !profileButton.contains(event.target) &&
+            !profileDropdown.contains(event.target)
+        ) {
+
+            profileDropdown.classList.remove("show");
+
+            profileButton.classList.remove("open");
+
+        }
+
+    });
+
+
+    // ==============================
+    // DASHBOARD
+    // ==============================
+
+    dashboardButton.addEventListener("click", function () {
+
+        window.location.href =
+            "http://127.0.0.1:5500/Collage_event_management/frontend/page/student/student.html";
+
+    });
+
+
+    // ==============================
+    // SETTINGS
+    // ==============================
+
+    settingsButton.addEventListener("click", function () {
+
+        alert("Settings clicked");
+
+    });
+
+
+    // ==============================
+    // LOGOUT
+    // ==============================
+
+    logoutButton.addEventListener("click", async function () {
+
+        try {
+
+            const response = await fetch(
+                "http://localhost:5000/auth/logout",
+                {
+                    method: "POST",
+                    credentials: "include"
+                }
+            );
+
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+
+
+            window.location.href =
+                "http://127.0.0.1:5500/Collage_event_management/frontend/page/index.html";
+
+
+        } catch (error) {
+
+            console.error("Logout error:", error);
+
+        }
+
+    });
+
+});
+</script> -->
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEMS Admin Panel</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- ================= ADMIN LAYOUT ================= -->
+  <div id="adminApp" class="app-container">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-logo">
+          <i data-lucide="folder"></i>
+          <span>CEMS</span>
+        </div>
+        <button class="icon-btn" id="themeToggleBtn" title="Toggle Theme">
+          <i data-lucide="moon" id="themeIcon"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-menu">
+        <button class="nav-item active" data-view="studentsView">
+          <i data-lucide="folder"></i>
+          <span>Students</span>
+        </button>
+        <button class="nav-item" data-view="approveStudentsView">
+          <i data-lucide="folder"></i>
+          <span>Approve Student</span>
+        </button>
+        <button class="nav-item" data-view="eventsView">
+          <i data-lucide="user"></i>
+          <span>Events</span>
+        </button>
+        <button class="nav-item" data-view="eventListView">
+          <i data-lucide="bookmark"></i>
+          <span>Event List</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-wrapper">
+      
+      <!-- Top Header -->
+      <header class="top-header">
+        <div class="header-welcome">
+          <i data-lucide="graduation-cap"></i>
+          <div>
+            <h3>Welcome back, admin 👋</h3>
+            <p>Ready for today's work.</p>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button class="icon-btn">
+            <i data-lucide="bell"></i>
+          </button>
+          
+          <!-- Profile Dropdown -->
+          <div class="profile-dropdown-container">
+            <button class="profile-trigger" id="profileTrigger">
+              <img src="" alt="Admin Avatar" class="avatar">
+            </button>
+            <div class="dropdown-menu hidden" id="profileDropdown">
+              <button class="dropdown-item" id="menuDashboard">
+                <i data-lucide="layout-dashboard"></i>
+                <span>Dashboard</span>
+              </button>
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item text-danger" id="menuLogout">
+                <i data-lucide="log-out"></i>
+                <span>Logout</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Page Views Container -->
+      <main class="content-area">
+
+        <!-- 1. ALL STUDENTS VIEW -->
+        <section id="studentsView" class="view-panel">
+          <div class="search-box">
+            <label><h1>Search</h1></label>
+            <input type="text" id="studentSearchInput" placeholder="Enter student name or email">
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Image</th>
+                  <th>Contact</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="studentsTableBody">
+                <!-- Dynamically populated from GET /admin/students -->
+              </tbody>
+            </table>
+            <div class="table-footer">List of the students</div>
+          </div>
+        </section>
+
+        <!-- 2. APPROVE STUDENTS VIEW -->
+        <section id="approveStudentsView" class="view-panel hidden">
+          <div class="view-header">
+            <h2>Approve Students</h2>
+            <p>Review and manage students waiting for approval.</p>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Image</th>
+                  <th>Contact</th>
+                  <th>Email</th>
+                  <th>email verified</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="unapprovedStudentsTableBody">
+                <!-- Dynamically populated from GET /admin/notApproved -->
+              </tbody>
+            </table>
+            <div class="table-footer">List of students waiting for approval</div>
+          </div>
+        </section>
+
+        <!-- 3. PENDING EVENTS VIEW -->
+        <section id="eventsView" class="view-panel hidden">
+          <div class="view-header">
+            <h2>Event Approval</h2>
+            <p>Review and manage events submitted for approval.</p>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Event</th>
+                  <th>Location</th>
+                  <th>Event Date</th>
+                  <th>Type</th>
+                  <th>Details</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="pendingEventsTableBody">
+                <!-- Dynamically populated from GET /admin/event/pending -->
+              </tbody>
+            </table>
+            <div class="table-footer">List of events waiting for approval</div>
+          </div>
+        </section>
+
+        <!-- 4. ALL EVENTS VIEW -->
+        <section id="eventListView" class="view-panel hidden">
+          <div class="view-header">
+            <h2>All Events</h2>
+            <p>Overview of all events registered in the system.</p>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Event</th>
+                  <th>Location</th>
+                  <th>Event Date</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="allEventsTableBody">
+                <!-- Dynamically populated from GET /admin/events -->
+              </tbody>
+            </table>
+            <div class="table-footer">List of all events</div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
