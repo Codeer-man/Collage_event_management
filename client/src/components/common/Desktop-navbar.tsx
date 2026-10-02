@@ -1,4 +1,4 @@
-import { Home, Info, type LucideIcon } from "lucide-react";
+import { Home, Info } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useAuthStore } from "../../store/auth.store";
 
@@ -7,35 +7,7 @@ import SignUp from "../../page/auth/register";
 import MobileNavbar from "./mobile-navbar";
 import Profile from "./profileIcons";
 import { ThemeToggleButton } from "../ui/skiper-ui/skiper26";
-
-type NavTextLinkProps = {
-  href: string;
-  label: string;
-  icon: LucideIcon;
-};
-
-function NavTextLink({ href, label, icon: Icon }: NavTextLinkProps) {
-  return (
-    <NavLink
-      to={href}
-      className={({ isActive }) =>
-        `
-        inline-flex h-10 items-center gap-2 rounded-xl px-3
-        text-sm font-medium
-        transition-all duration-200
-        ${
-          isActive
-            ? "bg-primary/10 text-primary"
-            : "text-muted-foreground hover:bg-primary/5 hover:text-foreground"
-        }
-        `
-      }
-    >
-      <Icon className="h-4 w-4" />
-      <span>{label}</span>
-    </NavLink>
-  );
-}
+import { Button } from "../ui/button";
 
 export default function DesktopNavBar() {
   const { user } = useAuthStore();
@@ -60,15 +32,27 @@ export default function DesktopNavBar() {
 
         {/* Desktop Navigation */}
         <nav className="ml-10 hidden items-center gap-1 lg:flex">
-          <NavTextLink href="/" label="Home" icon={Home} />
-
-          <a
-            href="#about"
+          {/* <NavTextLink  href="/" label="Home" icon={Home} /> */}
+          <Button
             className=" bg-primary/10 text-primary  inline-flex h-10 items-center gap-2 rounded-xl px-3 text-sm font-medium  transition hover:bg-primary/5 hover:text-foreground"
+            onClick={() =>
+              window.scrollTo({ top: 0, left: 0, behavior: "smooth" })
+            }
+          >
+            <Home /> Home
+          </Button>
+          <Button
+            className=" bg-primary/10 text-primary  inline-flex h-10 items-center gap-2 rounded-xl px-3 text-sm font-medium  transition hover:bg-primary/5 hover:text-foreground"
+            onClick={() => {
+              const element = document.getElementById("about");
+              if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
           >
             <Info className="h-4 w-4" />
             <span>About</span>
-          </a>
+          </Button>
         </nav>
 
         {/* Right side */}

@@ -1,3 +1,4 @@
+import type { ParticipantResponse } from "../../components/student/myEvent/eventDetail";
 import { apiGet, apiPatch, apiPost } from "../../lib/api";
 import type {
   CreateEventPayload,
@@ -85,4 +86,8 @@ export async function getSingleJoinedEvents() {
 
 export async function getTeamJoinedEvents() {
   return apiGet<joinEventRes>("/user/event/registered/team");
+}
+
+export async function getParticipants(eventId: string) {
+  return apiGet<ParticipantResponse>(`/user/event/participate/${eventId}`);
 }

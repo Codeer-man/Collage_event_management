@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import Profile from "../../components/common/profileIcons";
 import StudentSidebar from "../../components/student/sidebar";
-import { Bell, Building2, GraduationCap } from "lucide-react";
+import { Bell, GraduationCap } from "lucide-react";
 import { Button } from "../../components/ui/button";
 
 export default function StudentLayout() {

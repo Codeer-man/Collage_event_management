@@ -46,7 +46,6 @@ export default function Team() {
 
     fetchTeams();
   }, []);
-  console.log(teams);
 
   if (loading) {
     return (

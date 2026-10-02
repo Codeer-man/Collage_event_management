@@ -1,4 +1,13 @@
-import { Home, Info, LogOut, Menu, Settings, User } from "lucide-react";
+import {
+  Group,
+  Home,
+  Info,
+  LogOut,
+  Menu,
+  Settings,
+  SportShoeIcon,
+  User,
+} from "lucide-react";
 
 import { Link, NavLink } from "react-router-dom";
 
@@ -104,9 +113,26 @@ export default function MobileNavbar() {
 
         {/* Navigation */}
         <nav className="flex flex-1 flex-col gap-1 px-4 py-5">
-          <MobileNavLink to="/" icon={<Home />} label="Home" />
-
-          <MobileNavLink to="/about" icon={<Info />} label="About" />
+          <Button
+            className=" bg-primary/10 text-primary  inline-flex h-10 items-center gap-2 rounded-xl px-3 text-sm font-medium  transition hover:bg-primary/5 hover:text-foreground"
+            onClick={() =>
+              window.scrollTo({ top: 0, left: 0, behavior: "smooth" })
+            }
+          >
+            <Home /> Home
+          </Button>
+          <Button
+            className=" bg-primary/10 text-primary  inline-flex h-10 items-center gap-2 rounded-xl px-3 text-sm font-medium  transition hover:bg-primary/5 hover:text-foreground"
+            onClick={() => {
+              const element = document.getElementById("about");
+              if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
+          >
+            <Info className="h-4 w-4" />
+            <span>About</span>
+          </Button>
 
           {user && (
             <>
@@ -122,7 +148,17 @@ export default function MobileNavbar() {
                 icon={<Settings />}
               />
 
-              <MobileNavLink to="/profile" label="Profile" icon={<User />} />
+              <MobileNavLink
+                to="/student/join/events"
+                label="Events"
+                icon={<SportShoeIcon />}
+              />
+
+              <MobileNavLink
+                to="/student/team"
+                label="Teams"
+                icon={<Group />}
+              />
             </>
           )}
         </nav>

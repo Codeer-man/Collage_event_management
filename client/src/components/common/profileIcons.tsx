@@ -48,16 +48,13 @@ export default function Profile({
             Dashboard
           </Link>
         </DropdownMenuItem>
+
         <DropdownMenuItem asChild>
           <Link to="/" className="w-full cursor-pointer">
             Home
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link to="#" className="w-full cursor-pointer">
-            Setting
-          </Link>
-        </DropdownMenuItem>
+
         <DropdownMenuItem
           onClick={logout}
           className="text-destructive focus:text-destructive cursor-pointer"

@@ -10,6 +10,7 @@ import { UserEventModel } from "../../model/events/user-event.model.js";
 import { pool } from "../../config/pool.js";
 import multer, { memoryStorage } from "multer";
 import { uploadImage } from "../../utils/cloudinary.js";
+import { fail } from "node:assert";
 export const userRoute = express.Router();
 
 const upload = multer({
@@ -312,39 +313,6 @@ userRoute.post(
   }),
 );
 
-//delete in test
-//get Your tean
-// userRoute.get(
-//   "/your/team",
-//   asyncHandler(async (req, res) => {
-//     const userId = (req as any).user.id;
-
-//     textRequired(userId, "You are not authenticated");
-
-//     const leader = await pool.query(
-//       `
-//         SELECT * FROM teams
-//         WHERE leader_id = $1
-//       `,
-//       [userId],
-//     );
-
-//     if (leader.rows.length <= 0) {
-//       res.json(
-//         ok({
-//           message: "You are not leader of any team",
-//         }),
-//       );
-//     }
-
-//     res.json(
-//       ok({
-//         team: leader.rows[0],
-//       }),
-//     );
-//   }),
-// );
-
 // get all the team you are in
 userRoute.get(
   "/team",
@@ -530,7 +498,37 @@ userRoute.get(
   }),
 );
 
-//show events where the user is participated
+// cancel event
+userRoute.patch(
+  "/event/cancel",
+  asyncHandler(async (req, res) => {
+    const eventId = String(req.body.eventId || "");
+
+    textRequired(eventId, "Event is required");
+
+    const result = await pool.query(
+      `
+      UPDATE events
+      SET status = 'cancelled'
+      WHERE id = $1
+      RETURNING *;
+      `,
+      [eventId],
+    );
+
+    if (result.rowCount === 0) {
+      throw new AppError(404, "You are not registered for this event");
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "You have cancelled your event registration",
+      data: result.rows[0],
+    });
+  }),
+);
+
+//show events where the team is participated
 userRoute.get(
   "/event/registered/team",
   asyncHandler(async (req, res) => {
@@ -539,21 +537,21 @@ userRoute.get(
     const events = await pool.query(
       `
     SELECT
-  e.*,
-  t.team_name,
-  t.id AS team_id
-FROM team_registrations tr
-JOIN teams t
-  ON t.id = tr.team_id
-JOIN events e
-  ON e.id = tr.event_id
-WHERE
-  t.leader_id = $1
-  OR EXISTS (
-    SELECT 1
-    FROM team_members tm
-    WHERE tm.team_id = t.id
-      AND tm.user_id = $1
+      e.*,
+      t.team_name,
+      t.id AS team_id
+      FROM team_registrations tr
+      JOIN teams t
+        ON t.id = tr.team_id
+      JOIN events e
+        ON e.id = tr.event_id
+      WHERE
+        t.leader_id = $1
+        OR EXISTS (
+          SELECT 1
+          FROM team_members tm
+          WHERE tm.team_id = t.id
+            AND tm.user_id = $1
   );
       `,
       [userId],
@@ -564,5 +562,94 @@ WHERE
         events: events.rows,
       }),
     );
+  }),
+);
+
+// show participates
+userRoute.get(
+  "/event/participate/:eventId",
+  asyncHandler(async (req, res) => {
+    const userId = (req as any).user.id;
+    const eventId = Number(req.params.eventId);
+    numberRequires(eventId, "Event id  not found");
+
+    const existingEvent = await pool.query(
+      `
+      SELECT * FROM events e
+      WHERE e.id = $1
+      `,
+      [eventId],
+    );
+
+    if (existingEvent.rows.length === 0) {
+      res.json(fail("event not found"));
+    }
+
+    if (existingEvent.rows[0].created_by !== userId) {
+      res.status(409).json({ message: "You are not the owner of this event " });
+      return;
+    }
+
+    //participants
+    const teamParticipants = await pool.query(
+      `
+  SELECT
+    e.id AS event_id,
+    e.title AS event_title,
+
+    tr.id AS registration_id,
+
+    t.id AS team_id,
+    t.team_name,
+
+    json_agg(
+      json_build_object(
+        'user_id', u.id,
+        'name', u.full_name,
+        'image', u.image_url
+      )
+    ) AS members
+
+    FROM team_registrations tr
+
+    INNER JOIN events e
+      ON e.id = tr.event_id
+
+    INNER JOIN teams t
+      ON t.id = tr.team_id
+
+    INNER JOIN team_members tm
+      ON tm.team_id = t.id
+
+    INNER JOIN users u
+      ON u.id = tm.user_id
+
+    WHERE e.id = $1
+
+    GROUP BY
+      e.id,
+      e.title,
+      tr.id,
+      t.id,
+      t.team_name;
+  `,
+      [eventId],
+    );
+
+    const soloParticipants = await pool.query(
+      `
+  SELECT
+  er.*,
+  u.full_name AS name,
+  u.image_url AS image
+  FROM event_registrations er
+  INNER JOIN users u
+    ON u.id = er.user_id
+  WHERE er.id = $1;
+      `,
+      [eventId],
+    );
+
+    res.json(ok({ team: teamParticipants.rows, solo: soloParticipants.rows }));
   }),
 );

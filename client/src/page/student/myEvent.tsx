@@ -1,4 +1,6 @@
+import { useState } from "react";
 import CommonLoader from "../../components/common/loader";
+import EventsDetail from "../../components/student/myEvent/eventDetail";
 import { Button } from "../../components/ui/button";
 import {
   Table,
@@ -13,6 +15,7 @@ import { UseStudent } from "../../feature/students/useStudent";
 
 export default function MyEvents() {
   const { muEvents, loading, cancelYourEvent } = UseStudent();
+  const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
 
   if (loading) {
     return <CommonLoader />;
@@ -128,10 +131,7 @@ export default function MyEvents() {
                       size="sm"
                       className="cursor-pointer"
                       disabled={event.status !== "approved"}
-                      //   onClick={() => {
-                      //     setSelectedEvent(event);
-                      //     setDialogOpen(true);
-                      //   }}
+                      onClick={() => setSelectedEvent(event.id!)}
                     >
                       open
                     </Button>
@@ -153,6 +153,15 @@ export default function MyEvents() {
             )}
           </TableBody>
         </Table>
+        <EventsDetail
+          event={selectedEvent}
+          open={!!selectedEvent}
+          onOpenChange={(open) => {
+            if (!open) {
+              setSelectedEvent(null);
+            }
+          }}
+        />
       </div>
     </div>
   );

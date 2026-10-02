@@ -9,14 +9,9 @@ import {
 } from "lucide-react";
 import { Badge } from "../../components/ui/badge";
 import { Button } from "../../components/ui/button";
-import { useNavigate } from "react-router-dom";
-
-import { useAuthStore } from "../../store/auth.store";
+import { animateScroll as scroll } from "react-scroll";
 
 export default function HomePage() {
-  const navigate = useNavigate();
-  const { user } = useAuthStore();
-
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main>
@@ -65,7 +60,12 @@ export default function HomePage() {
                 <Button
                   size="lg"
                   className="group rounded-full px-6"
-                  onClick={() => (user ? navigate(`${user.role}`) : "")}
+                  onClick={() =>
+                    scroll.scrollToBottom({
+                      duration: 9000,
+                      smooth: "easeInOut",
+                    })
+                  }
                 >
                   Explore
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -75,6 +75,12 @@ export default function HomePage() {
                   size="lg"
                   variant="outline"
                   className="rounded-full border-white/30 bg-white/5 px-6 text-white backdrop-blur-sm hover:bg-white/10 hover:text-white"
+                  onClick={() => {
+                    const element = document.getElementById("about");
+                    if (element) {
+                      element.scrollIntoView({ behavior: "smooth" });
+                    }
+                  }}
                 >
                   About CEMS
                 </Button>
@@ -189,7 +195,10 @@ export default function HomePage() {
                 }}
               />
 
-              <div className="flex flex-col justify-center p-8 sm:p-12 lg:p-16">
+              <div
+                className="flex flex-col justify-center p-8 sm:p-12 lg:p-16"
+                id="explore"
+              >
                 <Badge className="mb-6 w-fit rounded-full">
                   Campus Community
                 </Badge>

@@ -1,7 +1,6 @@
 import {
   BadgeCheck,
   Building2,
-  Edit3,
   GraduationCap,
   Mail,
   ShieldCheck,
@@ -12,7 +11,6 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "../../components/ui/avatar";
-import { Button } from "../../components/ui/button";
 import {
   Card,
   CardContent,
@@ -69,11 +67,6 @@ export default function Profile({ user }: { user: AppUser }) {
                   </p>
                 </div>
               </div>
-
-              <Button className="gap-2">
-                <Edit3 className="h-4 w-4" />
-                Edit Profile
-              </Button>
             </div>
           </CardContent>
         </Card>
