@@ -107,6 +107,10 @@ export const AuthService = {
       return { verified: false };
     }
 
+    if (existingUser.role === "student" && !existingUser.is_approved_student) {
+      throw new AppError(401, "You are not approved by the admin");
+    }
+
     //create jwt accessToken to stay logged in every refresh using cookies
     const accessToken = createAccessToken(existingUser.id, existingUser.role);
     return { verified: true, accessToken, user: existingUser };

@@ -389,6 +389,9 @@ userRoute.post(
       if (!findUser) {
         throw new AppError(404, "User not found with the email");
       }
+      if (findUser.is_approved_student === false) {
+        throw new AppError(401, "Use is not a approved student");
+      }
 
       const checkFaculty = await pool.query(
         `
@@ -456,7 +459,19 @@ userRoute.post(
     numberRequires(400, "EventId is requierd");
     numberRequires(teamId, "team is required");
 
-    const registerTeam = await pool.query(
+    const registeredTeam = await pool.query(
+      ` 
+      SELECT 1 FROM team_registrations(team_id)
+      WHERE team_id = $1
+      `,
+      [teamId],
+    );
+
+    if (registeredTeam.rows.length) {
+      throw new AppError(401, "This team is already registered");
+    }
+
+    await pool.query(
       `
       INSERT INTO team_registrations (event_id,team_id)
       VALUES ($1,$2)

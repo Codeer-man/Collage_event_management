@@ -25,7 +25,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
 export default function LeaderTeam() {
-  const { leaderTeam } = useTeamHandler();
+  const { leaderTeam, getTeam } = useTeamHandler();
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
@@ -47,7 +47,7 @@ export default function LeaderTeam() {
     userId: string,
   ) => {
     await manageMember({ eventId, teamId, userId });
-    navigate(0);
+    getTeam();
   };
 
   const teams = leaderTeam?.teams ?? [];
@@ -118,7 +118,7 @@ export default function LeaderTeam() {
                     {team.members.length}
                   </Badge>
 
-                  <Dialog>
+                  <Dialog onOpenChange={() => getTeam()}>
                     <DialogTrigger>Add</DialogTrigger>
 
                     <DialogContent className="sm:max-w-md">

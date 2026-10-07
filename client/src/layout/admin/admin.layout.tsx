@@ -1,12 +1,11 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Profile from "../../components/common/profileIcons";
 import { useAuthStore } from "../../store/auth.store";
 import CommonLoader from "../../components/common/loader";
 import { toast } from "sonner";
 import AdminSidebar from "../../components/admin/sidebar";
-import { Button } from "../../components/ui/button";
-import { Bell, GraduationCap } from "lucide-react";
+import { GraduationCap } from "lucide-react";
 
 export default function AdminLayout() {
   const user = useAuthStore((state) => state.user);
@@ -52,15 +51,6 @@ export default function AdminLayout() {
 
             {/* Right side */}
             <div className="ml-auto flex items-center gap-3">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="relative rounded-full"
-              >
-                <Bell className="h-5 w-5" />
-
-                <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500" />
-              </Button>
               <Profile role={user.role} image={user?.image_url} />
             </div>
           </header>

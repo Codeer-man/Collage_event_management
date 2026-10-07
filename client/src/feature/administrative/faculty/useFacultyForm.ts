@@ -109,6 +109,7 @@ export default function UseFacultyForm() {
         loading: "Searching",
         success: () => {
           setOpenAssignAdminDialogue(false);
+          getFaculty();
           return "The user has been successfully assigned as admin";
         },
         error: (error) => {

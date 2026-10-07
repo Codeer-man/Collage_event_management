@@ -57,7 +57,7 @@ export default function AdministrativeSideBar() {
         </div>
         <div className="gap-3 flex">
           <ThemeToggle />
-          <ThemeToggleButton />
+          {/* <ThemeToggleButton /> */}
         </div>
       </div>
 

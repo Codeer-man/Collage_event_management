@@ -65,7 +65,6 @@ export default function EventsDetail({
 
     fetchParticipants();
   }, [event, open]);
-  console.log(participate, "par");
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

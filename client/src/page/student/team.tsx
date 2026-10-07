@@ -129,9 +129,9 @@ export default function Team() {
                 </div>
 
                 {/* Button */}
-                <Button variant="outline" className="w-full">
+                {/* <Button variant="outline" className="w-full">
                   View Team
-                </Button>
+                </Button> */}
               </CardContent>
             </Card>
           ))}

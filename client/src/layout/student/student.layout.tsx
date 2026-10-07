@@ -5,8 +5,7 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import Profile from "../../components/common/profileIcons";
 import StudentSidebar from "../../components/student/sidebar";
-import { Bell, GraduationCap } from "lucide-react";
-import { Button } from "../../components/ui/button";
+import { GraduationCap } from "lucide-react";
 
 export default function StudentLayout() {
   const user = useAuthStore((state) => state.user);
@@ -52,15 +51,6 @@ export default function StudentLayout() {
 
             {/* Right side */}
             <div className="ml-auto flex items-center gap-3">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="relative rounded-full"
-              >
-                <Bell className="h-5 w-5" />
-
-                <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500" />
-              </Button>
               <Profile role={user.role} image={user?.image_url} />
             </div>
           </header>

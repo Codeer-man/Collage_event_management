@@ -18,6 +18,7 @@ import MyEvents from "./page/student/myEvent";
 import LeaderTeam from "./page/student/leaderTeam";
 import EventRegistered from "./page/student/eventRegistered";
 import EventList from "./page/admin/event-list";
+import ForgetPassword from "./page/auth/forget-password";
 
 export const route = createBrowserRouter([
   // public or home
@@ -28,6 +29,10 @@ export const route = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+      },
+      {
+        path: "/forget-password/:token",
+        element: <ForgetPassword />,
       },
     ],
   },

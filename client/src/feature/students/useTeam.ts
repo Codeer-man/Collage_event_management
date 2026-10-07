@@ -29,5 +29,5 @@ export function useTeamHandler() {
   useEffect(() => {
     getTeam();
   }, []);
-  return { handleCreateteam, leaderTeam };
+  return { handleCreateteam, leaderTeam, getTeam };
 }

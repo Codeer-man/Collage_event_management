@@ -6,16 +6,18 @@ import { UserModel } from "../../model/auth/user.model.js";
 
 import { ok } from "../../utils/envolve.js";
 
-import { verifyToken } from "../../lib/token.js";
+import { createVerifyToken, verifyToken } from "../../lib/token.js";
 
 import { requireAuth } from "../../middleware/auth.middleware.js";
 import multer, { memoryStorage } from "multer";
 
 import { AuthService } from "../../service/auth.service.js";
 import { AppError } from "../../utils/AppError.js";
-import { facultyService } from "../../service/faculty.service.js";
 import { facultyModel } from "../../model/faculty/faculty.model.js";
-import { frontendUrl } from "../../lib/getUrl.js";
+import { frontendUrl, getUrl } from "../../lib/getUrl.js";
+import { pool } from "../../config/pool.js";
+import { hashPassword } from "../../lib/hash.js";
+import { sendEmail } from "../../lib/sendEmail.js";
 
 export const authRoute = Router();
 
@@ -168,5 +170,72 @@ authRoute.get(
         faculty: fauclty,
       }),
     );
+  }),
+);
+
+//forget-pwd send email
+authRoute.post(
+  "/forget-pwd/send-email",
+  asyncHandler(async (req, res) => {
+    const email = String(req.body.email || "").trim();
+
+    textRequired(email, "Email is required");
+
+    const user = await UserModel.findByField("email", email);
+
+    if (!user) {
+      throw new AppError(201, "Email has been sent.Please check your gmail");
+    }
+    const token = createVerifyToken(user.id);
+
+    await sendEmail({
+      html: ` <a
+          href="${frontendUrl()}/forget-password/${token}"
+          style="display:inline-block;margin-top:12px;padding:10px 22px;
+          background:#2563eb;color:#fff;text-decoration:none;border-radius:8px;font-weight:600;"
+        >
+          Verify Email
+        </a> `,
+      subject: `Forget password email`,
+      to: email,
+    });
+
+    res.json(
+      ok({
+        message: "Email has been sent.Please check your email",
+      }),
+    );
+  }),
+);
+
+//forget-pwd
+authRoute.put(
+  "/forget-pwd",
+  asyncHandler(async (req, res) => {
+    const newPassword = String(req.body.password || "").trim();
+    const token = String(req.body.token || "").trim();
+    textRequired(newPassword, "Please prodive new password");
+    textRequired(token, "token is required");
+
+    const payload = verifyToken(token);
+
+    const user = await UserModel.findByField("id", payload.id);
+
+    if (!user) {
+      throw new AppError(404, "User does not exists");
+    }
+
+    const passwordHash = await hashPassword(newPassword);
+
+    await pool.query(
+      `
+    UPDATE users
+    SET password = $1 
+    WHERE id = $2
+    `,
+      [passwordHash, user.id],
+    );
+
+    res.json(ok({ message: "Password successfully updated" }));
   }),
 );
