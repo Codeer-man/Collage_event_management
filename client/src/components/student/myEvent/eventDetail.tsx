@@ -6,6 +6,8 @@ import {
   DialogTitle,
 } from "../../ui/dialog";
 import { getParticipants } from "../../../feature/students/api";
+import { Button } from "../../ui/button";
+import { downloadPdf } from "../../../feature/event/api";
 
 type Participant = {
   user_id: string;
@@ -44,6 +46,18 @@ export default function EventsDetail({
 
   const [loading, setLoading] = useState(false);
 
+  async function handleDownloadPdf() {
+    if (!event) {
+      return;
+    }
+
+    try {
+      await downloadPdf(event);
+    } catch (error) {
+      console.error("Failed to download PDF:", error);
+    }
+  }
+
   useEffect(() => {
     if (!event || !open) {
       return;
@@ -74,7 +88,15 @@ export default function EventsDetail({
             {participate?.team[0]?.event_title ?? "Event Participants"}
           </DialogTitle>
         </DialogHeader>
-
+        <Button
+          disabled={
+            !participate ||
+            (participate.team.length === 0 && participate.solo.length === 0)
+          }
+          onClick={handleDownloadPdf}
+        >
+          Downlaod PDF
+        </Button>
         {loading ? (
           <p>Loading participants...</p>
         ) : !participate ||

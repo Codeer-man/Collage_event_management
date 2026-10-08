@@ -163,7 +163,7 @@ export default function SignUp() {
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label="Contact Number" icon={<Phone />}>
               <Input
-                type="tel"
+                type="number"
                 className="h-10 rounded-xl pl-9"
                 placeholder="98XXXXXXXX"
                 value={register.contact_number}

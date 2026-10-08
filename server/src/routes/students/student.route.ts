@@ -461,7 +461,7 @@ userRoute.post(
 
     const registeredTeam = await pool.query(
       ` 
-      SELECT 1 FROM team_registrations(team_id)
+      SELECT 1 FROM team_registrations
       WHERE team_id = $1
       `,
       [teamId],

@@ -15,9 +15,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main>
-        {/* =========================================================
-            HERO
-        ========================================================= */}
+        {/* HERO */}
         <section className="relative min-h-[calc(100vh-72px)] overflow-hidden">
           {/* Background image */}
           <div
@@ -370,10 +368,10 @@ export default function HomePage() {
               active part of your college community.
             </p>
 
-            <Button size="lg" className="group mt-9 rounded-full px-7">
+            {/* <Button size="lg" className="group mt-9 rounded-full px-7">
               View Upcoming Events
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
+            </Button> */}
           </div>
         </section>
       </main>

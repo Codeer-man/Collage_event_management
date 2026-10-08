@@ -2,7 +2,7 @@ import axios, { type AxiosRequestConfig } from "axios";
 import { env } from "./env";
 import type { ApiEnvolve } from "./type";
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: env.backendUrl,
   // headers: {
   //   "Content-Type": "application/json",
