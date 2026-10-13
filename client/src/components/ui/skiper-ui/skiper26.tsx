@@ -1,11 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { GripHorizontal } from "lucide-react";
+import { GripHorizontal, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import React, { useCallback, useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
+import { Button } from "../button";
 
 const Skiper26 = () => {
   const [variant, setVariant] = useState<AnimationVariant>("rectangle");
@@ -616,132 +617,12 @@ export const ThemeToggleButton = ({
   return (
     <button
       type="button"
-      className={cn(
-        "size-10 cursor-pointer rounded-full bg-black p-0 transition-all duration-300 active:scale-95",
-        className,
-      )}
       onClick={toggleTheme}
-      aria-label="Toggle theme"
+      aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+      className="h-9 w-9 rounded-xl text-muted-foreground hover:text-foreground"
     >
       <span className="sr-only">Toggle theme</span>
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="size-6 mx-auto"
-      >
-        <motion.g
-          animate={{ rotate: isDark ? 40 : 90 }}
-          transition={{ ease: "easeInOut", duration: 0.5 }}
-        >
-          {/* Sun core / Moon body */}
-          <motion.circle
-            cx="12"
-            cy="12"
-            animate={{
-              r: isDark ? 8 : 5,
-            }}
-            transition={{ ease: "easeInOut", duration: 0.5 }}
-            fill="white"
-          />
-
-          {/* Sun rays - fade & shrink away when dark */}
-          <motion.g
-            animate={{
-              opacity: isDark ? 0 : 1,
-              scale: isDark ? 0 : 1,
-            }}
-            transition={{ ease: "easeInOut", duration: 0.4 }}
-            style={{ originX: "12px", originY: "12px" }}
-          >
-            <line
-              x1="12"
-              y1="1"
-              x2="12"
-              y2="3"
-              stroke="white"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <line
-              x1="12"
-              y1="21"
-              x2="12"
-              y2="23"
-              stroke="white"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <line
-              x1="4.22"
-              y1="4.22"
-              x2="5.64"
-              y2="5.64"
-              stroke="white"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <line
-              x1="18.36"
-              y1="18.36"
-              x2="19.78"
-              y2="19.78"
-              stroke="white"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <line
-              x1="1"
-              y1="12"
-              x2="3"
-              y2="12"
-              stroke="white"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <line
-              x1="21"
-              y1="12"
-              x2="23"
-              y2="12"
-              stroke="white"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <line
-              x1="4.22"
-              y1="19.78"
-              x2="5.64"
-              y2="18.36"
-              stroke="white"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <line
-              x1="18.36"
-              y1="5.64"
-              x2="19.78"
-              y2="4.22"
-              stroke="white"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </motion.g>
-
-          {/* Moon crescent cutout - fades in when dark */}
-          <motion.circle
-            cx="17"
-            cy="8"
-            r="7"
-            fill="black"
-            animate={{
-              opacity: isDark ? 1 : 0,
-              cx: isDark ? 16 : 22,
-            }}
-            transition={{ ease: "easeInOut", duration: 0.5 }}
-          />
-        </motion.g>
-      </svg>
+      {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
     </button>
   );
 };

@@ -148,7 +148,7 @@ export default function EventDialogue({
             </Button>
 
             <Button
-              className="cursor-pointer bg-green-600 text-white hover:bg-green-700"
+              className="cursor-pointer"
               onClick={() => {
                 handleEvents(true, event.id);
                 onOpenChange(false);

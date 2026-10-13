@@ -22,12 +22,10 @@ import {
 import { Input } from "../../components/ui/input";
 import { manageMember } from "../../feature/students/api";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
 
 export default function LeaderTeam() {
   const { leaderTeam, getTeam } = useTeamHandler();
   const [email, setEmail] = useState("");
-  const navigate = useNavigate();
 
   const handleAddMember = async (eventId: string, teamId: string) => {
     try {
@@ -57,7 +55,7 @@ export default function LeaderTeam() {
       <div className="flex min-h-75 items-center justify-center">
         <Card className="w-full max-w-md text-center shadow-lg">
           <CardContent className="py-10">
-            <Crown className="mx-auto mb-4 h-12 w-12 text-gray-400" />
+            <Crown className="mx-auto mb-4 h-12 w-12 text-muted-foreground" />
             <h2 className="text-xl font-semibold">No Team Found</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               You are not the leader of any team yet.
@@ -110,7 +108,7 @@ export default function LeaderTeam() {
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between rounded-lg bg-muted/50 p-3">
                 <div className="flex items-center gap-2">
-                  <Users className="h-5 w-5 text-blue-600" />
+                  <Users className="h-5 w-5 text-primary" />
                   <span className="font-medium">Members</span>
                 </div>
                 <div className=" flex gap-3 items-center">

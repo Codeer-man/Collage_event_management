@@ -1,494 +1,266 @@
 import {
   ArrowRight,
+  CalendarCheck,
   CalendarDays,
-  ChevronDown,
   GraduationCap,
+  Leaf,
+  ShieldCheck,
   Users,
-  Sparkles,
-  Trophy,
 } from "lucide-react";
-import { Badge } from "../../components/ui/badge";
 import { Button } from "../../components/ui/button";
-import { animateScroll as scroll } from "react-scroll";
+
+const features = [
+  {
+    icon: CalendarDays,
+    title: "Discover campus events",
+    text: "Find workshops, competitions, cultural programs, and activities shared by your college community.",
+  },
+  {
+    icon: Users,
+    title: "Join with your community",
+    text: "Register individually or take part with a team when an event supports team participation.",
+  },
+  {
+    icon: CalendarCheck,
+    title: "Keep everything organized",
+    text: "Review your registrations, follow event updates, and keep your campus plans in one place.",
+  },
+];
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="overflow-hidden bg-background">
       <main>
-        {/* HERO */}
-        <section className="relative min-h-[calc(100vh-72px)] overflow-hidden">
-          {/* Background image */}
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage:
-                "url('https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=2200&q=85')",
-              // "url('https://portal.tu.edu.np/medias/AdministrativeBuildingPNC_2024_05_16_13_27_01.jpg')",
-            }}
-          />
-
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-black/55" />
-
-          {/* Subtle gradient */}
-          <div className="absolute inset-0 bg-linear-to-r from-black/75 via-black/45 to-black/20" />
-
-          <div className="relative mx-auto flex min-h-[calc(100vh-72px)] max-w-7xl items-center px-6 py-20 lg:px-8">
-            <div className="max-w-3xl text-white">
-              <Badge
-                variant="secondary"
-                className="mb-6 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-white backdrop-blur-md"
-              >
-                <Sparkles className="mr-2 h-3.5 w-3.5" />
-                College Event Management System
-              </Badge>
-
-              <h1 className="text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
-                Where campus life
-                <span className="block text-white/70">comes together.</span>
+        <section className="relative px-4 pb-16 pt-10 sm:px-6 sm:pb-20 sm:pt-14 lg:px-10 lg:pb-24 lg:pt-20">
+          <div className="mx-auto grid max-w-330 items-center gap-12 lg:grid-cols-[1fr_0.9fr] lg:gap-16">
+            <div className="relative z-10">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/15 bg-accent/70 px-3.5 py-2 text-xs font-medium text-accent-foreground">
+                <Leaf className="h-3.5 w-3.5" /> A better way to be part of
+                campus life
+              </div>
+              <h1 className="max-w-3xl text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-[4.35rem]">
+                Campus life happens{" "}
+                <span className="text-primary">outside the classroom.</span>
               </h1>
-
-              <p className="mt-7 max-w-2xl text-base leading-7 text-white/75 sm:text-lg">
-                Discover what is happening around campus, take part in student
-                activities, connect with your community, and make your college
-                experience more memorable.
+              <p className="mt-6 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
+                Discover college events, connect with students, and take part in
+                the experiences that make your campus journey memorable — all
+                from one place.
               </p>
-
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Button
                   size="lg"
-                  className="group rounded-full px-6"
+                  className="h-12 rounded-xl px-6"
                   onClick={() =>
-                    scroll.scrollToBottom({
-                      duration: 9000,
-                      smooth: "easeInOut",
-                    })
+                    document
+                      .getElementById("features")
+                      ?.scrollIntoView({ behavior: "smooth" })
                   }
                 >
-                  Explore
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  Explore CEMS <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
-
                 <Button
                   size="lg"
                   variant="outline"
-                  className="rounded-full border-white/30 bg-white/5 px-6 text-white backdrop-blur-sm hover:bg-white/10 hover:text-white"
-                  onClick={() => {
-                    const element = document.getElementById("about");
-                    if (element) {
-                      element.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
+                  className="h-12 rounded-xl px-6"
+                  onClick={() =>
+                    document
+                      .getElementById("about")
+                      ?.scrollIntoView({ behavior: "smooth" })
+                  }
                 >
-                  About CEMS
+                  How it works
                 </Button>
               </div>
-
-              {/* Small stats */}
-              <div className="mt-14 grid max-w-xl grid-cols-3 border-t border-white/20 pt-6">
-                <div>
-                  <p className="text-2xl font-semibold">25+</p>
-                  <p className="mt-1 text-xs text-white/60 sm:text-sm">
-                    Faculties
-                  </p>
-                </div>
-
-                <div className="border-l border-white/20 pl-5">
-                  <p className="text-2xl font-semibold">Easy</p>
-                  <p className="mt-1 text-xs text-white/60 sm:text-sm">
-                    Registration
-                  </p>
-                </div>
-
-                <div className="border-l border-white/20 pl-5">
-                  <p className="text-2xl font-semibold">One</p>
-                  <p className="mt-1 text-xs text-white/60 sm:text-sm">
-                    Event hub
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Scroll indicator */}
-          <div className="absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-white/50 md:flex">
-            <span className="text-[10px] uppercase tracking-[0.25em]">
-              Scroll to explore
-            </span>
-
-            <ChevronDown className="h-4 w-4 animate-bounce" />
-          </div>
-        </section>
-
-        {/* =========================================================
-            INTRODUCTION
-        ========================================================= */}
-        <section className="px-6 py-24 lg:px-8 lg:py-32" id="about">
-          <div className="mx-auto max-w-7xl">
-            <div className="grid gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
-              <div>
-                <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-primary">
-                  More than academics
-                </p>
-
-                <h2 className="max-w-xl text-4xl font-semibold tracking-tight sm:text-5xl">
-                  College is also about the moments you remember.
-                </h2>
-              </div>
-
-              <div>
-                <p className="max-w-2xl text-lg leading-8 text-muted-foreground">
-                  CEMS brings the different sides of campus life into one place.
-                  From academic programs and student activities to competitions,
-                  cultural programs, and other events, the platform helps
-                  students stay connected with what is happening around them.
-                </p>
-
-                <p className="mt-5 max-w-2xl leading-7 text-muted-foreground">
-                  Instead of searching through messages, notices, and different
-                  channels, students can discover events and participate in the
-                  activities that matter to them.
-                </p>
-              </div>
-            </div>
-
-            {/* Feature cards */}
-            <div className="mt-20 grid gap-5 md:grid-cols-3">
-              <FeatureCard
-                icon={<CalendarDays />}
-                number="01"
-                title="Discover events"
-                description="Find upcoming college events, competitions, workshops, programs, and student activities in one place."
-              />
-
-              <FeatureCard
-                icon={<Users />}
-                number="02"
-                title="Be part of campus life"
-                description="Join activities, connect with students from different faculties, and participate beyond the classroom."
-              />
-
-              <FeatureCard
-                icon={<Trophy />}
-                number="03"
-                title="Create experiences"
-                description="Student organizers can bring ideas to life and create events that contribute to a stronger campus community."
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* =========================================================
-            IMAGE / CAMPUS LIFE
-        ========================================================= */}
-        <section className="px-6 pb-24 lg:px-8 lg:pb-32">
-          <div className="mx-auto max-w-7xl">
-            <div className="grid overflow-hidden rounded-3xl bg-muted lg:grid-cols-[1.1fr_0.9fr]">
-              <div
-                className="min-h-[420px] bg-cover bg-center lg:min-h-[560px]"
-                style={{
-                  backgroundImage:
-                    // "url('https://www.collegenp.com/uploads/2022/08/Prithvi-Narayan-Campus-(PN-Campus).jpg')",
-                    "url('https://upload.wikimedia.org/wikipedia/commons/c/c0/Sagarmatha_Engineering_College_-_Building_2.jpg')",
-                }}
-              />
-
-              <div
-                className="flex flex-col justify-center p-8 sm:p-12 lg:p-16"
-                id="explore"
-              >
-                <Badge className="mb-6 w-fit rounded-full">
-                  Campus Community
-                </Badge>
-
-                <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-                  Learn, participate, connect.
-                </h2>
-
-                <p className="mt-6 leading-7 text-muted-foreground">
-                  A college experience extends beyond lectures and examinations.
-                  Student clubs, sports, cultural activities, competitions,
-                  workshops, and social events create opportunities to discover
-                  new interests and meet people across the campus.
-                </p>
-
-                <div className="mt-8 space-y-5">
-                  <InfoRow
-                    icon={<GraduationCap />}
-                    title="Academic community"
-                    description="Students and teachers coming together across different fields."
-                  />
-
-                  <InfoRow
-                    icon={<Users />}
-                    title="Student participation"
-                    description="Opportunities to contribute, organize, compete, and collaborate."
-                  />
-
-                  <InfoRow
-                    icon={<CalendarDays />}
-                    title="One place for events"
-                    description="A simpler way to discover what's happening around campus."
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* =========================================================
-            ABOUT CAMPUS
-        ========================================================= */}
-
-        {/* =========================================================
-            ACADEMIC COMMUNITY
-        ========================================================= */}
-        <section className="px-6 py-24 lg:px-8 lg:py-32">
-          <div className="mx-auto max-w-7xl">
-            <div className="max-w-2xl">
-              <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-primary">
-                Academic community
-              </p>
-
-              <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-                Different disciplines.
-                <span className="block text-muted-foreground">
-                  One community.
+              <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-border pt-6 text-sm text-muted-foreground">
+                <span className="inline-flex items-center gap-2">
+                  <ShieldCheck className="h-4 w-4 text-primary" /> Faculty-based
+                  approvals
                 </span>
-              </h2>
-
-              <p className="mt-6 leading-7 text-muted-foreground">
-                The campus brings together students from a broad range of
-                academic disciplines. CEMS provides a common space where those
-                communities can meet through events and activities.
-              </p>
+                <span className="inline-flex items-center gap-2">
+                  <CalendarCheck className="h-4 w-4 text-primary" /> Event
+                  registration in one place
+                </span>
+              </div>
             </div>
 
-            <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <AcademicCard
-                title="Humanities & Social Sciences"
-                description="Culture, economics, geography, sociology, BCA, and more."
-              />
-
-              <AcademicCard
-                title="Management"
-                description="Business, finance, accounting, marketing, and management."
-              />
-
-              <AcademicCard
-                title="Education"
-                description="Education, teaching practice, social studies, and related fields."
-              />
-
-              <AcademicCard
-                title="Science & Technology"
-                description="Computer science, mathematics, biology, chemistry, and other sciences."
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* =========================================================
-            FACILITIES / EXPERIENCE
-        ========================================================= */}
-        <section className="px-6 pb-24 lg:px-8 lg:pb-32">
-          <div className="mx-auto max-w-7xl">
-            <div className="relative overflow-hidden rounded-3xl">
-              <div
-                className="absolute inset-0 bg-cover bg-center"
-                style={{
-                  backgroundImage:
-                    "url('https://images.unsplash.com/photo-1564981797816-1043664bf78d?auto=format&fit=crop&w=1800&q=85')",
-                }}
-              />
-
-              <div className="absolute inset-0 bg-black/65" />
-
-              <div className="relative grid gap-12 p-8 text-white sm:p-12 lg:grid-cols-[1fr_0.8fr] lg:p-16">
-                <div>
-                  <p className="text-sm font-medium uppercase tracking-[0.2em] text-white/60">
-                    The student experience
-                  </p>
-
-                  <h2 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl">
-                    Your campus experience doesn't end at the classroom door.
-                  </h2>
-
-                  <p className="mt-6 max-w-xl leading-7 text-white/70">
-                    From the library and learning spaces to student activities
-                    and campus events, the environment around students plays an
-                    important role in their college journey.
-                  </p>
+            <div className="relative mx-auto w-full max-w-150 lg:ml-auto">
+              <div className="absolute -right-7 -top-7 h-40 w-40 rounded-full bg-[#dce7d7] blur-3xl dark:bg-[#49644c]/40" />
+              <div className="absolute -bottom-8 -left-8 h-40 w-40 rounded-full bg-[#e9e4cf] blur-3xl dark:bg-[#625e3e]/25" />
+              <div className="relative overflow-hidden rounded-[28px] border border-border bg-card p-2.5 shadow-[0_24px_80px_-38px_rgba(41,58,50,0.28)] sm:p-3">
+                <div className="relative min-h-85 overflow-hidden rounded-[21px] bg-[#dce7d7] dark:bg-[#334438] sm:min-h-[470px]">
+                  <img
+                    src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=1200&q=85"
+                    alt="College students taking part in a campus activity"
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1d3025]/85 via-[#1d3025]/10 to-transparent" />
+                  <div className="absolute inset-x-5 bottom-5 text-white sm:inset-x-7 sm:bottom-7">
+                    <p className="text-xs font-medium uppercase tracking-[0.18em] text-white/75">
+                      Find your next experience
+                    </p>
+                    <h2 className="mt-2 max-w-sm text-2xl font-semibold leading-tight sm:text-3xl">
+                      More to learn. More to share. More to experience.
+                    </h2>
+                    <div className="mt-5 flex items-center gap-3 text-sm text-white/85">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15 backdrop-blur">
+                        <GraduationCap className="h-4 w-4" />
+                      </span>{" "}
+                      Made for campus communities
+                    </div>
+                  </div>
                 </div>
-
-                <div className="space-y-3">
-                  <ExperienceItem
-                    title="Library & learning resources"
-                    description="Spaces and resources that support academic learning."
-                  />
-
-                  <ExperienceItem
-                    title="Student activities"
-                    description="A place for students to participate and build connections."
-                  />
-
-                  <ExperienceItem
-                    title="Events & competitions"
-                    description="Opportunities to showcase skills and enjoy campus life."
-                  />
-
-                  <ExperienceItem
-                    title="Community"
-                    description="Meet people, share ideas, and create lasting memories."
-                  />
-                </div>
+              </div>
+              <div className="absolute -bottom-5 right-3 hidden items-center gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-lg sm:flex sm:right-0">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-accent-foreground">
+                  <CalendarDays className="h-5 w-5" />
+                </span>
+                <span>
+                  <span className="block text-sm font-semibold">
+                    Your campus, connected
+                  </span>
+                  <span className="mt-0.5 block text-xs text-muted-foreground">
+                    Events in one place
+                  </span>
+                </span>
               </div>
             </div>
           </div>
         </section>
 
-        {/* =========================================================
-            FINAL CTA
-        ========================================================= */}
-        <section className="border-t px-6 py-24 lg:px-8 lg:py-28">
-          <div className="mx-auto max-w-4xl text-center">
-            <Badge variant="outline" className="rounded-full px-4 py-2">
-              What's happening on campus?
-            </Badge>
+        <section
+          id="features"
+          className="border-y border-border bg-card/60 px-4 py-16 sm:px-6 sm:py-20 lg:px-10"
+        >
+          <div className="mx-auto max-w-[1320px]">
+            <div className="max-w-2xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                What you can do
+              </p>
+              <h2 className="mt-4 text-3xl font-semibold leading-tight sm:text-4xl">
+                Everything you need to take part.
+              </h2>
+              <p className="mt-4 text-base leading-7 text-muted-foreground">
+                Less time searching for information. More time showing up,
+                participating, and making something happen.
+              </p>
+            </div>
+            <div className="mt-10 grid gap-4 md:grid-cols-3">
+              {features.map(({ icon: Icon, title, text }, index) => (
+                <article
+                  key={title}
+                  className="group rounded-2xl border border-border bg-background p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-md sm:p-7"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent text-accent-foreground">
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <span className="text-xs font-medium text-muted-foreground">
+                      0{index + 1}
+                    </span>
+                  </div>
+                  <h3 className="mt-7 text-xl font-semibold">{title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                    {text}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
 
-            <h2 className="mt-6 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
-              There is always something
-              <span className="block text-muted-foreground">
-                worth being part of.
-              </span>
-            </h2>
+        <section
+          id="about"
+          className="px-4 py-16 sm:px-6 sm:py-20 lg:px-10 lg:py-24"
+        >
+          <div className="mx-auto grid max-w-[1320px] gap-10 rounded-3xl border border-border bg-accent/35 p-6 sm:p-9 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-16 lg:p-12">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                How CEMS works
+              </p>
+              <h2 className="mt-4 text-3xl font-semibold leading-tight sm:text-4xl">
+                A clearer path from discovering an event to taking part.
+              </h2>
+              <p className="mt-4 leading-7 text-muted-foreground">
+                CEMS helps students and college administrators manage event
+                participation with clearer information and faculty-based
+                approval workflows.
+              </p>
+            </div>
+            <div className="space-y-3">
+              <Step
+                number="01"
+                title="Explore"
+                text="Browse events and review dates, location, and registration details."
+              />
+              <Step
+                number="02"
+                title="Register or organize"
+                text="Join an event individually or as a team, or create an event when your role allows it."
+              />
+              <Step
+                number="03"
+                title="Stay informed"
+                text="Use your workspace to follow registrations and manage event activity."
+              />
+            </div>
+          </div>
+        </section>
 
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
-              Explore upcoming events, discover opportunities, and become an
-              active part of your college community.
-            </p>
-
-            {/* <Button size="lg" className="group mt-9 rounded-full px-7">
-              View Upcoming Events
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button> */}
+        <section className="px-4 pb-16 sm:px-6 sm:pb-20 lg:px-10">
+          <div className="mx-auto flex max-w-[1320px] flex-col gap-6 rounded-3xl bg-[#334b3c] px-6 py-9 text-white sm:px-10 sm:py-12 md:flex-row md:items-center md:justify-between">
+            <div className="max-w-2xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/65">
+                Your next campus memory starts here
+              </p>
+              <h2 className="mt-3 text-3xl font-semibold leading-tight sm:text-4xl">
+                Be part of what happens next.
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-white/70 sm:text-base">
+                Sign in to discover events and manage your campus activities.
+              </p>
+            </div>
+            <Button
+              variant="secondary"
+              size="lg"
+              className="h-12 shrink-0 rounded-xl bg-[#e5ede2] px-6 text-[#293a32] hover:bg-white"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
+              Get started <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
           </div>
         </section>
       </main>
-
-      {/* =========================================================
-          FOOTER
-      ========================================================= */}
-      <footer className="border-t bg-muted/30">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between lg:px-8">
-          <div>
-            <p className="font-medium text-foreground">
-              College Event Management System
-            </p>
-            <p className="mt-1">Connecting students through campus life.</p>
-          </div>
-
-          <p>Prithvi Narayan Campus · Pokhara, Nepal</p>
+      <footer className="border-t border-border px-4 py-7 sm:px-6 lg:px-10">
+        <div className="mx-auto flex max-w-[1320px] flex-col gap-2 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+          <span className="font-medium text-foreground">
+            CEMS · College Event Management System
+          </span>
+          <span>Connecting students through campus life.</span>
         </div>
       </footer>
     </div>
   );
 }
 
-/* 
-   REUSABLE COMPONENTS
- */
-
-function FeatureCard({
-  icon,
+function Step({
   number,
   title,
-  description,
+  text,
 }: {
-  icon: React.ReactNode;
   number: string;
   title: string;
-  description: string;
+  text: string;
 }) {
   return (
-    <div className="group rounded-2xl border bg-background p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-      <div className="flex items-center justify-between">
-        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-          {icon}
-        </div>
-
-        <span className="text-sm text-muted-foreground">{number}</span>
-      </div>
-
-      <h3 className="mt-7 text-xl font-semibold">{title}</h3>
-
-      <p className="mt-3 text-sm leading-6 text-muted-foreground">
-        {description}
-      </p>
-    </div>
-  );
-}
-
-function InfoRow({
-  icon,
-  title,
-  description,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}) {
-  return (
-    <div className="flex gap-4">
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-background shadow-sm">
-        {icon}
-      </div>
-
+    <div className="flex gap-4 rounded-2xl border border-border/80 bg-card p-4 sm:p-5">
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent text-xs font-semibold text-accent-foreground">
+        {number}
+      </span>
       <div>
-        <h4 className="font-medium">{title}</h4>
-
-        <p className="mt-1 text-sm leading-6 text-muted-foreground">
-          {description}
-        </p>
+        <h3 className="font-semibold">{title}</h3>
+        <p className="mt-1 text-sm leading-6 text-muted-foreground">{text}</p>
       </div>
-    </div>
-  );
-}
-
-function AcademicCard({
-  title,
-  description,
-}: {
-  title: string;
-  description: string;
-}) {
-  return (
-    <div className="group rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-muted/50">
-      <div className="mb-10 flex justify-end">
-        <ArrowRight className="h-5 w-5 text-muted-foreground transition-transform duration-300 group-hover:translate-x-1 group-hover:text-primary" />
-      </div>
-
-      <h3 className="text-lg font-semibold">{title}</h3>
-
-      <p className="mt-3 text-sm leading-6 text-muted-foreground">
-        {description}
-      </p>
-    </div>
-  );
-}
-
-export function ExperienceItem({
-  title,
-  description,
-}: {
-  title: string;
-  description: string;
-}) {
-  return (
-    <div className="rounded-2xl border border-white/10 bg-white/10 p-5 backdrop-blur-sm">
-      <h3 className="font-medium">{title}</h3>
-
-      <p className="mt-1 text-sm leading-6 text-white/60">{description}</p>
     </div>
   );
 }

@@ -117,7 +117,7 @@ export default function ApproveStudents() {
                     <div className="flex items-center gap-2">
                       <Button
                         size="sm"
-                        className="cursor-pointer bg-green-600 text-white shadow-sm transition-all hover:bg-green-700 hover:shadow"
+                        className="cursor-pointer shadow-sm transition-all hover:shadow"
                         disabled={!student.is_email_verified}
                         onClick={() => handleStudentStatus(student.id, true)}
                       >

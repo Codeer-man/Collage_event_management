@@ -11,7 +11,7 @@ import { Label } from "../../components/ui/label";
 import { Button } from "../../components/ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
-import { apiGet, apiPost } from "../../lib/api";
+import { apiPost } from "../../lib/api";
 
 type ForgetDialogProps = {
   open: boolean;
@@ -26,7 +26,7 @@ export default function ForgetPasswordEmail({
 
   async function handleSubmit() {
     try {
-      const resp = await apiPost("/auth/forget-pwd/send-email", {
+      await apiPost("/auth/forget-pwd/send-email", {
         email,
       });
     } finally {

@@ -104,7 +104,9 @@ authRoute.post(
           image_url: result.user.image_url,
           email: result.user.email,
           role: result.user.role,
-          isEmailVerified: result.user.is_email_verified,
+          is_email_verified: result.user.is_email_verified,
+          faculty: result.user.faculty_id,
+          is_approved_student: result.user.is_approved_student,
         },
       }),
     );

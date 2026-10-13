@@ -77,13 +77,13 @@ export default function UnApprovedStudentsList({
 
                 <TableCell className=" flex flex-col gap-3">
                   <Button
-                    className="cursor-pointer bg-green-500"
+                    className="cursor-pointer"
                     onClick={() => handleStudentStatus(sts.id, true)}
                   >
                     Accept
                   </Button>
                   <Button
-                    className=" cursor-pointer bg-red-500 text-white"
+                    className=" cursor-pointer text-destructive"
                     onClick={() => handleStudentStatus(sts.id, false)}
                   >
                     Decline

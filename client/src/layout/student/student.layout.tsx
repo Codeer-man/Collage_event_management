@@ -1,11 +1,11 @@
-import { Outlet, useNavigate } from "react-router-dom";
-import CommonLoader from "../../components/common/loader";
-import { useAuthStore } from "../../store/auth.store";
 import { useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
+import { GraduationCap } from "lucide-react";
 import { toast } from "sonner";
+import CommonLoader from "../../components/common/loader";
 import Profile from "../../components/common/profileIcons";
 import StudentSidebar from "../../components/student/sidebar";
-import { GraduationCap } from "lucide-react";
+import { useAuthStore } from "../../store/auth.store";
 
 export default function StudentLayout() {
   const user = useAuthStore((state) => state.user);
@@ -13,52 +13,35 @@ export default function StudentLayout() {
 
   useEffect(() => {
     if (user) return;
-
     const timer = setTimeout(() => {
       navigate("/", { replace: true });
-      toast.warning("Please login ");
+      toast.warning("Please log in to continue.");
     }, 3000);
-
     return () => clearTimeout(timer);
   }, [user, navigate]);
 
-  if (!user) {
-    return <CommonLoader />;
-  }
+  if (!user) return <CommonLoader />;
 
   return (
-    <div className=" min-h-screen bg-secondary/40">
-      <div className=" flex  min-h-screen ">
-        <StudentSidebar />
-        <div className="flex min-w-0 flex-1 flex-col">
-          <header className="sticky top-0 z-30 flex h-20 items-center gap-4 border-b-8 border-border/20 bg-background/80 px-4 backdrop-blur lg:px-6">
-            {/* Student welcome section */}
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <GraduationCap className="h-5 w-5" />
-              </div>
-
-              <div className="hidden sm:block">
-                <p className="text-sm font-semibold">
-                  Welcome back, {user.full_name?.split(" ")[0]} 👋
-                </p>
-
-                <p className="text-xs text-muted-foreground">
-                  Ready for your next event?
-                </p>
-              </div>
+    <div className="app-shell flex min-h-screen">
+      <StudentSidebar />
+      <div className="flex min-w-0 flex-1 flex-col">
+        <header className="app-topbar">
+          <StudentSidebar mobile />
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="hidden h-10 w-10 items-center justify-center rounded-xl bg-accent text-accent-foreground sm:flex">
+              <GraduationCap className="h-5 w-5" />
             </div>
-
-            {/* Right side */}
-            <div className="ml-auto flex items-center gap-3">
-              <Profile role={user.role} image={user?.image_url} />
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold">Welcome back, {user.full_name?.split(" ")[0] || "Student"}</p>
+              <p className="hidden text-xs text-muted-foreground sm:block">Find your next campus experience.</p>
             </div>
-          </header>
-
-          <main className="flex-1">
-            <Outlet />
-          </main>
-        </div>
+          </div>
+          <div className="ml-auto flex items-center gap-2">
+            <Profile role={user.role} image={user.image_url} />
+          </div>
+        </header>
+        <main className="min-w-0 flex-1"><Outlet /></main>
       </div>
     </div>
   );

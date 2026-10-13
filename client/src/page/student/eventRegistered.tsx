@@ -94,7 +94,7 @@ function EventCard({ event }: { event: joinEventType }) {
             </div>
           </div>
 
-          {event.is_team_event ? (
+          {String(event.is_team_event).toLowerCase() === "true" ? (
             <div className="flex items-center gap-3">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-muted">
                 <Group className="h-4 w-4" />

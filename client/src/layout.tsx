@@ -10,6 +10,7 @@ import Students from "./page/admin/students";
 import ApproveStudents from "./page/admin/approveSts";
 import Event from "./page/admin/event";
 import MyProfile from "./page/student/student";
+import StudentDashboard from "./page/student/dashboard";
 import Events from "./page/student/event";
 import Team from "./page/student/team";
 import HomePage from "./page/home/home";
@@ -108,6 +109,10 @@ export const route = createBrowserRouter([
             children: [
               {
                 index: true,
+                element: <StudentDashboard />,
+              },
+              {
+                path: "profile",
                 element: <MyProfile />,
               },
               {
@@ -142,6 +147,20 @@ export const route = createBrowserRouter([
   },
   {
     path: "*",
-    element: <div>page does not exists </div>,
+    element: (
+      <div className="flex min-h-[60vh] flex-col items-center justify-center px-6 text-center">
+        <div className="brand-mark">C</div>
+        <h1 className="mt-5 text-3xl font-semibold">Page not found</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          The page you are looking for may have moved or does not exist.
+        </p>
+        <a
+          className="mt-5 text-sm font-medium text-primary hover:underline"
+          href="/"
+        >
+          Return home
+        </a>
+      </div>
+    ),
   },
 ]);
