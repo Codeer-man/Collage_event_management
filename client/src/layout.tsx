@@ -20,6 +20,7 @@ import LeaderTeam from "./page/student/leaderTeam";
 import EventRegistered from "./page/student/eventRegistered";
 import EventList from "./page/admin/event-list";
 import ForgetPassword from "./page/auth/forget-password";
+import Location from "./page/administrative/location";
 
 export const route = createBrowserRouter([
   // public or home
@@ -56,6 +57,10 @@ export const route = createBrowserRouter([
                 // path: "faculty",
                 index: true,
                 element: <Faculty />,
+              },
+              {
+                path: "location",
+                element: <Location />,
               },
             ],
           },

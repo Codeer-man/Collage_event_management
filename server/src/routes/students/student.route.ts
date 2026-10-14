@@ -49,23 +49,27 @@ userRoute.post(
     const userId = (req as any).user.id;
     const title = String(req.body.title || "").trim();
     const description = String(req.body.description || "").trim();
-    const location = String(req.body.location || "").trim();
+
+    const location_id = String(req.body.location_id || "").trim();
+    const location_type = String(req.body.location_type).trim();
+    let location_name = String(req.body.location_name).trim();
+
     let event_date = String(req.body.event_date || "").trim();
     let registration_deadline = String(
       req.body.registration_deadline || "",
     ).trim();
+    let end_at = String(req.body.end_at).trim();
+
     const entry_fee = Number(req.body.entry_fee || 0);
     const contact = Number(req.body.contact);
     const max_participants = Number(req.body.max_participants || 100);
     const isTeamEvent = req.body.isTeamEvent === "true";
-    const eventId = String(req.body.eventId || "").trim();
     const faculty = JSON.parse(req.body.faculty || "[]");
     const file = req.file as Express.Multer.File;
 
     textRequired(userId, "You are not authenticated");
     textRequired(title, "event title is reqiured");
     textRequired(description, "event description is reqiured");
-    textRequired(location, "event location is reqiured");
     textRequired(event_date, "event event_date is reqiured");
     textRequired(
       registration_deadline,
@@ -77,13 +81,14 @@ userRoute.post(
 
     event_date = event_date.split("T")[0];
     registration_deadline = registration_deadline.split("T")[0];
+    end_at = end_at.split("T")[0];
 
     if (event_date <= today) {
       throw new AppError(400, "Event date must be in the future.");
     }
 
     if (registration_deadline <= today) {
-      throw new AppError(400, "Registration deadline must be in the future.");
+      throw new AppError(400, `Registration deadline after ${today}.`);
     }
 
     if (registration_deadline >= event_date) {
@@ -92,20 +97,42 @@ userRoute.post(
         "Registration deadline must be before the event date.",
       );
     }
+
+    if (end_at < event_date) {
+      throw new AppError(
+        400,
+        "Event end date cannot be before the event start date.",
+      );
+    }
+
+    if (location_type === "internal") {
+      const location = await pool.query(
+        ` 
+          SELECT name FROM location
+          WHERE id = $1
+        `,
+        [location_id],
+      );
+      location_name = location.rows[0].name;
+    }
+
     if (!file) throw new AppError(400, "event image is required");
     const imageUpload = await uploadImage(file.buffer, "event_publicId");
 
     const newlyCreatedEvent = await studentService.saveEvent(
       title,
       description,
-      location,
+      location_id,
       event_date,
+      end_at,
       registration_deadline,
       entry_fee,
       contact,
       imageUpload.url,
       imageUpload.public_id,
       userId,
+      location_type,
+      location_name,
       isTeamEvent,
       max_participants,
       // eventId,
@@ -666,5 +693,21 @@ userRoute.get(
     );
 
     res.json(ok({ team: teamParticipants.rows, solo: soloParticipants.rows }));
+  }),
+);
+
+userRoute.get(
+  "/location",
+  asyncHandler(async (req, res) => {
+    const location = await pool.query(`
+    SELECT * FROM location
+    WHERE is_available = true
+    `);
+
+    res.json(
+      ok({
+        location: location.rows,
+      }),
+    );
   }),
 );

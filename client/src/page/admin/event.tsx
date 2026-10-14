@@ -102,7 +102,7 @@ export default function Event() {
 
                   {/* Location */}
                   <TableCell className="text-muted-foreground">
-                    {event.location}
+                    {event.location_name}
                   </TableCell>
 
                   {/* Event Date */}

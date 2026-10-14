@@ -38,7 +38,7 @@ export type event = {
   id: string;
   title: string;
   description: string;
-  location: string;
+  location_name: string;
   event_date: Date;
   registration_deadline: Date;
   created_by: string;

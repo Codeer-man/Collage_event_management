@@ -6,6 +6,10 @@
 --     'completed',
 --     'cancelled'
 -- );
+-- CREATE TYPE  location_type AS ENUM (
+--    'internal',
+--    'external'
+-- );
 
 -- Events table
 CREATE TABLE IF NOT EXISTS events (
@@ -15,7 +19,15 @@ CREATE TABLE IF NOT EXISTS events (
 
     description TEXT NOT NULL,
 
-    location VARCHAR(255) NOT NULL,
+    location_type location_type NOT NULL,
+
+    location_id UUID ,
+    CONSTRAINT fk_location_id
+        FOREIGN KEY (location_id)
+        REFERENCES location(id)
+        ON DELETE RESTRICT,
+
+    location_name VARCHAR(20),
 
     event_date TIMESTAMP NOT NULL,
 
@@ -53,12 +65,3 @@ ON events(event_date);
 
 CREATE INDEX IF NOT EXISTS idx_events_creator
 ON events(created_by);
-
--- ALTER TABLE events
--- ALTER COLUMN image_url set  NOT NULL;
-
--- ALTER TABLE events
--- ALTER COLUMN     public_id set  NOT NULL;
-
--- ALTER TABLE events
--- ADD contact varchar(25) not null

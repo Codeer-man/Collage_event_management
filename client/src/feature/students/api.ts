@@ -1,8 +1,9 @@
 import type { ParticipantResponse } from "../../components/student/myEvent/eventDetail";
 import { apiGet, apiPatch, apiPost } from "../../lib/api";
 import type {
-  CreateEventPayload,
+  CreateEventFormData,
   joinEventRes,
+  locationRes,
   myEventTypeResp,
   TeamResp,
 } from "./type";
@@ -22,14 +23,21 @@ export async function joinTeamEvent(input: {
   return apiPost("/user/event/team", input);
 }
 
-export async function CreateEvent(data: CreateEventPayload) {
+export async function CreateEvent(data: CreateEventFormData) {
   const formData = new FormData();
 
   formData.append("title", data.title);
   formData.append("description", data.description);
-  formData.append("location", data.location);
+  formData.append("location_type", data.location_type);
+  if (data.location_type === "external") {
+    formData.append("location_name", data.location_name!);
+  } else {
+    formData.append("location_id", data.location_id!);
+  }
+
   formData.append("event_date", data.event_date);
   formData.append("registration_deadline", data.registration_deadline);
+  formData.append("end_at", data.end_at);
 
   formData.append("entry_fee", String(data.entry_fee));
   formData.append("contact", String(data.contact));
@@ -90,4 +98,8 @@ export async function getTeamJoinedEvents() {
 
 export async function getParticipants(eventId: string) {
   return apiGet<ParticipantResponse>(`/user/event/participate/${eventId}`);
+}
+
+export async function loadLocationSts() {
+  return apiGet<locationRes>("/user/location");
 }

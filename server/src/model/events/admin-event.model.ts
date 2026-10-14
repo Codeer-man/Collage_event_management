@@ -7,7 +7,7 @@ export const AdminEventModel = {
     e.id,
     e.title,
     e.description,
-    e.location,
+    e.location_name,
     e.event_date,
     e.registration_deadline,
     e.entry_fee,

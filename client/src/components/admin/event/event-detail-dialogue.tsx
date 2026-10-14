@@ -61,7 +61,7 @@ export default function EventDialogue({
             <div className="rounded-lg border bg-muted/30 p-4">
               <p className="text-xs text-muted-foreground">Location</p>
 
-              <p className="mt-1 font-medium">{event.location}</p>
+              <p className="mt-1 font-medium">{event.location_name}</p>
             </div>
 
             <div className="rounded-lg border bg-muted/30 p-4">

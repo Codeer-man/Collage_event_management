@@ -1,16 +1,17 @@
-import { Router } from "express";
+import { Router, text } from "express";
 import {
   requireAdministrative,
   requireAuth,
 } from "../../middleware/auth.middleware.js";
 import asyncHandler from "../../utils/asyncHandler.js";
-import { textRequired } from "../../utils/helper.js";
+import { numberRequires, textRequired } from "../../utils/helper.js";
 import { facultyModel } from "../../model/faculty/faculty.model.js";
 import { ok } from "../../utils/envolve.js";
 import { facultyService } from "../../service/faculty.service.js";
 import { AppError } from "../../utils/AppError.js";
 import { AdministrativeService } from "../../service/administrative.service.js";
 import { UserModel } from "../../model/auth/user.model.js";
+import { pool } from "../../config/pool.js";
 
 export const superRoute = Router();
 
@@ -130,4 +131,94 @@ superRoute.patch(
 superRoute.patch(
   "/admin/change",
   asyncHandler(async (req, res) => {}),
+);
+
+superRoute.get(
+  "/location",
+  asyncHandler(async (_req, res) => {
+    const location = await pool.query(`
+      SELECT * FROM location
+      `);
+
+    res.json(
+      ok({
+        location: location.rows,
+      }),
+    );
+  }),
+);
+
+//create location
+superRoute.post(
+  "/location",
+  asyncHandler(async (req, res) => {
+    const name = String(req.body.name).trim();
+    const description = String(req.body.description).trim();
+    const capacity = Number(req.body.capacity);
+    const is_available = Boolean(req.body.is_available);
+
+    textRequired(name, "location name is required");
+
+    await pool.query(
+      `
+    INSERT INTO location (name, description, capacity, is_available)
+    VALUES ($1, $2, $3,$4)
+  `,
+      [name, description, capacity, is_available],
+    );
+
+    res.json(
+      ok({
+        message: "new location added successfully",
+      }),
+    );
+  }),
+);
+
+//update location
+superRoute.put(
+  "/location/:id",
+  asyncHandler(async (req, res) => {
+    const name = String(req.body.name).trim();
+    const description = String(req.body.description).trim();
+    const capacity = Number(req.body.capacity);
+    const is_available = Boolean(req.body.is_available);
+
+    const id = String(req.params.id).trim();
+
+    textRequired(id, "Location id is required");
+
+    const findLocation = await pool.query(
+      `
+      SELECT 1 FROM location
+      WHERE id = $1
+      `,
+      [id],
+    );
+
+    if (!findLocation.rows.length) {
+      throw new AppError(404, "table does not exists");
+    }
+
+    const updatedTable = await pool.query(
+      `
+    UPDATE location 
+    SET 
+      name = $1, 
+      description = $2, 
+      capacity = $3,     
+      is_available = $4
+    WHERE id = $5
+    RETURNING *;
+  `,
+      [name, description, capacity, is_available, id],
+    );
+
+    res.json(
+      ok({
+        message: `${name} successfully updated`,
+        location: updatedTable.rows[0],
+      }),
+    );
+  }),
 );

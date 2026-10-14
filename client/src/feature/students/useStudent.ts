@@ -1,7 +1,18 @@
 import { useEffect, useState } from "react";
-import type { joinEventType, myEventType } from "./type";
-import { cancelEvent, CreateEvent, getAllEvents, getYourEvents } from "./api";
-import type { CreateEventFormData } from "../../components/student/event/createEvent";
+import type {
+  CreateEventFormData,
+  joinEventType,
+  location,
+  myEventType,
+} from "./type";
+import {
+  cancelEvent,
+  CreateEvent,
+  getAllEvents,
+  getYourEvents,
+  loadLocationSts,
+} from "./api";
+
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
@@ -10,6 +21,7 @@ export function UseStudent() {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [muEvents, setMyEvents] = useState<myEventType[]>();
+  const [location, setLocation] = useState<location[]>([]);
 
   const navigate = useNavigate();
 
@@ -44,6 +56,7 @@ export function UseStudent() {
       });
 
       await response;
+      navigate("/student/my/events");
     } finally {
       setSaving(false);
     }
@@ -72,10 +85,20 @@ export function UseStudent() {
       },
       error: "something went wrong",
     });
+    getEvents();
+  }
+
+  async function loadLocation() {
+    const respones = await loadLocationSts();
+
+    setLocation(respones.location);
   }
 
   useEffect(() => {
     yourEvents();
+  }, []);
+  useEffect(() => {
+    loadLocation();
   }, []);
 
   useEffect(() => {
@@ -90,6 +113,7 @@ export function UseStudent() {
     saving,
     //my event
     muEvents,
+    location,
     cancelYourEvent,
   };
 }

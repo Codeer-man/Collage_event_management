@@ -5,7 +5,8 @@ export const EventModel = {
   async getEvents(facultyId: string) {
     const query = `
         SELECT e.image_url ,e.id, e.title, e.description,
-        e.location,e.event_date,e.is_team_event , e.status
+        e.location_name,e.event_date,e.is_team_event , e.status,e.registration_deadline, 
+        e.end_at,e.max_participants,e.location_type,e.entry_fee
         FROM events e
         JOIN event_faculties ef
           on e.id = ef.event_id

@@ -21,10 +21,6 @@ export default function MyEvents() {
     return <CommonLoader />;
   }
 
-  if (!muEvents) {
-    return null;
-  }
-
   return (
     <div className="mx-4 py-6 md:mx-8 lg:mx-10">
       {/* Header */}
@@ -62,7 +58,7 @@ export default function MyEvents() {
           </TableHeader>
 
           <TableBody>
-            {muEvents.length === 0 ? (
+            {!muEvents ? (
               <TableRow>
                 <TableCell colSpan={5} className="h-40 text-center">
                   <div className="flex flex-col items-center justify-center gap-2">
@@ -101,7 +97,7 @@ export default function MyEvents() {
 
                   {/* Location */}
                   <TableCell className="text-muted-foreground">
-                    {event.location}
+                    {event.location_name}
                   </TableCell>
 
                   {/* Event Date */}
