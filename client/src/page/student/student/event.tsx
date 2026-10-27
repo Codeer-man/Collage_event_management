@@ -1,6 +1,6 @@
 import { CalendarDays } from "lucide-react";
-import EventPresentList from "../../components/student/event/listEvent";
-import { UseStudent } from "../../feature/students/useStudent";
+import EventPresentList from "../../../components/student/event/listEvent";
+import { UseStudent } from "../../../feature/students/useStudent";
 
 export default function Events() {
   const { events, loading } = UseStudent();

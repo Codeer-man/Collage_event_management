@@ -92,6 +92,7 @@ export interface TeamMember {
   full_name: string;
   email: string;
   contact_number: string;
+  image_url: string;
   joined_at: string;
 }
 
@@ -101,11 +102,25 @@ export interface TeamType {
   leader_id: string;
   team_name: string;
   members: TeamMember[];
+  max_participants: number;
   created_at: string;
   title: string;
   image_url: string;
+  location_name: string;
+  event_date: string;
 }
 
 export interface TeamResp {
   teams: TeamType[];
 }
+
+export type participateUser = {
+  id: string;
+  full_name: string;
+  image_url: string;
+  faculty_name: string;
+};
+
+export type participateUserRes = {
+  users: participateUser[];
+};

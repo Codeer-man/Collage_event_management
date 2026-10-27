@@ -1,7 +1,6 @@
 import { useState } from "react";
-import CommonLoader from "../../components/common/loader";
-import EventsDetail from "../../components/student/myEvent/eventDetail";
-import { Button } from "../../components/ui/button";
+import CommonLoader from "../../../components/common/loader";
+import { UseStudent } from "../../../feature/students/useStudent";
 import {
   Table,
   TableBody,
@@ -10,8 +9,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../../components/ui/table";
-import { UseStudent } from "../../feature/students/useStudent";
+} from "../../../components/ui/table";
+import { Button } from "../../../components/ui/button";
+import EventsDetail from "../../../components/student/myEvent/eventDetail";
 
 export default function MyEvents() {
   const { muEvents, loading, cancelYourEvent } = UseStudent();

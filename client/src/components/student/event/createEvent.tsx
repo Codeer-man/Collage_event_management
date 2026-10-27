@@ -336,83 +336,6 @@ export default function CreateEvent({
             {/* EVENT SETTINGS */}
 
             <section className="space-y-5 border-t pt-7">
-              <div>
-                <h2 className="text-lg font-semibold">Event Settings</h2>
-
-                <p className="text-sm text-muted-foreground">
-                  Configure participation and contact information.
-                </p>
-              </div>
-
-              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {/* Entry Fee */}
-                <div className="space-y-2">
-                  <Label htmlFor="entry-fee">Entry Fee</Label>
-
-                  <div className="relative">
-                    <div className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground">
-                      Nrs
-                    </div>
-
-                    <Input
-                      id="entry-fee"
-                      type="number"
-                      min={0}
-                      placeholder="0"
-                      value={form.entry_fee || ""}
-                      onChange={(e) =>
-                        updateField("entry_fee", Number(e.target.value))
-                      }
-                      className="h-11 rounded-xl pl-9"
-                    />
-                  </div>
-                </div>
-
-                {/* Contact */}
-                <div className="space-y-2">
-                  <Label htmlFor="contact">
-                    Contact Number <span className="text-destructive">*</span>
-                  </Label>
-
-                  <div className="relative">
-                    <Phone className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-
-                    <Input
-                      id="contact"
-                      type="tel"
-                      placeholder="98XXXXXXXX"
-                      value={form.contact || ""}
-                      onChange={(e) =>
-                        updateField("contact", Number(e.target.value))
-                      }
-                      required
-                      className="h-11 rounded-xl pl-9"
-                    />
-                  </div>
-                </div>
-
-                {/* Max Participants */}
-                <div className="space-y-2">
-                  <Label htmlFor="max-participants">Maximum Participants</Label>
-
-                  <div className="relative">
-                    <Users className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-
-                    <Input
-                      id="max-participants"
-                      type="number"
-                      min={1}
-                      placeholder="100"
-                      value={form.max_participants || ""}
-                      onChange={(e) =>
-                        updateField("max_participants", Number(e.target.value))
-                      }
-                      className="h-11 rounded-xl pl-9"
-                    />
-                  </div>
-                </div>
-              </div>
-
               {/* Team Event */}
               <div className="flex items-center justify-between gap-4">
                 {/* Team Event */}
@@ -481,11 +404,94 @@ export default function CreateEvent({
                   </PopoverContent>
                 </Popover>
               </div>
+
+              <div>
+                <h2 className="text-lg font-semibold">Event Settings</h2>
+
+                <p className="text-sm text-muted-foreground">
+                  Configure participation and contact information.
+                </p>
+              </div>
+
+              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {/* Entry Fee */}
+                <div className="space-y-2">
+                  <Label htmlFor="entry-fee">Entry Fee</Label>
+
+                  <div className="relative">
+                    <div className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground">
+                      Nrs
+                    </div>
+
+                    <Input
+                      id="entry-fee"
+                      type="number"
+                      min={0}
+                      placeholder="0"
+                      value={form.entry_fee || ""}
+                      onChange={(e) =>
+                        updateField("entry_fee", Number(e.target.value))
+                      }
+                      className="h-11 rounded-xl pl-9"
+                    />
+                  </div>
+                </div>
+
+                {/* Contact */}
+                <div className="space-y-2">
+                  <Label htmlFor="contact">
+                    Contact Number <span className="text-destructive">*</span>
+                  </Label>
+
+                  <div className="relative">
+                    <Phone className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+
+                    <Input
+                      id="contact"
+                      type="tel"
+                      placeholder="98XXXXXXXX"
+                      value={form.contact || ""}
+                      onChange={(e) =>
+                        updateField("contact", Number(e.target.value))
+                      }
+                      required
+                      className="h-11 rounded-xl pl-9"
+                    />
+                  </div>
+                </div>
+
+                {/* Max Participants */}
+                <div className="space-y-2">
+                  {form.isTeamEvent ? (
+                    <Label htmlFor="max-participants">
+                      Maximum Participants in a team
+                    </Label>
+                  ) : (
+                    <Label htmlFor="max-participants">
+                      Maximum Participants
+                    </Label>
+                  )}
+
+                  <div className="relative">
+                    <Users className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+
+                    <Input
+                      id="max-participants"
+                      type="number"
+                      min={1}
+                      placeholder="100"
+                      value={form.max_participants || ""}
+                      onChange={(e) =>
+                        updateField("max_participants", Number(e.target.value))
+                      }
+                      className="h-11 rounded-xl pl-9"
+                    />
+                  </div>
+                </div>
+              </div>
             </section>
 
-            {/* =====================================================
-                SUBMIT
-            ====================================================== */}
+            {/* SUBMIT */}
             <div className="flex flex-col-reverse gap-3 border-t pt-7 sm:flex-row sm:justify-end">
               <Button
                 type="button"

@@ -9,18 +9,20 @@ import AdminLayout from "./layout/admin/admin.layout";
 import Students from "./page/admin/students";
 import ApproveStudents from "./page/admin/approveSts";
 import Event from "./page/admin/event";
-import MyProfile from "./page/student/student";
-import StudentDashboard from "./page/student/dashboard";
-import Events from "./page/student/event";
-import Team from "./page/student/team";
+
+import Team from "./page/student/student/team";
 import HomePage from "./page/home/home";
-import CreateEventPage from "./page/student/createEvent";
-import MyEvents from "./page/student/myEvent";
-import LeaderTeam from "./page/student/leaderTeam";
-import EventRegistered from "./page/student/eventRegistered";
+
 import EventList from "./page/admin/event-list";
 import ForgetPassword from "./page/auth/forget-password";
 import Location from "./page/administrative/location";
+import StudentDashboard from "./page/student/student/dashboard";
+import MyProfile from "./page/student/student/student";
+import Events from "./page/student/student/event";
+import TeamLeader from "./page/student/leader/TeamLeader";
+import CreateEventPage from "./page/student/event/createEvent";
+import MyEvents from "./page/student/event/myEvent";
+import EventRegistered from "./page/student/student/eventRegistered";
 
 export const route = createBrowserRouter([
   // public or home
@@ -126,7 +128,7 @@ export const route = createBrowserRouter([
               },
               {
                 path: "leader",
-                element: <LeaderTeam />,
+                element: <TeamLeader />,
               },
               {
                 path: "team",

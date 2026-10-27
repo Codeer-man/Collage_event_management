@@ -11,14 +11,17 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import { useAuthStore } from "../../store/auth.store";
+import type {
+  joinEventType,
+  myEventType,
+} from "../../../feature/students/type";
+import { useAuthStore } from "../../../store/auth.store";
 import {
   getSingleJoinedEvents,
   getTeamJoinedEvents,
-} from "../../feature/students/api";
-import { getYourEvents } from "../../feature/students/api";
-import type { joinEventType, myEventType } from "../../feature/students/type";
-import { Button } from "../../components/ui/button";
+  getYourEvents,
+} from "../../../feature/students/api";
+import { Button } from "../../../components/ui/button";
 
 type DashboardData = {
   solo: joinEventType[];
@@ -43,6 +46,7 @@ export default function StudentDashboard() {
     team: [],
     created: [],
   });
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -53,6 +57,7 @@ export default function StudentDashboard() {
         getTeamJoinedEvents(),
         getYourEvents(),
       ] as const);
+
       if (!active) return;
       setData({
         solo:
@@ -229,7 +234,7 @@ export default function StudentDashboard() {
                       </p>
                       <p className="mt-1 flex items-center gap-1.5 truncate text-xs text-muted-foreground">
                         <MapPin className="h-3.5 w-3.5 shrink-0" />{" "}
-                        {event.location}
+                        {event.location_name}
                       </p>
                     </div>
                     <span className="hidden rounded-full bg-accent px-2.5 py-1 text-[11px] font-medium capitalize text-accent-foreground sm:inline-flex">
@@ -243,9 +248,7 @@ export default function StudentDashboard() {
                 <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
                   <CalendarDays className="h-5 w-5" />
                 </span>
-                <h3 className="mt-4 font-medium">
-                  Nothing on your calendar yet
-                </h3>
+                <h3 className="mt-4 font-medium">Nothing yet to show</h3>
                 <p className="mt-1 max-w-sm text-sm text-muted-foreground">
                   Explore campus events and register for something that
                   interests you.

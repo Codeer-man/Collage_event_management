@@ -15,7 +15,7 @@ const items: AppNavItem[] = [
   { label: "Dashboard", href: "/student", icon: LayoutDashboard },
   { label: "My Profile", href: "/student/profile", icon: UserRound },
   { label: "Explore events", href: "/student/join/events", icon: CalendarDays },
-  { label: "My teams", href: "/student/team", icon: Users },
+  { label: "Teams", href: "/student/team", icon: Users },
   { label: "Team leadership", href: "/student/leader", icon: Crown },
   { label: "Create event", href: "/student/create/events", icon: CalendarPlus },
   { label: "Events I manage", href: "/student/my/events", icon: CalendarCheck },

@@ -34,7 +34,10 @@ export default function CreateTeamDialog({
         </DialogHeader>
         <form
           className=" flex gap-2"
-          onSubmit={() => handleCreateteam(eventId, teamName)}
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleCreateteam(eventId, teamName);
+          }}
         >
           <Input
             type="text"

@@ -5,10 +5,10 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../../components/ui/card";
-import { Badge } from "../../components/ui/badge";
+} from "../../../components/ui/card";
+import { Badge } from "../../../components/ui/badge";
 import { Users, CalendarDays, Crown } from "lucide-react";
-import { getTeamYouAreIn } from "../../feature/students/api";
+import { getTeamYouAreIn } from "../../../feature/students/api";
 
 type Team = {
   id: number;

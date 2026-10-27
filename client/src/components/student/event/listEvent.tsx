@@ -22,15 +22,7 @@ import {
 import { useState } from "react";
 import CreateTeamDialog from "./createTeam";
 import { toast } from "sonner";
-import { joinSingleEvent, joinTeamEvent } from "../../../feature/students/api";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../../ui/dialog";
-import { Input } from "../../ui/input";
+import { joinSingleEvent } from "../../../feature/students/api";
 
 type eventProps = {
   events: joinEventType[];
@@ -51,54 +43,25 @@ function formatDate(value?: string) {
   });
 }
 
-function formatTime(value?: string) {
-  if (!value) return "";
-
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) return "";
-
-  return date.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-  });
+function registerExpire(eventDate: string): boolean {
+  return new Date(eventDate) < new Date();
 }
 
 export default function EventPresentList({ events, loading }: eventProps) {
   const [open, setOpen] = useState(false);
   const [title, setEventTitle] = useState("");
   const [id, setEventId] = useState<number>();
-  const [teamId, setTeamId] = useState("");
 
   const visibleEvents = events.filter((event) => event.status !== "cancelled");
 
-  async function handleEventJoin(teamEvent: boolean, eventId: number) {
+  async function handelSingleEventJoin(eventId: number) {
     try {
-      if (teamEvent) {
-        if (!teamId.trim()) {
-          toast.error("Please enter a team ID");
-          return;
-        }
-
-        await joinTeamEvent({
-          eventId,
-          teamId: teamId.trim(),
-        });
-
-        toast.success("Your team has successfully joined the event");
-        setTeamId("");
-      } else {
-        await joinSingleEvent(eventId);
-        toast.success("You have successfully joined the event");
-      }
+      await joinSingleEvent(eventId);
+      toast.success("You have successfully joined the event");
     } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        toast.error("Something went wrong. Please try again.");
-      }
-
-      console.error(error);
+      const msg =
+        error instanceof Error ? error.message : "Something went wrong";
+      toast.error(msg);
     }
   }
 
@@ -216,20 +179,20 @@ export default function EventPresentList({ events, loading }: eventProps) {
                   </span>
 
                   <div className="min-w-0">
-                    <p className="text-xs text-muted-foreground">Event date</p>
+                    <p className="text-xs text-muted-foreground">
+                      {event.end_at ? "Starts" : "Event date"}
+                    </p>
                     <p className="mt-1 text-sm font-medium text-foreground">
                       {formatDate(event.event_date)}
                     </p>
 
                     {event.end_at && (
-                      <p className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
-                        <Clock className="h-3.5 w-3.5" />
-                        {formatTime(event.event_date)}
-                        {formatTime(event.event_date) &&
-                          formatTime(event.end_at) &&
-                          " – "}
-                        {formatTime(event.end_at)}
-                      </p>
+                      <div className="mt-3">
+                        <p className="text-xs text-muted-foreground">Ends</p>
+                        <p className="mt-1 text-sm font-medium text-foreground">
+                          {formatDate(event.end_at)}
+                        </p>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -293,7 +256,9 @@ export default function EventPresentList({ events, loading }: eventProps) {
               {isTeamEvent ? (
                 <>
                   <Button
-                    disabled={!isApproved}
+                    disabled={
+                      !isApproved || registerExpire(event.registration_deadline)
+                    }
                     onClick={() => {
                       setEventTitle(event.title);
                       setEventId(event.id);
@@ -301,54 +266,16 @@ export default function EventPresentList({ events, loading }: eventProps) {
                     }}
                     className="w-full"
                   >
-                    Create a team
+                    {registerExpire(event.registration_deadline)
+                      ? "Registration Date ended"
+                      : "Create a team"}
                     <UsersRound className="ml-2 h-4 w-4" />
                   </Button>
-
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button
-                        variant="outline"
-                        disabled={!isApproved}
-                        className="w-full"
-                      >
-                        Join an existing team
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </DialogTrigger>
-
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Join a team</DialogTitle>
-                      </DialogHeader>
-
-                      <div className="space-y-4">
-                        <p className="text-sm text-muted-foreground">
-                          Enter the team ID shared by your team leader to join
-                          this event.
-                        </p>
-
-                        <Input
-                          type="text"
-                          placeholder="Enter team ID"
-                          value={teamId}
-                          onChange={(e) => setTeamId(e.target.value)}
-                        />
-
-                        <Button
-                          className="w-full"
-                          onClick={() => handleEventJoin(true, event.id)}
-                        >
-                          Join team
-                        </Button>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
                 </>
               ) : (
                 <Button
                   disabled={!isApproved}
-                  onClick={() => handleEventJoin(false, event.id)}
+                  onClick={() => handelSingleEventJoin(event.id)}
                   className="w-full"
                 >
                   Join event

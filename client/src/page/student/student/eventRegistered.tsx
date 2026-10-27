@@ -7,14 +7,15 @@ import {
   Clock3,
   Group,
 } from "lucide-react";
-import { Card, CardContent } from "../../components/ui/card";
+
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import type { joinEventType } from "../../../feature/students/type";
 import {
   getSingleJoinedEvents,
   getTeamJoinedEvents,
-} from "../../feature/students/api";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import type { joinEventType } from "../../feature/students/type";
+} from "../../../feature/students/api";
+import { Card, CardContent } from "../../../components/ui/card";
 
 function EventCard({ event }: { event: joinEventType }) {
   const eventDate = new Date(event.event_date);
@@ -79,7 +80,7 @@ function EventCard({ event }: { event: joinEventType }) {
 
             <div className="min-w-0">
               <p className="text-xs text-muted-foreground">Location</p>
-              <p className="truncate font-medium">{event.location}</p>
+              <p className="truncate font-medium">{event.location_name}</p>
             </div>
           </div>
 

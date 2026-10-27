@@ -5,23 +5,18 @@ import { numberRequires, textRequired } from "../../utils/helper.js";
 import { ok } from "../../utils/envolve.js";
 import { studentService } from "../../service/student.service.js";
 import { AppError } from "../../utils/AppError.js";
-import { UserModel } from "../../model/auth/user.model.js";
 import { UserEventModel } from "../../model/events/user-event.model.js";
 import { pool } from "../../config/pool.js";
-import multer, { memoryStorage } from "multer";
-import { uploadImage } from "../../utils/cloudinary.js";
 import { fail } from "node:assert";
+import { leaderRoute } from "./leader.route.js";
+import { memberRouter } from "./member.route.js";
+import { eventRouter } from "./event.route.js";
 export const userRoute = express.Router();
 
-const upload = multer({
-  storage: memoryStorage(),
-  limits: {
-    fieldSize: 5 * 1024 * 1024,
-    files: 1,
-  },
-});
-
 userRoute.use(requireAuth);
+userRoute.use(leaderRoute);
+userRoute.use(memberRouter);
+userRoute.use(eventRouter);
 
 // get events
 userRoute.get(
@@ -36,133 +31,6 @@ userRoute.get(
     res.json(
       ok({
         events,
-      }),
-    );
-  }),
-);
-
-//create and update event
-userRoute.post(
-  "/create/event",
-  upload.single("image"),
-  asyncHandler(async (req, res) => {
-    const userId = (req as any).user.id;
-    const title = String(req.body.title || "").trim();
-    const description = String(req.body.description || "").trim();
-
-    const location_id = String(req.body.location_id || "").trim();
-    const location_type = String(req.body.location_type).trim();
-    let location_name = String(req.body.location_name).trim();
-
-    let event_date = String(req.body.event_date || "").trim();
-    let registration_deadline = String(
-      req.body.registration_deadline || "",
-    ).trim();
-    let end_at = String(req.body.end_at).trim();
-
-    const entry_fee = Number(req.body.entry_fee || 0);
-    const contact = Number(req.body.contact);
-    const max_participants = Number(req.body.max_participants || 100);
-    const isTeamEvent = req.body.isTeamEvent === "true";
-    const faculty = JSON.parse(req.body.faculty || "[]");
-    const file = req.file as Express.Multer.File;
-
-    textRequired(userId, "You are not authenticated");
-    textRequired(title, "event title is reqiured");
-    textRequired(description, "event description is reqiured");
-    textRequired(event_date, "event event_date is reqiured");
-    textRequired(
-      registration_deadline,
-      "event registration_deadline is reqiured",
-    );
-    numberRequires(contact, "Contct number is requireed");
-
-    const today = new Date().toISOString().split("T")[0];
-
-    event_date = event_date.split("T")[0];
-    registration_deadline = registration_deadline.split("T")[0];
-    end_at = end_at.split("T")[0];
-
-    if (event_date <= today) {
-      throw new AppError(400, "Event date must be in the future.");
-    }
-
-    if (registration_deadline <= today) {
-      throw new AppError(400, `Registration deadline after ${today}.`);
-    }
-
-    if (registration_deadline >= event_date) {
-      throw new AppError(
-        400,
-        "Registration deadline must be before the event date.",
-      );
-    }
-
-    if (end_at < event_date) {
-      throw new AppError(
-        400,
-        "Event end date cannot be before the event start date.",
-      );
-    }
-
-    if (location_type === "internal") {
-      const location = await pool.query(
-        ` 
-          SELECT name FROM location
-          WHERE id = $1
-        `,
-        [location_id],
-      );
-      location_name = location.rows[0].name;
-    }
-
-    if (!file) throw new AppError(400, "event image is required");
-    const imageUpload = await uploadImage(file.buffer, "event_publicId");
-
-    const newlyCreatedEvent = await studentService.saveEvent(
-      title,
-      description,
-      location_id,
-      event_date,
-      end_at,
-      registration_deadline,
-      entry_fee,
-      contact,
-      imageUpload.url,
-      imageUpload.public_id,
-      userId,
-      location_type,
-      location_name,
-      isTeamEvent,
-      max_participants,
-      // eventId,
-    );
-
-    if (!newlyCreatedEvent) {
-      throw new AppError(400, "failed to create event");
-    }
-
-    const values: string[] = [];
-    const params: string[] = [];
-
-    faculty.forEach((facultyId: string, index: number) => {
-      const offset = index * 2;
-
-      values.push(`($${offset + 1}, $${offset + 2})`);
-      params.push(newlyCreatedEvent.rows[0].id, facultyId);
-    });
-
-    const query = `
-    INSERT INTO event_faculties (event_id, faculty_id)
-    VALUES ${values.join(", ")}
-`;
-
-    await pool.query(query, params);
-
-    res.json(
-      ok({
-        message: "new event has been created",
-        event: newlyCreatedEvent,
       }),
     );
   }),
@@ -185,73 +53,6 @@ userRoute.get(
     res.json(
       ok({
         myEvent: events.rows,
-      }),
-    );
-  }),
-);
-
-//get your team
-userRoute.get(
-  "/your/team",
-  asyncHandler(async (req, res) => {
-    const userId = (req as any).user.id;
-
-    textRequired(userId, "You are not authenticated");
-
-    const leader = await pool.query(
-      `
-      SELECT
-        t.*,
-        e.title,
-        e.image_url
-      FROM teams t
-      JOIN events e
-        ON e.id = t.event_id
-      WHERE t.leader_id = $1
-      ORDER BY t.created_at DESC
-      `,
-      [userId],
-    );
-
-    if (leader.rows.length === 0) {
-      res.json(
-        ok({
-          message: "You are not the leader of any team",
-        }),
-      );
-      return;
-    }
-
-    const teams = await Promise.all(
-      leader.rows.map(async (team) => {
-        const members = await pool.query(
-          `
-          SELECT
-            tm.id,
-            tm.user_id,
-            tm.joined_at,
-            u.full_name,
-            u.email,
-            u.contact_number
-          FROM team_members tm
-          JOIN users u
-            ON tm.user_id = u.id
-          WHERE tm.team_id = $1
-          ORDER BY tm.joined_at ASC
-          `,
-          [team.id],
-        );
-
-        return {
-          ...team,
-          members: members.rows,
-        };
-      }),
-    );
-
-    res.json(
-      ok({
-        teams,
       }),
     );
   }),
@@ -297,225 +98,7 @@ userRoute.post(
   }),
 );
 
-// create team
-userRoute.post(
-  "/create",
-  asyncHandler(async (req, res) => {
-    const team_name = String(req.body.teamName).trim();
-    const userId = (req as any).user.id;
-    const eventId = Number(req.body.eventId);
-
-    textRequired(team_name, "Team name is requierd");
-    textRequired(userId, "User id is requierd");
-
-    const findEvent = await pool.query(
-      `
-      SELECT EXISTS (
-        SELECT 1 FROM teams
-        WHERE 
-          id =$1
-      );
-      `,
-      [eventId],
-    );
-
-    if (findEvent.rows[0].exists) {
-      throw new AppError(404, "Event does not exists");
-    }
-
-    const createTeam = await pool.query(
-      `
-      INSERT INTO teams (event_id, team_name, leader_id)
-      VALUES ($1, $2, $3)
-      RETURNING *;
-  `,
-      [eventId, team_name, userId],
-    );
-
-    res.json(
-      ok({
-        Team: createTeam.rows[0],
-      }),
-    );
-  }),
-);
-
-// get all the team you are in
-userRoute.get(
-  "/team",
-  asyncHandler(async (req, res) => {
-    const userId = (req as any).user.id;
-
-    textRequired(userId, "You are not authenticated");
-
-    const result = await pool.query(
-      `
-      SELECT
-        t.id,
-        t.team_name,
-        t.event_id,
-
-        e.title AS event_title,
-        e.image_url AS event_image,
-        e.event_date,
-
-        u.full_name AS leader_name
-
-      FROM teams t
-
-      INNER JOIN team_members tm
-        ON t.id = tm.team_id
-
-      INNER JOIN events e
-        ON t.event_id = e.id
-
-      INNER JOIN users u
-        ON t.leader_id = u.id
-
-      WHERE tm.user_id = $1
-  `,
-      [userId],
-    );
-
-    if (result.rows.length === 0) {
-      res.status(404).json({
-        success: false,
-        message: "You are not in any team.",
-      });
-      return;
-    }
-
-    res.json(
-      ok({
-        success: true,
-        leader: false,
-        team: result.rows,
-      }),
-    );
-  }),
-);
-
-//  add or remove  member by email
-userRoute.post(
-  "/add/member",
-  asyncHandler(async (req, res) => {
-    const email = String(req.body.email || "").trim();
-    const userId = String(req.body.userId || "").trim();
-    const teamId = Number(req.body.teamId);
-    const eventId = Number(req.body.eventId);
-
-    numberRequires(teamId, "team is requierd");
-    numberRequires(eventId, "Event id not found");
-
-    //Adding a member via email
-    if (userId === "") {
-      textRequired(email, "email is required");
-
-      const findUser = await UserModel.findByField("email", email);
-
-      if (!findUser) {
-        throw new AppError(404, "User not found with the email");
-      }
-      if (findUser.is_approved_student === false) {
-        throw new AppError(401, "Use is not a approved student");
-      }
-
-      const checkFaculty = await pool.query(
-        `
-        SELECT EXISTS (
-          SELECT 1 FROM event_faculties
-          WHERE event_id = $1 AND faculty_id = $2
-        ) AS "isValid";
-        `,
-        [eventId, findUser.faculty_id],
-      );
-
-      const isValid = checkFaculty.rows[0].isValid;
-
-      if (!isValid) {
-        throw new AppError(
-          400,
-          "This student is not part of an accepted faculty for this event.",
-        );
-      }
-
-      const addToTeam = await pool.query(
-        `
-        INSERT INTO team_members (team_id, user_id)
-        VALUES ($1, $2)
-        RETURNING *;
-        `,
-        [teamId, findUser.id],
-      );
-
-      res.json(
-        ok({
-          message: `${findUser.full_name} added to the team successfully.`,
-        }),
-      );
-    }
-
-    //  Removing a member via userId
-    else if (email === "") {
-      textRequired(userId, "userId is required");
-
-      await pool.query(
-        `
-        DELETE FROM team_members
-        WHERE user_id = $1 AND team_id = $2;
-        `,
-        [userId, teamId], // Safe deletion target scoped to this specific team
-      );
-
-      res.json(
-        ok({
-          message: "User removed",
-        }),
-      );
-    }
-  }),
-);
-
-//join team event
-userRoute.post(
-  "/event/team",
-  asyncHandler(async (req, res) => {
-    const teamId = Number(req.body.teamId);
-    const eventId = Number(req.body.eventId);
-
-    numberRequires(400, "EventId is requierd");
-    numberRequires(teamId, "team is required");
-
-    const registeredTeam = await pool.query(
-      ` 
-      SELECT 1 FROM team_registrations
-      WHERE team_id = $1
-      `,
-      [teamId],
-    );
-
-    if (registeredTeam.rows.length) {
-      throw new AppError(401, "This team is already registered");
-    }
-
-    await pool.query(
-      `
-      INSERT INTO team_registrations (event_id,team_id)
-      VALUES ($1,$2)
-      RETURNING *
-      `,
-      [eventId, teamId],
-    );
-
-    res.json(
-      ok({
-        event: "Successfully jpind the event",
-      }),
-    );
-  }),
-);
-
-//show events where the user is participated
+//show sole events where the user is participated
 userRoute.get(
   "/event/registered/solo",
   asyncHandler(async (req, res) => {
@@ -570,132 +153,7 @@ userRoute.patch(
   }),
 );
 
-//show events where the team is participated
-userRoute.get(
-  "/event/registered/team",
-  asyncHandler(async (req, res) => {
-    const userId = (req as any).user.id;
-
-    const events = await pool.query(
-      `
-    SELECT
-      e.*,
-      t.team_name,
-      t.id AS team_id
-      FROM team_registrations tr
-      JOIN teams t
-        ON t.id = tr.team_id
-      JOIN events e
-        ON e.id = tr.event_id
-      WHERE
-        t.leader_id = $1
-        OR EXISTS (
-          SELECT 1
-          FROM team_members tm
-          WHERE tm.team_id = t.id
-            AND tm.user_id = $1
-  );
-      `,
-      [userId],
-    );
-
-    res.json(
-      ok({
-        events: events.rows,
-      }),
-    );
-  }),
-);
-
-// show participates
-userRoute.get(
-  "/event/participate/:eventId",
-  asyncHandler(async (req, res) => {
-    const userId = (req as any).user.id;
-    const eventId = Number(req.params.eventId);
-    numberRequires(eventId, "Event id  not found");
-
-    const existingEvent = await pool.query(
-      `
-      SELECT * FROM events e
-      WHERE e.id = $1
-      `,
-      [eventId],
-    );
-
-    if (existingEvent.rows.length === 0) {
-      res.json(fail("event not found"));
-    }
-
-    if (existingEvent.rows[0].created_by !== userId) {
-      res.status(409).json({ message: "You are not the owner of this event " });
-      return;
-    }
-
-    //participants
-    const teamParticipants = await pool.query(
-      `
-  SELECT
-    e.id AS event_id,
-    e.title AS event_title,
-
-    tr.id AS registration_id,
-
-    t.id AS team_id,
-    t.team_name,
-
-    json_agg(
-      json_build_object(
-        'user_id', u.id,
-        'name', u.full_name,
-        'image', u.image_url
-      )
-    ) AS members
-
-    FROM team_registrations tr
-
-    INNER JOIN events e
-      ON e.id = tr.event_id
-
-    INNER JOIN teams t
-      ON t.id = tr.team_id
-
-    INNER JOIN team_members tm
-      ON tm.team_id = t.id
-
-    INNER JOIN users u
-      ON u.id = tm.user_id
-
-    WHERE e.id = $1
-
-    GROUP BY
-      e.id,
-      e.title,
-      tr.id,
-      t.id,
-      t.team_name;
-  `,
-      [eventId],
-    );
-
-    const soloParticipants = await pool.query(
-      `
-  SELECT
-  er.*,
-  u.full_name AS name,
-  u.image_url AS image
-  FROM event_registrations er
-  INNER JOIN users u
-    ON u.id = er.user_id
-  WHERE er.id = $1;
-      `,
-      [eventId],
-    );
-
-    res.json(ok({ team: teamParticipants.rows, solo: soloParticipants.rows }));
-  }),
-);
-
+//event location
 userRoute.get(
   "/location",
   asyncHandler(async (req, res) => {
@@ -707,6 +165,40 @@ userRoute.get(
     res.json(
       ok({
         location: location.rows,
+      }),
+    );
+  }),
+);
+
+//show team events where is the user is participated
+userRoute.get(
+  "/event/registered/team",
+  asyncHandler(async (req, res) => {
+    const userId = (req as any).user.id;
+
+    const events = await pool.query(
+      `
+    SELECT
+      e.*,
+      t.team_name,t.id AS team_id
+      FROM team_registrations tr
+      JOIN teams t
+        ON t.id = tr.team_id
+      JOIN events e
+        ON e.id = tr.event_id
+      WHERE t.leader_id = $1
+        OR EXISTS (
+          SELECT 1 FROM team_members tm
+            WHERE tm.team_id = t.id
+              AND tm.user_id = $1
+  );
+      `,
+      [userId],
+    );
+
+    res.json(
+      ok({
+        events: events.rows,
       }),
     );
   }),

@@ -5,6 +5,7 @@ import type {
   joinEventRes,
   locationRes,
   myEventTypeResp,
+  participateUserRes,
   TeamResp,
 } from "./type";
 
@@ -14,13 +15,6 @@ export async function getAllEvents() {
 
 export async function joinSingleEvent(eventId: number) {
   return apiPost("/user/event/single", { eventId });
-}
-
-export async function joinTeamEvent(input: {
-  teamId: string;
-  eventId: number;
-}) {
-  return apiPost("/user/event/team", input);
 }
 
 export async function CreateEvent(data: CreateEventFormData) {
@@ -71,17 +65,15 @@ export async function getYourTeam() {
 type manageMemberType = {
   eventId: string;
   teamId: string;
-  email?: string;
-  userId?: string;
+  member_id: string;
 };
 
 export async function manageMember({
   eventId,
   teamId,
-  email,
-  userId,
+  member_id,
 }: manageMemberType) {
-  return apiPost("/user/add/member", { email, eventId, teamId, userId });
+  return apiPost("/user/add/member", { eventId, teamId, member_id });
 }
 
 export async function getTeamYouAreIn() {
@@ -102,4 +94,9 @@ export async function getParticipants(eventId: string) {
 
 export async function loadLocationSts() {
   return apiGet<locationRes>("/user/location");
+}
+
+// get participants
+export async function getUsers(fullName: string) {
+  return apiGet<participateUserRes>(`/user/sts/${fullName}`, {});
 }
