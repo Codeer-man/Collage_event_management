@@ -286,7 +286,7 @@ eventRouter.post(
     if (!file) throw new AppError(400, "event image is required");
     const imageUpload = await uploadImage(file.buffer, "event_publicId");
 
-    const newlyCreatedEvent = await studentService.saveEvent(
+    const newlyCreatedEvent = await studentService.createEvent(
       title,
       description,
       location_id,
@@ -302,7 +302,6 @@ eventRouter.post(
       location_name,
       isTeamEvent,
       max_participants,
-      // eventId,
     );
 
     if (!newlyCreatedEvent) {
@@ -332,5 +331,35 @@ eventRouter.post(
         event: newlyCreatedEvent,
       }),
     );
+  }),
+);
+
+// cancel event
+eventRouter.patch(
+  "/event/cancel",
+  asyncHandler(async (req, res) => {
+    const eventId = String(req.body.eventId || "");
+
+    textRequired(eventId, "Event is required");
+
+    const result = await pool.query(
+      `
+      UPDATE events
+      SET status = 'cancelled'
+      WHERE id = $1
+      RETURNING *;
+      `,
+      [eventId],
+    );
+
+    if (result.rowCount === 0) {
+      throw new AppError(404, "You are not registered for this event");
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "You have cancelled your event registration",
+      data: result.rows[0],
+    });
   }),
 );

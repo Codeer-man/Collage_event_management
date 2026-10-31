@@ -7,10 +7,10 @@ import { studentService } from "../../service/student.service.js";
 import { AppError } from "../../utils/AppError.js";
 import { UserEventModel } from "../../model/events/user-event.model.js";
 import { pool } from "../../config/pool.js";
-import { fail } from "node:assert";
 import { leaderRoute } from "./leader.route.js";
 import { memberRouter } from "./member.route.js";
 import { eventRouter } from "./event.route.js";
+import { createNotification } from "../../service/notification.service.js";
 export const userRoute = express.Router();
 
 userRoute.use(requireAuth);
@@ -123,36 +123,6 @@ userRoute.get(
   }),
 );
 
-// cancel event
-userRoute.patch(
-  "/event/cancel",
-  asyncHandler(async (req, res) => {
-    const eventId = String(req.body.eventId || "");
-
-    textRequired(eventId, "Event is required");
-
-    const result = await pool.query(
-      `
-      UPDATE events
-      SET status = 'cancelled'
-      WHERE id = $1
-      RETURNING *;
-      `,
-      [eventId],
-    );
-
-    if (result.rowCount === 0) {
-      throw new AppError(404, "You are not registered for this event");
-    }
-
-    res.status(200).json({
-      success: true,
-      message: "You have cancelled your event registration",
-      data: result.rows[0],
-    });
-  }),
-);
-
 //event location
 userRoute.get(
   "/location",
@@ -201,5 +171,133 @@ userRoute.get(
         events: events.rows,
       }),
     );
+  }),
+);
+
+// team invition decision
+userRoute.patch(
+  "/team/:decision",
+  asyncHandler(async (req, res) => {
+    const userId = (req as any).user.id;
+    const name = (req as any).user.full_name;
+
+    const invitationId = Number(req.body.entityId);
+    const decision = String(req.params.decision || "").trim();
+
+    if (!["accept", "reject"].includes(decision)) {
+      throw new AppError(400, "Invalid decision");
+    }
+
+    // Find invitation
+    const invitation = await pool.query(
+      `
+        SELECT status, team_id, invited_user_id,invited_by
+        FROM team_invitations
+        WHERE id = $1
+      `,
+      [invitationId],
+    );
+
+    if (invitation.rows.length === 0) {
+      throw new AppError(404, "You were not invited to this team");
+    }
+
+    const invitationData = invitation.rows[0];
+
+    if (invitationData.invited_user_id !== userId) {
+      throw new AppError(403, "This invitation does not belong to you");
+    }
+
+    if (invitationData.status !== "pending") {
+      throw new AppError(409, "This invitation has already been handled");
+    }
+
+    const presentDate = new Date();
+
+    // Reject invitation
+    if (decision === "reject") {
+      await pool.query(
+        `UPDATE team_invitations
+        SET status = 'rejected',
+          responded_at = $2
+        WHERE id = $1`,
+        [invitationId, presentDate],
+      );
+
+      await createNotification({
+        userId: invitationData.invited_by,
+        title: "Invition rejected",
+        message: `${name} has rejected your team invition`,
+        type: "team_invitation_response",
+      });
+
+      res.json(ok({ message: "Invition rejected" }));
+      return;
+    }
+
+    // Find team and event participant limit
+    const team = await pool.query(
+      `
+        SELECT t.id,t.team_name, e.max_participants,t.leader_id
+        FROM teams t
+        JOIN events e ON e.id = t.event_id
+        WHERE t.id = $1
+      `,
+      [invitationData.team_id],
+    );
+
+    if (team.rows.length === 0) {
+      throw new AppError(404, "Team not found");
+    }
+
+    // Count current team members
+    const teamMembers = await pool.query(
+      `
+        SELECT COUNT(*)::int AS total
+        FROM team_members
+        WHERE team_id = $1
+      `,
+      [invitationData.team_id],
+    );
+
+    const totalMembers = teamMembers.rows[0].total;
+
+    if (totalMembers >= team.rows[0].max_participants) {
+      await pool.query(
+        `UPDATE team_invitations
+        SET status = 'rejected',
+          responded_at = $2
+        WHERE id = $1`,
+        [invitationId, presentDate],
+      );
+      throw new AppError(409, "This team has reached its maximum capacity");
+    }
+
+    // Add member and accept invitation
+    await pool.query(
+      `
+        INSERT INTO team_members (team_id, user_id)
+        VALUES ($1, $2)
+      `,
+      [invitationData.team_id, userId],
+    );
+
+    await pool.query(
+      `UPDATE team_invitations
+        SET status = 'accepted',
+          responded_at = $2
+        WHERE id = $1`,
+      [invitationId, presentDate],
+    );
+
+    // send notification
+    await createNotification({
+      userId: invitationData.invited_by,
+      title: "Invition accepted",
+      message: `${name} has accepted your ${team.rows[0].team_name} team invition`,
+      type: "team_invitation_response",
+    });
+
+    res.json(ok({ message: "Invition Accepted" }));
   }),
 );

@@ -10,7 +10,6 @@ import {
 } from "../ui/sheet";
 import { Button } from "../ui/button";
 import ThemeToggleButton from "../theme/theme-toggle-button";
-import { useState } from "react";
 
 export type AppNavItem = {
   label: string;

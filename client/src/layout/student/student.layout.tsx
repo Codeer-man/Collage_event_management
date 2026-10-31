@@ -1,15 +1,17 @@
 import { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
-import { GraduationCap } from "lucide-react";
+import { NavLink, Outlet, useNavigate, useNavigation } from "react-router-dom";
+import { Bell, GraduationCap } from "lucide-react";
 import { toast } from "sonner";
 import CommonLoader from "../../components/common/loader";
 import Profile from "../../components/common/profileIcons";
 import StudentSidebar from "../../components/student/sidebar";
 import { useAuthStore } from "../../store/auth.store";
+import { useNotiStore } from "../../feature/notification/store";
 
 export default function StudentLayout() {
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
+  const {} = useNavigation();
 
   useEffect(() => {
     if (user) return;
@@ -22,6 +24,14 @@ export default function StudentLayout() {
 
   if (!user) return <CommonLoader />;
 
+  const { getNoti, unreadMsgSignal } = useNotiStore();
+
+  useEffect(() => {
+    void getNoti();
+  }, [getNoti]);
+
+  const unreadCount = unreadMsgSignal();
+
   return (
     <div className="app-shell flex min-h-screen">
       <StudentSidebar />
@@ -33,15 +43,34 @@ export default function StudentLayout() {
               <GraduationCap className="h-5 w-5" />
             </div>
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold">Welcome back, {user.full_name?.split(" ")[0] || "Student"}</p>
-              <p className="hidden text-xs text-muted-foreground sm:block">Find your next campus experience.</p>
+              <p className="truncate text-sm font-semibold">
+                Welcome back, {user.full_name?.split(" ")[0] || "Student"}
+              </p>
+              <p className="hidden text-xs text-muted-foreground sm:block">
+                Find your next campus experience.
+              </p>
             </div>
           </div>
           <div className="ml-auto flex items-center gap-2">
+            <NavLink
+              to="/student/noti"
+              className="relative flex size-9 items-center justify-center"
+            >
+              <Bell className="size-5" />
+
+              {unreadCount > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold text-destructive-foreground">
+                  {unreadCount > 99 ? "99+" : unreadCount}
+                </span>
+              )}
+            </NavLink>
+
             <Profile role={user.role} image={user.image_url} />
           </div>
         </header>
-        <main className="min-w-0 flex-1"><Outlet /></main>
+        <main className="min-w-0 flex-1">
+          <Outlet />
+        </main>
       </div>
     </div>
   );

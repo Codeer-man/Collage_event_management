@@ -23,6 +23,7 @@ import TeamLeader from "./page/student/leader/TeamLeader";
 import CreateEventPage from "./page/student/event/createEvent";
 import MyEvents from "./page/student/event/myEvent";
 import EventRegistered from "./page/student/student/eventRegistered";
+import NotificationPage from "./page/student/student/notification";
 
 export const route = createBrowserRouter([
   // public or home
@@ -51,12 +52,7 @@ export const route = createBrowserRouter([
             path: "/administrative",
             element: <AdministrativeLayout />,
             children: [
-              // {
-              //   index: true,
-              //   element: <AdministrativeDashboard />,
-              // },
               {
-                // path: "faculty",
                 index: true,
                 element: <Faculty />,
               },
@@ -96,6 +92,10 @@ export const route = createBrowserRouter([
               {
                 path: "list",
                 element: <EventList />,
+              },
+              {
+                path: "noti",
+                element: <NotificationPage />,
               },
             ],
           },
@@ -145,6 +145,10 @@ export const route = createBrowserRouter([
               {
                 path: "registered",
                 element: <EventRegistered />,
+              },
+              {
+                path: "noti",
+                element: <NotificationPage />,
               },
             ],
           },

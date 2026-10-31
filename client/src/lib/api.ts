@@ -99,13 +99,16 @@ export async function apiPatch<TRespons, TBody = unknown>(
   }
 }
 
-export async function apiDelete<TRespons>(
+export async function apiDelete<TRespons, TBody = unknown>(
   url: string,
-
+  body?: TBody,
   config?: AxiosRequestConfig,
 ) {
   try {
-    const respones = await api.delete<ApiEnvolve<TRespons>>(url, config);
+    const respones = await api.delete<ApiEnvolve<TRespons>>(url, {
+      ...config,
+      data: body,
+    });
 
     if (respones.data.status === "error" || !respones.data.data) {
       throw new Error(respones.data.errors?.message || "request failed");

@@ -4,6 +4,7 @@ import { AppError } from "../../utils/AppError.js";
 import asyncHandler from "../../utils/asyncHandler.js";
 import { fail, ok } from "../../utils/envolve.js";
 import { numberRequires, textRequired } from "../../utils/helper.js";
+import { createNotification } from "../../service/notification.service.js";
 
 export const leaderRoute = express.Router();
 
@@ -209,11 +210,16 @@ leaderRoute.post(
     // leader check
     const eligibleLeader = await pool.query(
       `
-     SELECT 1
-      FROM teams
-      WHERE id = $1
-        AND event_id = $2
-        AND leader_id = $3;
+     SELECT t.team_name,u.full_name AS name, e.title as event_title
+      FROM teams t
+      JOIN users u
+        ON u.id = $3
+      JOIN events e
+        ON e.id = t.event_id
+      WHERE t.id = $1
+        AND t.event_id = $2
+        AND t.leader_id = $3;
+      
       `,
       [teamId, eventId, userId],
     );
@@ -281,25 +287,41 @@ leaderRoute.post(
     );
 
     if (cloneInviteCheck.rows[0].has_pending_invitation) {
-      throw new AppError(409, "Invitation already sent to this student");
+      throw new AppError(
+        409,
+        "You have already invited the user. Wait for the response",
+      );
     }
 
     // send invitation
-    await pool.query(
+    const invition = await pool.query(
       `
        INSERT INTO team_invitations
         (team_id, invited_user_id, invited_by)
-        VALUES ($1, $2, $3);
+        VALUES ($1, $2, $3)
+        RETURNING id;
       `,
       [teamId, member_id, userId],
     );
+
+    //notification
+    await createNotification({
+      userId: member_id,
+      title: "Team Invitation",
+      message: `${eligibleLeader.rows[0].name} has invited you to join the team 
+      "${eligibleLeader.rows[0].team_name}". Join the team to participate 
+      together in the ${eligibleLeader.rows[0].event_title} event. Check your team invitations to accept or decline the request.`,
+      entityId: String(invition.rows[0].id),
+      entityType: "notificatin",
+      type: "team_invitation",
+    });
     res.json(ok({ message: "Invitation has been sent" }));
   }),
 );
 
 // remove member from the team
 leaderRoute.delete(
-  "/remove",
+  "/remove/member",
   asyncHandler(async (req, res) => {
     const userId = (req as any).user.id;
 
@@ -331,6 +353,16 @@ leaderRoute.delete(
       `,
       [teamId, member_id],
     );
+
+    await createNotification({
+      message:
+        "Sorry due to some team management error you have been layed off",
+      title: "Ejected from team",
+      type: "team_invitation_response",
+      userId: member_id,
+    });
+
+    res.json(ok({ success: true }));
   }),
 );
 

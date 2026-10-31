@@ -10,6 +10,8 @@ import cookieParser from "cookie-parser";
 import { frontendUrl } from "./lib/getUrl.js";
 import { userRoute } from "./routes/students/student.route.js";
 import { adminRoute } from "./routes/admin/admin.route.js";
+import { notiRoute } from "./routes/notification/notification.route.js";
+import { eventRouter } from "./routes/event/event.route.js";
 
 const app = express();
 
@@ -38,6 +40,12 @@ app.use("/admin", adminRoute);
 
 //student
 app.use("/user", userRoute);
+
+//event
+app.use("/event", eventRouter);
+
+//notification
+app.use("/noti", notiRoute);
 
 app.use(notfound);
 app.use(errorHandler);

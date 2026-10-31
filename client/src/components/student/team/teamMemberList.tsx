@@ -1,12 +1,15 @@
 import { Crown, Trash2, UserRound } from "lucide-react";
 import { Button } from "../../ui/button";
 import type { TeamMember } from "../../../feature/students/type";
+import { useTeamStore } from "../../../feature/students/useTeam";
 
 type TeamMembersListProps = {
   members: TeamMember[];
   leaderId?: string;
   canManage?: boolean;
   emptyMessage?: string;
+  eventId: string;
+  teamId: string;
 };
 
 export default function TeamMembersList({
@@ -14,7 +17,11 @@ export default function TeamMembersList({
   leaderId,
   canManage,
   emptyMessage = "No team members yet.",
+  eventId,
+  teamId,
 }: TeamMembersListProps) {
+  const handleRemoveMember = useTeamStore((s) => s.handleRemoveMember);
+
   if (members.length === 0) {
     return (
       <div className="rounded-lg border border-dashed p-8 text-center">
@@ -74,7 +81,9 @@ export default function TeamMembersList({
                 variant="ghost"
                 size="icon"
                 aria-label={`Remove ${member.full_name}`}
-                // onClick={() => onRemove(member.user_id)}
+                onClick={() =>
+                  handleRemoveMember(eventId, teamId, member.user_id)
+                }
               >
                 <Trash2 className="h-4 w-4 text-destructive" />
               </Button>

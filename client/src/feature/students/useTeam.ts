@@ -1,75 +1,91 @@
+import { create } from "zustand";
 import { toast } from "sonner";
-import { createTeam, getUsers, getYourTeam, manageMember } from "./api";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {
+  addMember,
+  createTeam,
+  getUsers,
+  getYourTeam,
+  removeMember,
+} from "./api";
 import type { participateUser, TeamResp } from "./type";
 
-export function useTeamHandler() {
-  const [leaderTeam, setLeaderTeam] = useState<TeamResp | null>(null);
-  const [users, setUser] = useState<participateUser[]>();
-  const navigate = useNavigate();
+type TeamState = {
+  leaderTeam: TeamResp | null;
+  users: participateUser[];
 
-  async function handleCreateteam(eventId: number, teamName: string) {
-    try {
-      const response = await createTeam(eventId, teamName);
-
-      if (response) {
-        toast.success("You have successfuly create a team for this event");
-      }
-
-      navigate("/student/leader");
-    } catch (error) {
-      const msg =
-        error instanceof Error ? error.message : "something went wrong";
-      toast.error(msg);
-    }
-  }
-
-  const handleAddMember = async (
+  getTeam: () => Promise<void>;
+  handleCreateteam: (eventId: number, teamName: string) => Promise<boolean>;
+  handleAddMember: (
     eventId: string,
     teamId: string,
     member_id: string,
-  ) => {
-    try {
-      await manageMember({ eventId, teamId, member_id });
-      toast.success("Add successfully");
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      }
-    }
-  };
+  ) => Promise<void>;
+  handleRemoveMember: (
+    eventId: string,
+    teamId: string,
+    member_id: string,
+  ) => Promise<void>;
+  getUserForTeam: (fullName: string) => Promise<void>;
+};
 
-  async function getUserForTeam(fullName: string) {
+const errorMessage = (error: unknown) =>
+  error instanceof Error ? error.message : "Something went wrong";
+
+export const useTeamStore = create<TeamState>()((set, get) => ({
+  leaderTeam: null,
+  users: [],
+
+  getTeam: async () => {
+    try {
+      const resp = await getYourTeam();
+      set({ leaderTeam: resp });
+    } catch (error) {
+      toast.error(errorMessage(error));
+    }
+  },
+
+  handleCreateteam: async (eventId, teamName) => {
+    try {
+      const response = await createTeam(eventId, teamName);
+      if (response) {
+        toast.success("You have successfully created a team for this event");
+      }
+      return true;
+    } catch (error) {
+      toast.error(errorMessage(error));
+      return false;
+    }
+  },
+
+  handleAddMember: async (eventId, teamId, member_id) => {
+    try {
+      await addMember({ eventId, teamId, member_id });
+      toast.success("Invitation has been sent to the user");
+    } catch (error) {
+      toast.error(errorMessage(error));
+    }
+  },
+
+  handleRemoveMember: async (eventId, teamId, member_id) => {
+    try {
+      await removeMember({ eventId, teamId, member_id });
+      toast.success("User has been removed successfully");
+      await get().getTeam();
+    } catch (error) {
+      toast.error(errorMessage(error));
+    }
+  },
+
+  getUserForTeam: async (fullName) => {
     const response = getUsers(fullName);
 
     toast.promise(response, {
       loading: "Searching user......",
-      success: (user) => {
-        setUser(user.users);
+      success: (data) => {
+        set({ users: data.users });
         return "Found Users";
       },
-      error: (error: unknown) => {
-        return error instanceof Error ? error.message : "Something went wrong";
-      },
+      error: errorMessage,
     });
-  }
-
-  async function getTeam() {
-    const resp = await getYourTeam();
-    setLeaderTeam(resp);
-  }
-
-  useEffect(() => {
-    getTeam();
-  }, []);
-
-  return {
-    getUserForTeam,
-    users,
-    handleCreateteam,
-    leaderTeam,
-    handleAddMember,
-    getTeam,
-  };
-}
+  },
+}));

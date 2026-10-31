@@ -13,8 +13,8 @@ export const studentService = {
     return events;
   },
 
-  //create or update event
-  async saveEvent(
+  //create event
+  async createEvent(
     title: string,
     description: string,
     location_id: string,
@@ -26,77 +26,31 @@ export const studentService = {
     image_url: string,
     public_id: string,
     created_by: string,
-    locatoin_type: string,
+    location_type: string,
     location_name: string,
     is_team_event?: boolean,
     max_participants?: number,
-    eventId?: string,
   ) {
-    if (eventId) {
-      return await pool.query(
-        `
-      UPDATE events
-      SET
-        title=$1,
-        description=$2,
-        location_id=$3,
-        event_date=$4,
-        registration_deadline=$5,
-        entry_fee=$6,
-        contact=$7,
-        image_url=$8,
-        public_id=$9,
-        is_team_event=$10,
-        max_participants=$11,
-        updated_at=NOW()
-      WHERE id=$12
-        end_at=$13,
-        location_type=$14,
-        location_name = $15
-      RETURNING *;
-      `,
-        [
-          title,
-          description,
-          location_id,
-          event_date,
-          registration_deadline,
-          entry_fee,
-          contact,
-          image_url,
-          public_id,
-          is_team_event,
-          max_participants,
-          eventId,
-          end_at,
-          locatoin_type,
-          location_name,
-        ],
-      );
-    }
-
     return await pool.query(
       `
-    INSERT INTO events(
+    INSERT INTO events (
       title,
       description,
       location_id,
       event_date,
+      end_at,
       registration_deadline,
       entry_fee,
       contact,
       image_url,
       public_id,
       created_by,
-      is_team_event,
-      max_participants,
-      end_at,
       location_type,
-      location_name
+      location_name,
+      is_team_event,
+      max_participants
     )
-    VALUES(
-      $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15
-    )
+    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
     RETURNING *;
     `,
       [
@@ -104,17 +58,77 @@ export const studentService = {
         description,
         location_id,
         event_date,
+        end_at,
         registration_deadline,
         entry_fee,
         contact,
         image_url,
         public_id,
         created_by,
+        location_type,
+        location_name,
         is_team_event,
         max_participants,
+      ],
+    );
+  },
+
+  // update event
+  async updateEvent(
+    eventId: string,
+    title: string,
+    description: string,
+    location_id: string,
+    event_date: string,
+    end_at: string,
+    registration_deadline: string,
+    entry_fee: number,
+    contact: number,
+    image_url: string,
+    public_id: string,
+    location_type: string,
+    location_name: string,
+    is_team_event?: boolean,
+    max_participants?: number,
+  ) {
+    return await pool.query(
+      `
+    UPDATE events
+    SET
+      title = $1,
+      description = $2,
+      location_id = $3,
+      event_date = $4,
+      end_at = $5,
+      registration_deadline = $6,
+      entry_fee = $7,
+      contact = $8,
+      image_url = $9,
+      public_id = $10,
+      location_type = $11,
+      location_name = $12,
+      is_team_event = $13,
+      max_participants = $14,
+      updated_at = NOW()
+    WHERE id = $15
+    RETURNING *;
+    `,
+      [
+        title,
+        description,
+        location_id,
+        event_date,
         end_at,
-        locatoin_type,
+        registration_deadline,
+        entry_fee,
+        contact,
+        image_url,
+        public_id,
+        location_type,
         location_name,
+        is_team_event,
+        max_participants,
+        eventId,
       ],
     );
   },

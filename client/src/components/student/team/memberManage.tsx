@@ -8,8 +8,8 @@ import {
 } from "../../ui/dialog";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
-import { useTeamHandler } from "../../../feature/students/useTeam";
 import { useState } from "react";
+import { useTeamStore } from "../../../feature/students/useTeam";
 
 export default function MemberManage({
   eventId,
@@ -20,7 +20,9 @@ export default function MemberManage({
   teamId: string;
   disabled?: boolean;
 }) {
-  const { handleAddMember, getTeam, getUserForTeam, users } = useTeamHandler();
+  const { handleAddMember, getTeam, getUserForTeam, users } = useTeamStore(
+    (state) => state,
+  );
 
   const [name, setName] = useState("");
 
@@ -42,6 +44,7 @@ export default function MemberManage({
           onSubmit={(e) => {
             e.preventDefault();
             getUserForTeam(name);
+            setName("");
           }}
         >
           <div className="flex items-center space-x-4 w-full">
@@ -52,7 +55,9 @@ export default function MemberManage({
               className="flex-1"
             />
 
-            <Button type="submit">Find Student</Button>
+            <Button disabled={name.trim().length === 0} type="submit">
+              Find Student
+            </Button>
           </div>
         </form>
 

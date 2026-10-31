@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useTeamHandler } from "../../../feature/students/useTeam";
 import { Button } from "../../ui/button";
 import {
   Dialog,
@@ -8,6 +7,7 @@ import {
   DialogTitle,
 } from "../../ui/dialog";
 import { Input } from "../../ui/input";
+import { useTeamStore } from "../../../feature/students/useTeam";
 
 type teamProps = {
   open: boolean;
@@ -23,7 +23,7 @@ export default function CreateTeamDialog({
   eventId,
 }: teamProps) {
   const [teamName, setTeamName] = useState("");
-  const { handleCreateteam } = useTeamHandler();
+  const handleCreateteam = useTeamStore((s) => s.handleCreateteam);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>

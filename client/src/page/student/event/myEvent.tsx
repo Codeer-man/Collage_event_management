@@ -35,7 +35,7 @@ export default function MyEvents() {
       {/* Table */}
       <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
         <Table>
-          <TableCaption className="pb-4">Table caption here</TableCaption>
+          <TableCaption className="pb-4">Event Management</TableCaption>
 
           <TableHeader>
             <TableRow className="bg-muted/50 hover:bg-muted/50">
@@ -58,7 +58,7 @@ export default function MyEvents() {
           </TableHeader>
 
           <TableBody>
-            {!muEvents ? (
+            {!muEvents?.length ? (
               <TableRow>
                 <TableCell colSpan={5} className="h-40 text-center">
                   <div className="flex flex-col items-center justify-center gap-2">

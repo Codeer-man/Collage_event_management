@@ -1,5 +1,5 @@
 import type { ParticipantResponse } from "../../components/student/myEvent/eventDetail";
-import { apiGet, apiPatch, apiPost } from "../../lib/api";
+import { apiDelete, apiGet, apiPatch, apiPost } from "../../lib/api";
 import type {
   CreateEventFormData,
   joinEventRes,
@@ -68,12 +68,20 @@ type manageMemberType = {
   member_id: string;
 };
 
-export async function manageMember({
+export async function addMember({
   eventId,
   teamId,
   member_id,
 }: manageMemberType) {
   return apiPost("/user/add/member", { eventId, teamId, member_id });
+}
+
+export async function removeMember({
+  eventId,
+  teamId,
+  member_id,
+}: manageMemberType) {
+  return apiDelete("/user/remove/member", { eventId, teamId, member_id });
 }
 
 export async function getTeamYouAreIn() {

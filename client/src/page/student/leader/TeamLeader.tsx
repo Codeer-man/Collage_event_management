@@ -13,7 +13,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../../../components/ui/card";
-import { useTeamHandler } from "../../../feature/students/useTeam";
 import { Badge } from "../../../components/ui/badge";
 import { Separator } from "../../../components/ui/separator";
 import {
@@ -27,10 +26,15 @@ import {
 import { Button } from "../../../components/ui/button";
 import MemberManage from "../../../components/student/team/memberManage";
 import TeamMembersList from "../../../components/student/team/teamMemberList";
+import { useTeamStore } from "../../../feature/students/useTeam";
+import { useEffect } from "react";
 
 export default function TeamLeader() {
-  const { leaderTeam } = useTeamHandler();
-
+  const leaderTeam = useTeamStore((s) => s.leaderTeam);
+  const getTeam = useTeamStore((s) => s.getTeam);
+  useEffect(() => {
+    void getTeam();
+  }, [getTeam]);
   const teams = leaderTeam?.teams ?? [];
 
   if (teams.length === 0) {
@@ -262,6 +266,9 @@ export default function TeamLeader() {
                         members={team.members}
                         canManage={true}
                         emptyMessage="No team members yet."
+                        leaderId={team.leader_id}
+                        eventId={team.event_id}
+                        teamId={team.id}
                       />
                     </div>
                   </DialogContent>
