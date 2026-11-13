@@ -15,6 +15,7 @@ import {
 } from "../../components/ui/table";
 import CommonLoader from "../../components/common/loader";
 import useAdmin from "../../feature/admin/useAdmin";
+import { Badge } from "../../components/ui/badge";
 
 export default function ApproveStudents() {
   const { unApproved, loading, handleStudentStatus } = useAdmin();
@@ -24,20 +25,21 @@ export default function ApproveStudents() {
   }
 
   return (
-    <div className="mx-4 md:mx-8 lg:mx-10 py-6">
+    <div className="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold tracking-tight">
+        <p className="eyebrow">Faculty workspace</p>
+        <h1 className="page-heading mt-2">
           Approve Students
         </h1>
 
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="mt-2 text-sm text-muted-foreground">
           Review and manage students waiting for approval.
         </p>
       </div>
 
       {/* Table Container */}
-      <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
+      <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
         <Table>
           <TableCaption className="pb-4">
             List of students waiting for approval
@@ -63,7 +65,7 @@ export default function ApproveStudents() {
           <TableBody>
             {unApproved.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="h-40 text-center">
+                <TableCell colSpan={6} className="h-40 text-center">
                   <div className="flex flex-col items-center justify-center gap-2">
                     <p className="font-medium">No students found</p>
 
@@ -109,7 +111,16 @@ export default function ApproveStudents() {
                   </TableCell>
                   {/* Email */}
                   <TableCell className="text-muted-foreground">
-                    {student.is_email_verified ? "true" : "false"}
+                    <Badge
+                      variant="outline"
+                      className={
+                        student.is_email_verified
+                          ? "border-transparent bg-secondary text-secondary-foreground"
+                          : "border-transparent bg-accent text-accent-foreground"
+                      }
+                    >
+                      {student.is_email_verified ? "Verified" : "Unverified"}
+                    </Badge>
                   </TableCell>
 
                   {/* Actions */}

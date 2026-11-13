@@ -35,11 +35,11 @@ function EventCard({ event }: { event: joinEventType }) {
           <span
             className={`rounded-full px-3 py-1 text-xs font-medium backdrop-blur-md ${
               event.status === "approved"
-                ? "bg-green-500/90 text-white"
+                ? "bg-secondary text-secondary-foreground"
                 : event.status === "pending"
-                  ? "bg-yellow-500/90 text-white"
+                  ? "bg-accent text-accent-foreground"
                   : event.status === "cancelled"
-                    ? "bg-red-500/90 text-white"
+                    ? "bg-destructive text-white"
                     : "bg-black/70 text-white"
             }`}
           >
@@ -169,14 +169,15 @@ export default function EventRegistered() {
 
   return (
     <div className="min-h-full px-4 py-6 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl space-y-10">
+      <div className="mx-auto max-w-[1440px] space-y-10">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+          <p className="eyebrow">Your campus activity</p>
+          <h1 className="page-heading mt-2">
             My Registered Events
           </h1>
 
-          <p className="mt-1 text-sm text-muted-foreground sm:text-base">
+          <p className="mt-2 text-sm text-muted-foreground sm:text-base">
             Keep track of the events you've joined.
           </p>
         </div>

@@ -60,17 +60,17 @@ export default function Profile({ user }: { user: AppUser }) {
     <div className="min-h-full px-4 py-6 sm:px-6 sm:py-8 xl:px-10">
       <div className="page-wrap space-y-6">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+          <p className="eyebrow">
             Your account
           </p>
-          <h1 className="mt-2 text-3xl font-semibold">My profile</h1>
+          <h1 className="page-heading mt-2">My profile</h1>
           <p className="mt-2 text-sm text-muted-foreground">
             Review your personal information and account status.
           </p>
         </div>
 
         <Card className="overflow-hidden rounded-2xl border-border shadow-sm">
-          <div className="h-28 bg-gradient-to-r from-[#dce7dd] via-[#eaf0e6] to-[#f2efe1] dark:from-[#33483a] dark:via-[#2c3b30] dark:to-[#393d2e]" />
+          <div className="h-28 bg-foreground" />
           <CardContent className="relative px-5 pb-6 sm:px-7">
             <div className="-mt-12 flex flex-col gap-4 sm:-mt-14 sm:flex-row sm:items-end">
               <Avatar className="h-24 w-24 border-4 border-card shadow-sm sm:h-28 sm:w-28">

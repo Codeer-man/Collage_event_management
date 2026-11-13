@@ -1,4 +1,5 @@
-import { api } from "../../lib/api";
+import { api, apiGet } from "../../lib/api";
+import type { eventDetailRes } from "./type";
 
 export async function downloadPdf(eventId: string) {
   try {
@@ -25,4 +26,8 @@ export async function downloadPdf(eventId: string) {
     console.error("PDF download failed:", error);
     throw error;
   }
+}
+
+export async function getEventDetail(eventId: number) {
+  return await apiGet<eventDetailRes>(`/event/${eventId}`);
 }

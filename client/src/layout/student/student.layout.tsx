@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { NavLink, Outlet, useNavigate, useNavigation } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { Bell, GraduationCap } from "lucide-react";
 import { toast } from "sonner";
 import CommonLoader from "../../components/common/loader";
@@ -11,7 +11,8 @@ import { useNotiStore } from "../../feature/notification/store";
 export default function StudentLayout() {
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
-  const {} = useNavigation();
+  const { getNoti, unreadMsgSignal } = useNotiStore();
+  const unreadCount = unreadMsgSignal();
 
   useEffect(() => {
     if (user) return;
@@ -22,15 +23,11 @@ export default function StudentLayout() {
     return () => clearTimeout(timer);
   }, [user, navigate]);
 
-  if (!user) return <CommonLoader />;
-
-  const { getNoti, unreadMsgSignal } = useNotiStore();
-
   useEffect(() => {
-    void getNoti();
-  }, [getNoti]);
+    if (user) void getNoti();
+  }, [getNoti, user]);
 
-  const unreadCount = unreadMsgSignal();
+  if (!user) return <CommonLoader />;
 
   return (
     <div className="app-shell flex min-h-screen">
@@ -54,7 +51,8 @@ export default function StudentLayout() {
           <div className="ml-auto flex items-center gap-2">
             <NavLink
               to="/student/noti"
-              className="relative flex size-9 items-center justify-center"
+              aria-label={`Notifications${unreadCount ? `, ${unreadCount} unread` : ""}`}
+              className="relative flex size-9 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               <Bell className="size-5" />
 

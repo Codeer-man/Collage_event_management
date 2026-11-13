@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { Menu } from "lucide-react";
+import { ArrowUpRight, CalendarDays, Menu } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 import {
   Sheet,
@@ -26,12 +26,14 @@ type AppSidebarProps = {
 function Brand({ title }: { title: string }) {
   return (
     <Link to="/" className="flex min-w-0 items-center gap-3 rounded-xl">
-      <span className="brand-mark">C</span>
+      <span className="brand-mark">
+        <CalendarDays className="size-5" />
+      </span>
       <span className="min-w-0">
-        <span className="block text-base font-semibold tracking-tight text-foreground">
+        <span className="block text-base font-semibold tracking-tight text-sidebar-foreground">
           CEMS
         </span>
-        <span className="block truncate text-[11px] text-muted-foreground">
+        <span className="block truncate text-[11px] text-sidebar-muted">
           {title}
         </span>
       </span>
@@ -88,7 +90,7 @@ export default function AppSidebar({
         </SheetTrigger>
         <SheetContent
           side="left"
-          className="w-[min(86vw,320px)] border-sidebar-border bg-sidebar p-0"
+          className="w-[min(86vw,320px)] border-sidebar-border bg-sidebar p-0 text-sidebar-foreground"
         >
           <SheetHeader className="border-b border-sidebar-border px-5 py-5 text-left">
             <SheetTitle>
@@ -96,12 +98,12 @@ export default function AppSidebar({
             </SheetTitle>
           </SheetHeader>
           <div className="flex h-[calc(100%-82px)] flex-col px-3 py-5">
-            <p className="mb-3 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            <p className="mb-3 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-sidebar-muted">
               Workspace
             </p>
             <Navigation items={items} />
             <div className="mt-auto flex items-center justify-between border-t border-sidebar-border px-3 pt-4">
-              <span className="text-xs text-muted-foreground">Appearance</span>
+              <span className="text-xs text-sidebar-muted">Appearance</span>
               <ThemeToggleButton />
             </div>
           </div>
@@ -117,18 +119,26 @@ export default function AppSidebar({
         <ThemeToggleButton />
       </div>
       <div className="flex-1 overflow-y-auto px-3 py-6">
-        <p className="mb-3 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+        <p className="mb-3 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-sidebar-muted">
           Workspace
         </p>
         <Navigation items={items} />
       </div>
-      <div className="border-t border-sidebar-border px-5 py-4">
-        <p className="text-xs font-medium text-sidebar-foreground">
-          College Event Management
-        </p>
-        <p className="mt-1 text-[11px] text-muted-foreground">
-          Connect. Participate. Create.
-        </p>
+      <div className="border-t border-sidebar-border p-4">
+        <Link
+          to="/"
+          className="group flex items-center justify-between gap-3 rounded-2xl bg-sidebar-accent px-4 py-3 transition-colors hover:bg-sidebar-accent-foreground/10"
+        >
+          <span>
+            <span className="block text-xs font-semibold text-sidebar-foreground">
+              Campus starts here
+            </span>
+            <span className="mt-1 block text-[11px] text-sidebar-muted">
+              Connect. Participate. Create.
+            </span>
+          </span>
+          <ArrowUpRight className="size-4 shrink-0 text-sidebar-muted transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        </Link>
       </div>
     </aside>
   );

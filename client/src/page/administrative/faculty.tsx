@@ -31,10 +31,17 @@ export default function Faculty() {
   } = UseFacultyForm();
 
   return (
-    <div className=" space-y-6 p-3">
+    <div className="mx-auto max-w-[1440px] space-y-6 p-4 sm:p-6 lg:p-8">
+      <div>
+        <p className="eyebrow">College administration</p>
+        <h1 className="page-heading mt-2">Faculty management</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Organize faculties and assign the people who manage them.
+        </p>
+      </div>
       <Card>
         <CardHeader>
-          <CardTitle> Faculty</CardTitle>
+          <CardTitle>Faculties</CardTitle>
         </CardHeader>
         <CardContent>
           <FacultyToolBar

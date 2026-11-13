@@ -72,19 +72,20 @@ export default function Location() {
   }
 
   return (
-    <div className="min-h-screen space-y-6  p-6 md:p-8">
+    <div className="mx-auto min-h-screen max-w-[1440px] space-y-6 p-4 sm:p-6 md:p-8">
       {/* Header */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div className="flex items-center gap-3">
-          <div className="rounded-xl  p-3 text-blue-700">
+          <div className="rounded-2xl bg-accent p-3 text-accent-foreground">
             <MapPin size={26} />
           </div>
 
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            <p className="eyebrow">College administration</p>
+            <h1 className="page-heading mt-1">
               Locations
             </h1>
-            <p className="text-sm text-slate-500">
+            <p className="mt-1 text-sm text-muted-foreground">
               Manage venues available for college events.
             </p>
           </div>
@@ -97,14 +98,14 @@ export default function Location() {
       </div>
 
       {/* Locations table */}
-      <Card className="border-slate-200 shadow-sm">
+      <Card className="overflow-hidden rounded-2xl shadow-sm">
         <CardHeader>
           <CardTitle className="text-lg">All Locations</CardTitle>
 
           <div className="relative mt-3">
             <Search
               size={18}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
             />
             <Input
               value={search}
@@ -119,7 +120,7 @@ export default function Location() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b text-xs uppercase text-slate-500">
+                <tr className="border-b bg-muted/50 text-xs uppercase tracking-wide text-muted-foreground">
                   <th className="px-3 py-3 font-medium">Location</th>
                   <th className="px-3 py-3 font-medium">Capacity</th>
                   <th className="px-3 py-3 font-medium">Availability</th>
@@ -132,18 +133,18 @@ export default function Location() {
                 {filteredLocations.map((item) => (
                   <tr
                     key={item.id}
-                    className="border-b last:border-0 hover:bg-slate-50"
+                    className="border-b last:border-0 hover:bg-muted/50"
                   >
                     <td className="px-3 py-4">
-                      <div className="flex items-center gap-3 font-medium text-slate-800">
-                        <div className="rounded-lg bg-blue-50 p-2 text-blue-700">
+                      <div className="flex items-center gap-3 font-medium text-foreground">
+                        <div className="rounded-xl bg-accent p-2 text-accent-foreground">
                           <MapPin size={18} />
                         </div>
                         {item.name}
                       </div>
                     </td>
 
-                    <td className="px-3 py-4 text-slate-600">
+                    <td className="px-3 py-4 text-muted-foreground">
                       <span className="flex items-center gap-2">
                         <Users size={16} />
                         {item.capacity}
@@ -155,15 +156,15 @@ export default function Location() {
                         variant="outline"
                         className={
                           item.is_available
-                            ? "border-green-200 bg-green-50 text-green-700"
-                            : "border-red-200 bg-red-50 text-red-700"
+                            ? "border-transparent bg-secondary text-secondary-foreground"
+                            : "border-transparent bg-destructive/10 text-destructive"
                         }
                       >
                         {item.is_available ? "Available" : "Unavailable"}
                       </Badge>
                     </td>
 
-                    <td className="max-w-xs px-3 py-4 text-slate-500">
+                    <td className="max-w-xs px-3 py-4 text-muted-foreground">
                       <p className="line-clamp-2">
                         {item.description || "No description"}
                       </p>
@@ -188,12 +189,12 @@ export default function Location() {
                     <td colSpan={5} className="py-12 text-center">
                       <MapPin
                         size={30}
-                        className="mx-auto mb-3 text-slate-300"
+                        className="mx-auto mb-3 text-muted-foreground"
                       />
-                      <p className="font-medium text-slate-700">
+                      <p className="font-medium text-foreground">
                         No locations found
                       </p>
-                      <p className="mt-1 text-sm text-slate-500">
+                      <p className="mt-1 text-sm text-muted-foreground">
                         Try another search or create a location.
                       </p>
                     </td>
@@ -203,7 +204,7 @@ export default function Location() {
             </table>
           </div>
 
-          <p className="mt-4 text-xs text-slate-500">
+          <p className="mt-4 text-xs text-muted-foreground">
             Showing {filteredLocations.length} of {location?.length ?? 0}{" "}
             locations
           </p>
@@ -269,7 +270,7 @@ export default function Location() {
             <div className="flex items-center justify-between rounded-lg border p-4">
               <div className="space-y-1">
                 <Label htmlFor="availability">Location available</Label>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-muted-foreground">
                   Allow this location to be selected for new events.
                 </p>
               </div>

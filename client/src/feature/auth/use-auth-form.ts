@@ -127,9 +127,8 @@ export default function useAuthForm() {
           cleanAuth();
           return "You have successfully logout";
         },
-        error: (error) => {
-          error instanceof Error ? error.message : "something went worng";
-        },
+        error: (error) =>
+          error instanceof Error ? error.message : "Something went wrong",
       });
     } finally {
       setSaving(false);
@@ -137,7 +136,16 @@ export default function useAuthForm() {
   }
 
   useEffect(() => {
-    fetchFaculty();
+    async function loadFaculty() {
+      try {
+        const response = await fetchFacluty();
+        setFaculty(response);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    void loadFaculty();
   }, []);
 
   return {

@@ -1,9 +1,10 @@
 import {
   CalendarDays,
+  HelpCircle,
   Home,
-  Info,
   LogOut,
   Menu,
+  Sparkles,
   Settings,
   Users,
 } from "lucide-react";
@@ -42,12 +43,14 @@ export default function MobileNavbar() {
       </SheetTrigger>
       <SheetContent
         side="right"
-        className="flex w-[min(88vw,360px)] flex-col p-0"
+        className="flex w-[min(88vw,360px)] flex-col rounded-l-3xl p-0"
       >
         <SheetHeader className="border-b px-5 py-5 text-left">
           <SheetTitle asChild>
             <Link to="/" className="flex items-center gap-3">
-              <span className="brand-mark">C</span>
+              <span className="brand-mark">
+                <CalendarDays className="size-5" />
+              </span>
               <span>
                 <span className="block text-base font-semibold">CEMS</span>
                 <span className="block text-xs font-normal text-muted-foreground">
@@ -86,12 +89,23 @@ export default function MobileNavbar() {
             type="button"
             onClick={() =>
               document
-                .getElementById("about")
+                .getElementById("features")
                 ?.scrollIntoView({ behavior: "smooth" })
             }
             className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
           >
-            <Info className="h-4 w-4" /> About CEMS
+            <Sparkles className="h-4 w-4" /> Explore CEMS
+          </button>
+          <button
+            type="button"
+            onClick={() =>
+              document
+                .getElementById("faq")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
+            className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+          >
+            <HelpCircle className="h-4 w-4" /> FAQs
           </button>
           {user && (
             <>

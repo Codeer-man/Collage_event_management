@@ -48,19 +48,20 @@ export default function Team() {
 
   if (loading) {
     return (
-      <div className="p-6">
+      <div className="p-4 sm:p-6">
         <p className="text-muted-foreground">Loading teams...</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="mx-auto max-w-[1440px] space-y-6 p-4 sm:p-6 lg:p-8">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">My Teams</h1>
-          <p className="text-muted-foreground">
+          <p className="eyebrow">Campus community</p>
+          <h1 className="page-heading mt-2">My teams</h1>
+          <p className="mt-2 text-muted-foreground">
             Teams you are currently a member of.
           </p>
         </div>

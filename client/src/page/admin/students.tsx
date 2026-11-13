@@ -16,9 +16,28 @@ export default function Students() {
   return (
     <div className="space-y-5 px-4 py-6 sm:px-6 lg:px-8">
       <div className="page-wrap space-y-5">
-        <div><p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Faculty workspace</p><h1 className="mt-2 text-3xl font-semibold">Students</h1><p className="mt-2 text-sm text-muted-foreground">View student accounts and check their approval status.</p></div>
-        <SearchStudents value={search} onChange={(value) => { setSearch(value); setPage(1); }} />
-        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm"><ListStudents students={students} loading={loading} pagination={pagination} onPageChange={setPage} /></div>
+        <div>
+          <p className="eyebrow">Faculty workspace</p>
+          <h1 className="page-heading mt-2">Students</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            View student accounts and check their approval status.
+          </p>
+        </div>
+        <SearchStudents
+          value={search}
+          onChange={(value) => {
+            setSearch(value);
+            setPage(1);
+          }}
+        />
+        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+          <ListStudents
+            students={students}
+            loading={loading}
+            pagination={pagination}
+            onPageChange={setPage}
+          />
+        </div>
       </div>
     </div>
   );

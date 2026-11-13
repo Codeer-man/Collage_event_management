@@ -48,6 +48,12 @@ export default function StudentDashboard() {
   });
 
   const [loading, setLoading] = useState(true);
+  const [now, setNow] = useState<number | null>(null);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setNow(Date.now()), 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -91,14 +97,15 @@ export default function StudentDashboard() {
     return all
       .filter(
         (event) =>
-          new Date(event.event_date).getTime() >= Date.now() - 86400000,
+          now === null ||
+          new Date(event.event_date).getTime() >= now - 86400000,
       )
       .sort(
         (a, b) =>
           new Date(a.event_date).getTime() - new Date(b.event_date).getTime(),
       )
       .slice(0, 3);
-  }, [data]);
+  }, [data, now]);
 
   const stats = [
     {
@@ -124,19 +131,19 @@ export default function StudentDashboard() {
   return (
     <div className="px-4 py-6 sm:px-6 sm:py-8 xl:px-10">
       <div className="page-wrap space-y-8">
-        <section className="relative overflow-hidden rounded-3xl border border-[#d8e3d7] bg-[#e9f0e6] px-6 py-7 dark:border-[#3c5040] dark:bg-[#2c3a2f] sm:px-8 sm:py-9 lg:px-10">
-          <div className="pointer-events-none absolute -right-12 -top-20 h-64 w-64 rounded-full border-36 border-white/35 dark:border-white/5" />
-          <div className="pointer-events-none absolute -bottom-28 right-32 h-56 w-56 rounded-full bg-[#cdddc9]/55 blur-2xl dark:bg-[#4c6a50]/30" />
+        <section className="relative overflow-hidden rounded-3xl border border-primary/20 bg-accent/65 px-6 py-7 sm:px-8 sm:py-9 lg:px-10">
+          <div className="pointer-events-none absolute -right-12 -top-20 h-64 w-64 rounded-full border-36 border-white/25 dark:border-white/5" />
+          <div className="pointer-events-none absolute -bottom-28 right-32 h-56 w-56 rounded-full bg-primary/10 blur-2xl" />
           <div className="relative flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <div className="max-w-2xl">
-              <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/15 bg-white/65 px-3 py-1 text-xs font-medium text-primary dark:bg-black/10 dark:text-[#c2d8c4]">
+              <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/15 bg-card/80 px-3 py-1 text-xs font-medium text-primary">
                 <CalendarDays className="h-3.5 w-3.5" /> Your campus, all in one
                 place
               </p>
-              <h1 className="text-3xl font-semibold leading-tight text-[#2d4535] dark:text-[#f0f5ed] sm:text-4xl">
+              <h1 className="text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
                 Good to see you, {user?.full_name?.split(" ")[0] || "there"}.
               </h1>
-              <p className="mt-3 max-w-xl text-sm leading-6 text-[#627666] dark:text-[#c0cec0] sm:text-base">
+              <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground sm:text-base">
                 Find events that interest you, keep track of your registrations,
                 and make more of your campus experience.
               </p>

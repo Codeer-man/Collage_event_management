@@ -10,10 +10,10 @@ export default function Events() {
       <div className="page-wrap space-y-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+            <p className="eyebrow">
               Discover
             </p>
-            <h1 className="mt-2 text-3xl font-semibold">Explore events</h1>
+            <h1 className="page-heading mt-2">Explore events</h1>
             <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
               Find upcoming campus activities, review event details, and
               register for the ones that interest you.

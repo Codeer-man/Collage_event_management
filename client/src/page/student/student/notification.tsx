@@ -172,22 +172,24 @@ export default function NotificationPage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-5xl space-y-6 p-4 sm:p-6">
+    <div className="mx-auto w-full max-w-5xl space-y-6 p-4 sm:p-6 lg:py-8">
       {/* Page header */}
-      <div className=" flex flex-row items-center justify-between mb-10">
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
-          <div className="rounded-xl bg-primary/10 p-3 text-primary">
+          <div className="rounded-2xl bg-accent p-3 text-accent-foreground">
             <Bell size={24} />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Notifications</h1>
-            <p className="text-sm text-muted-foreground">
+            <p className="eyebrow">Your campus activity</p>
+            <h1 className="page-heading mt-1">Notifications</h1>
+            <p className="mt-1 text-sm text-muted-foreground">
               Stay updated with your teams and events.
             </p>
           </div>
         </div>
         <Button
-          className=" cursor-pointer"
+          variant="outline"
+          className="cursor-pointer self-start rounded-xl sm:self-auto"
           disabled={notificationList.length === 0}
           onClick={() => deleteNoti()}
         >

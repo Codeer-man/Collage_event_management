@@ -7,7 +7,11 @@ import {
   ShieldCheck,
   Users,
 } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "../../components/ui/button";
+import SignUp from "../auth/register";
+import { useAuthStore } from "../../store/auth.store";
 
 const features = [
   {
@@ -27,6 +31,39 @@ const features = [
   },
 ];
 
+const faqs = [
+  {
+    question: "Who can use CEMS?",
+    answer:
+      "CEMS is for students and college teams who create, manage, or take part in campus events.",
+  },
+  {
+    question: "How do I create a student account?",
+    answer:
+      "Sign up with your name, email, faculty, and contact number. You will receive an email verification message, and your account will be reviewed before student access is approved.",
+  },
+  {
+    question: "Can I use my account as soon as I sign up?",
+    answer:
+      "Student access is available after your college has reviewed and approved your account.",
+  },
+  {
+    question: "Can I register with a team?",
+    answer:
+      "Yes. You can join as a team when the event supports team participation.",
+  },
+  {
+    question: "Where can I find event details?",
+    answer:
+      "Browse available events in your student workspace to review dates, locations, and registration details.",
+  },
+  {
+    question: "How can I keep up with my registrations?",
+    answer:
+      "Your workspace brings your event activity and notifications together, so it is easier to follow what you have joined.",
+  },
+];
+
 export default function HomePage() {
   return (
     <div className="overflow-hidden bg-background">
@@ -38,39 +75,17 @@ export default function HomePage() {
                 <Leaf className="h-3.5 w-3.5" /> A better way to be part of
                 campus life
               </div>
-              <h1 className="max-w-3xl text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-[4.35rem]">
-                Campus life happens{" "}
-                <span className="text-primary">outside the classroom.</span>
+              <h1 className="max-w-3xl text-4xl font-semibold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+                Every campus event,{" "}
+                <span className="text-primary">all in one place.</span>
               </h1>
-              <p className="mt-6 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-                Discover college events, connect with students, and take part in
-                the experiences that make your campus journey memorable — all
-                from one place.
+              <p className="mt-6 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">
+                CEMS brings students and college teams together to discover
+                events, register individually or as a team, and keep up with
+                what is happening on campus.
               </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Button
-                  size="lg"
-                  className="h-12 rounded-xl px-6"
-                  onClick={() =>
-                    document
-                      .getElementById("features")
-                      ?.scrollIntoView({ behavior: "smooth" })
-                  }
-                >
-                  Explore CEMS <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="h-12 rounded-xl px-6"
-                  onClick={() =>
-                    document
-                      .getElementById("about")
-                      ?.scrollIntoView({ behavior: "smooth" })
-                  }
-                >
-                  How it works
-                </Button>
+              <div className="mt-8">
+                <GetStartedAction />
               </div>
               <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-border pt-6 text-sm text-muted-foreground">
                 <span className="inline-flex items-center gap-2">
@@ -85,16 +100,16 @@ export default function HomePage() {
             </div>
 
             <div className="relative mx-auto w-full max-w-150 lg:ml-auto">
-              <div className="absolute -right-7 -top-7 h-40 w-40 rounded-full bg-[#dce7d7] blur-3xl dark:bg-[#49644c]/40" />
-              <div className="absolute -bottom-8 -left-8 h-40 w-40 rounded-full bg-[#e9e4cf] blur-3xl dark:bg-[#625e3e]/25" />
-              <div className="relative overflow-hidden rounded-[28px] border border-border bg-card p-2.5 shadow-[0_24px_80px_-38px_rgba(41,58,50,0.28)] sm:p-3">
-                <div className="relative min-h-85 overflow-hidden rounded-[21px] bg-[#dce7d7] dark:bg-[#334438] sm:min-h-[470px]">
+              <div className="absolute -right-7 -top-7 h-40 w-40 rounded-full bg-accent/70 blur-3xl" />
+              <div className="absolute -bottom-8 -left-8 h-40 w-40 rounded-full bg-secondary blur-3xl" />
+              <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-2.5 shadow-[0_24px_80px_-38px_rgba(23,42,51,0.3)] sm:p-3">
+                <div className="relative min-h-85 overflow-hidden rounded-2xl bg-secondary sm:min-h-[470px]">
                   <img
                     src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=1200&q=85"
                     alt="College students taking part in a campus activity"
                     className="absolute inset-0 h-full w-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1d3025]/85 via-[#1d3025]/10 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#102128]/90 via-[#102128]/20 to-transparent" />
                   <div className="absolute inset-x-5 bottom-5 text-white sm:inset-x-7 sm:bottom-7">
                     <p className="text-xs font-medium uppercase tracking-[0.18em] text-white/75">
                       Find your next experience
@@ -169,6 +184,8 @@ export default function HomePage() {
           </div>
         </section>
 
+        <TaglineReveal />
+
         <section
           id="about"
           className="px-4 py-16 sm:px-6 sm:py-20 lg:px-10 lg:py-24"
@@ -207,27 +224,64 @@ export default function HomePage() {
           </div>
         </section>
 
+        <section
+          id="faq"
+          className="border-y border-border bg-card/60 px-4 py-16 sm:px-6 sm:py-20 lg:px-10"
+        >
+          <div className="mx-auto grid max-w-[1320px] gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                Frequently asked questions
+              </p>
+              <h2 className="mt-4 text-3xl font-semibold leading-tight sm:text-4xl">
+                A few things to know before you join.
+              </h2>
+              <p className="mt-4 leading-7 text-muted-foreground">
+                Learn how student accounts, event registration, and campus
+                participation work in CEMS.
+              </p>
+            </div>
+            <div className="space-y-3">
+              {faqs.map(({ question, answer }) => (
+                <details
+                  key={question}
+                  className="group rounded-2xl border border-border bg-background px-5 py-4 open:bg-card"
+                >
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold marker:content-none">
+                    {question}
+                    <span
+                      aria-hidden="true"
+                      className="text-xl font-normal text-primary transition-transform duration-300 group-open:rotate-45"
+                    >
+                      +
+                    </span>
+                  </summary>
+                  <p className="mt-3 pr-8 text-sm leading-6 text-muted-foreground">
+                    {answer}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section className="px-4 pb-16 sm:px-6 sm:pb-20 lg:px-10">
-          <div className="mx-auto flex max-w-[1320px] flex-col gap-6 rounded-3xl bg-[#334b3c] px-6 py-9 text-white sm:px-10 sm:py-12 md:flex-row md:items-center md:justify-between">
+          <div className="mx-auto flex max-w-[1320px] flex-col gap-6 rounded-3xl bg-foreground px-6 py-9 text-background sm:px-10 sm:py-12 md:flex-row md:items-center md:justify-between">
             <div className="max-w-2xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/65">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-background/65">
                 Your next campus memory starts here
               </p>
               <h2 className="mt-3 text-3xl font-semibold leading-tight sm:text-4xl">
                 Be part of what happens next.
               </h2>
-              <p className="mt-3 text-sm leading-6 text-white/70 sm:text-base">
-                Sign in to discover events and manage your campus activities.
+              <p className="mt-3 text-sm leading-6 text-background/75 sm:text-base">
+                Create your account to discover events and take part in campus
+                activities.
               </p>
             </div>
-            <Button
-              variant="secondary"
-              size="lg"
-              className="h-12 shrink-0 rounded-xl bg-[#e5ede2] px-6 text-[#293a32] hover:bg-white"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            >
-              Get started <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+            <GetStartedAction
+              className="shrink-0 bg-primary text-primary-foreground hover:bg-primary/90"
+            />
           </div>
         </section>
       </main>
@@ -240,6 +294,88 @@ export default function HomePage() {
         </div>
       </footer>
     </div>
+  );
+}
+
+function GetStartedAction({ className = "" }: { className?: string }) {
+  const { user } = useAuthStore();
+  const buttonClassName = `h-12 rounded-xl px-6 ${className}`;
+
+  if (user) {
+    return (
+      <Button asChild size="lg" className={buttonClassName}>
+        <Link to={`/${user.role}`}>
+          Go to your workspace <ArrowRight className="ml-2 h-4 w-4" />
+        </Link>
+      </Button>
+    );
+  }
+
+  return (
+    <SignUp
+      trigger={
+        <Button size="lg" className={buttonClassName}>
+          Create your account <ArrowRight className="ml-2 h-4 w-4" />
+        </Button>
+      }
+    />
+  );
+}
+
+function TaglineReveal() {
+  const text =
+    "Show up for the moments that make campus feel like yours.";
+  const words = text.split(" ");
+  const wordRefs = useRef<Array<HTMLSpanElement | null>>([]);
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const wordElements = wordRefs.current.filter(
+      (word): word is HTMLSpanElement => word !== null,
+    );
+
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      wordElements.forEach((word) => word.classList.add("is-visible"));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -20% 0px", threshold: 0.1 },
+    );
+
+    wordElements.forEach((word) => observer.observe(word));
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section
+      aria-label="The CEMS promise"
+      className="px-4 py-20 sm:px-6 sm:py-24 lg:px-10 lg:py-28"
+    >
+      <p className="mx-auto max-w-[900px] text-4xl font-semibold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+        {words.map((word, index) => (
+          <span
+            key={`${word}-${index}`}
+            ref={(element) => {
+              wordRefs.current[index] = element;
+            }}
+            className="tagline-word"
+          >
+            {word}{" "}
+          </span>
+        ))}
+      </p>
+    </section>
   );
 }
 

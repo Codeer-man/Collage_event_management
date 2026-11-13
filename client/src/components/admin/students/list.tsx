@@ -10,6 +10,7 @@ import {
 } from "../../ui/table";
 import CommonLoader from "../../common/loader";
 import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
+import { Badge } from "../../ui/badge";
 
 import {
   Pagination as PaginationComponent,
@@ -40,7 +41,8 @@ export default function ListStudents({
   const { page, totalPages, hasNextPage, hasPreviousPage } = pagination;
 
   return (
-    <div className="space-y-4 flex min-h-[78vh] flex-col ">
+    <div className="flex min-h-[70vh] flex-col space-y-4">
+      <div className="w-full overflow-x-auto">
       <Table>
         <TableCaption>List of the students</TableCaption>
 
@@ -88,9 +90,19 @@ export default function ListStudents({
 
                 <TableCell>
                   {sts.is_approved_student ? (
-                    " Approved"
+                    <Badge
+                      variant="outline"
+                      className="border-transparent bg-secondary text-secondary-foreground"
+                    >
+                      Approved
+                    </Badge>
                   ) : (
-                    <div className=" text-red-500">Not Approved</div>
+                    <Badge
+                      variant="outline"
+                      className="border-transparent bg-accent text-accent-foreground"
+                    >
+                      Pending review
+                    </Badge>
                   )}
                 </TableCell>
               </TableRow>
@@ -98,6 +110,7 @@ export default function ListStudents({
           )}
         </TableBody>
       </Table>
+      </div>
       {/* //pagination  */}
       <div className="mt-auto">
         {totalPages > 1 && (

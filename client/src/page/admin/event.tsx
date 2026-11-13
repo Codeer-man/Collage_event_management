@@ -27,20 +27,21 @@ export default function Event() {
   }
 
   return (
-    <div className="mx-4 py-6 md:mx-8 lg:mx-10">
+    <div className="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold tracking-tight">
+        <p className="eyebrow">Faculty workspace</p>
+        <h1 className="page-heading mt-2">
           Event Approval
         </h1>
 
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="mt-2 text-sm text-muted-foreground">
           Review and manage events submitted for approval.
         </p>
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
+      <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
         <Table>
           <TableCaption className="pb-4">
             List of events waiting for approval
@@ -115,8 +116,8 @@ export default function Event() {
                     <span
                       className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${
                         event.is_team_event
-                          ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-                          : "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400"
+                          ? "bg-accent text-accent-foreground"
+                          : "bg-secondary text-secondary-foreground"
                       }`}
                     >
                       {event.is_team_event ? "Team" : "Solo"}

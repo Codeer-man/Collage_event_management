@@ -30,7 +30,7 @@ import { Button } from "../../components/ui/button";
 import useAuthForm from "../../feature/auth/use-auth-form";
 import { useState } from "react";
 
-export default function SignUp() {
+export default function SignUp({ trigger }: { trigger?: React.ReactNode } = {}) {
   const {
     register,
     faculty,
@@ -55,7 +55,7 @@ export default function SignUp() {
       }}
     >
       <DialogTrigger asChild>
-        <Button className="rounded-xl px-5">Sign Up</Button>
+        {trigger ?? <Button className="rounded-xl px-5">Sign Up</Button>}
       </DialogTrigger>
 
       <DialogContent className="max-h-[95vh] overflow-y-auto rounded-3xl p-0 sm:max-w-2xl">

@@ -12,28 +12,32 @@ import {
 } from "../../../components/ui/table";
 import { Button } from "../../../components/ui/button";
 import EventsDetail from "../../../components/student/myEvent/eventDetail";
+import { useNavigate } from "react-router-dom";
 
 export default function MyEvents() {
   const { muEvents, loading, cancelYourEvent } = UseStudent();
   const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
+
+  const navigate = useNavigate();
 
   if (loading) {
     return <CommonLoader />;
   }
 
   return (
-    <div className="mx-4 py-6 md:mx-8 lg:mx-10">
+    <div className="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold tracking-tight">My Events</h1>
+        <p className="eyebrow">Organizer workspace</p>
+        <h1 className="page-heading mt-2">Events I manage</h1>
 
-        <p className="mt-1 text-sm text-muted-foreground">
-          Review and manage Your events
+        <p className="mt-2 text-sm text-muted-foreground">
+          Review your submissions, event details, and approval status.
         </p>
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
+      <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
         <Table>
           <TableCaption className="pb-4">Event Management</TableCaption>
 
@@ -60,7 +64,7 @@ export default function MyEvents() {
           <TableBody>
             {!muEvents?.length ? (
               <TableRow>
-                <TableCell colSpan={5} className="h-40 text-center">
+                <TableCell colSpan={6} className="h-40 text-center">
                   <div className="flex flex-col items-center justify-center gap-2">
                     <p className="font-medium">No events found</p>
 
@@ -110,10 +114,10 @@ export default function MyEvents() {
                     <span
                       className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${
                         event.status === "pending"
-                          ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                          ? "bg-accent text-accent-foreground"
                           : event.status === "rejected"
-                            ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-                            : "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400"
+                            ? "bg-destructive/10 text-destructive"
+                            : "bg-secondary text-secondary-foreground"
                       }`}
                     >
                       {event.status}
@@ -127,9 +131,9 @@ export default function MyEvents() {
                       size="sm"
                       className="cursor-pointer"
                       disabled={event.status !== "approved"}
-                      onClick={() => setSelectedEvent(event.id!)}
+                      onClick={() => navigate(`/events/${event.id}/manage`)}
                     >
-                      open
+                      Open
                     </Button>
                   </TableCell>
 
@@ -141,7 +145,7 @@ export default function MyEvents() {
                       onClick={() => cancelYourEvent(event.id!)}
                       disabled={event.status === "cancelled"}
                     >
-                      cancel
+                      Cancel
                     </Button>
                   </TableCell>
                 </TableRow>

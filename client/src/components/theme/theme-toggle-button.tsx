@@ -6,7 +6,7 @@ export default function ThemeToggleButton() {
       variant="circle"
       start="center"
       blur={true}
-      className="size-10 bg-[#567565] hover:bg-[#456453]"
+      className="size-10 bg-primary text-primary-foreground hover:bg-primary/85"
     />
   );
 }
