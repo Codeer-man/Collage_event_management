@@ -1,4 +1,3 @@
-import { useState } from "react";
 import CommonLoader from "../../../components/common/loader";
 import { UseStudent } from "../../../feature/students/useStudent";
 import {
@@ -11,12 +10,10 @@ import {
   TableRow,
 } from "../../../components/ui/table";
 import { Button } from "../../../components/ui/button";
-import EventsDetail from "../../../components/student/myEvent/eventDetail";
 import { useNavigate } from "react-router-dom";
 
 export default function MyEvents() {
   const { muEvents, loading, cancelYourEvent } = UseStudent();
-  const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -25,7 +22,7 @@ export default function MyEvents() {
   }
 
   return (
-    <div className="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-360 px-4 py-6 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="mb-6">
         <p className="eyebrow">Organizer workspace</p>
@@ -153,15 +150,6 @@ export default function MyEvents() {
             )}
           </TableBody>
         </Table>
-        <EventsDetail
-          event={selectedEvent}
-          open={!!selectedEvent}
-          onOpenChange={(open) => {
-            if (!open) {
-              setSelectedEvent(null);
-            }
-          }}
-        />
       </div>
     </div>
   );

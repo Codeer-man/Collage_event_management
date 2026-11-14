@@ -26,6 +26,7 @@ import EventRegistered from "./page/student/student/eventRegistered";
 import NotificationPage from "./page/student/student/notification";
 import EventLayout from "./layout/event/event.layout";
 import EventOverview from "./page/event/overview";
+import Participants from "./page/event/participants";
 
 export const route = createBrowserRouter([
   // public or home
@@ -166,12 +167,20 @@ export const route = createBrowserRouter([
         element: <RoleGuard allow={["student", "admin", "administrative"]} />,
         children: [
           {
-            path: "/events/:eventId/manage/*",
+            path: "/events/:eventId/*",
             element: <EventLayout />,
             children: [
               {
-                index: true,
+                path: "manage",
                 element: <EventOverview />,
+              },
+              {
+                path: "participants",
+                element: <Participants />,
+              },
+              {
+                path: "noti",
+                element: <NotificationPage />,
               },
             ],
           },

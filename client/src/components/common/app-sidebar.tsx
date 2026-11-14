@@ -55,6 +55,7 @@ function Navigation({
           to={href}
           key={href}
           end={
+            href === "/events" ||
             href === "/student" ||
             href === "/admin" ||
             href === "/administrative"
