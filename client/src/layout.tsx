@@ -9,10 +9,8 @@ import AdminLayout from "./layout/admin/admin.layout";
 import Students from "./page/admin/students";
 import ApproveStudents from "./page/admin/approveSts";
 import Event from "./page/admin/event";
-
 import Team from "./page/student/student/team";
 import HomePage from "./page/home/home";
-
 import EventList from "./page/admin/event-list";
 import ForgetPassword from "./page/auth/forget-password";
 import Location from "./page/administrative/location";
@@ -27,6 +25,7 @@ import NotificationPage from "./page/student/student/notification";
 import EventLayout from "./layout/event/event.layout";
 import EventOverview from "./page/event/overview";
 import Participants from "./page/event/participants";
+import NewsPage from "./page/event/news";
 
 export const route = createBrowserRouter([
   // public or home
@@ -177,6 +176,10 @@ export const route = createBrowserRouter([
               {
                 path: "participants",
                 element: <Participants />,
+              },
+              {
+                path: "news",
+                element: <NewsPage />,
               },
               {
                 path: "noti",

@@ -190,7 +190,10 @@ export default function NotificationPage() {
         <Button
           variant="outline"
           className="cursor-pointer self-start rounded-xl sm:self-auto"
-          disabled={notificationList.length === 0}
+          disabled={
+            notificationList.length === 0 ||
+            notificationList.some((noti) => noti.read_status === false)
+          }
           onClick={() => deleteNoti()}
         >
           Delete All

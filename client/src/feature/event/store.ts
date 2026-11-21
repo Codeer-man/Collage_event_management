@@ -1,6 +1,16 @@
 import { create } from "zustand";
-import type { eventDetail, soloParticipants, teamParticipants } from "./type";
-import { getEventDetail, getParticipantsByOrganizer } from "./api";
+import type {
+  eventDetail,
+  newsBody,
+  soloParticipants,
+  teamParticipants,
+} from "./type";
+import {
+  getEventDetail,
+  getParticipantsByOrganizer,
+  sendEventNews,
+} from "./api";
+import { toast } from "sonner";
 
 type eventStoreProps = {
   loading: boolean;
@@ -10,9 +20,10 @@ type eventStoreProps = {
   teamParticipants: teamParticipants[] | null;
   getEventParticipants: (eventId: number) => Promise<void>;
   getEventDetail: (eventId: number) => Promise<void>;
+  sendNews: (eventId: number, body: newsBody) => Promise<void>;
 };
 
-export const useEventStore = create<eventStoreProps>((set, get) => ({
+export const useEventStore = create<eventStoreProps>((set) => ({
   event: null,
   loading: false,
   soloParticipants: null,
@@ -64,6 +75,19 @@ export const useEventStore = create<eventStoreProps>((set, get) => ({
       console.error(msg);
     } finally {
       set({ loading: false });
+    }
+  },
+  sendNews: async (id: number, body: newsBody) => {
+    try {
+      const resp = await sendEventNews(id, body);
+      console.log(resp);
+
+      toast.success("notification has been successfully sent");
+    } catch (error) {
+      const msg =
+        error instanceof Error ? error.message : "Something went wrong";
+
+      console.error(msg);
     }
   },
 }));

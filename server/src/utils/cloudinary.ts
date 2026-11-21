@@ -44,3 +44,7 @@ export async function uploadImage(
     streamifier.createReadStream(folderBuffer).pipe(uploadStream);
   });
 }
+
+export async function deleteImage(publicId: string) {
+  return cloudinary.uploader.destroy(publicId);
+}

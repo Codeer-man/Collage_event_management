@@ -41,3 +41,8 @@ export type teamMemberList = {
     teamEvent: boolean;
   };
 };
+
+export type newsBody = {
+  title: string;
+  msg: string;
+};

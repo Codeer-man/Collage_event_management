@@ -74,62 +74,65 @@ export const studentService = {
   },
 
   // update event
-  async updateEvent(
-    eventId: string,
-    title: string,
-    description: string,
-    location_id: string,
-    event_date: string,
-    end_at: string,
-    registration_deadline: string,
-    entry_fee: number,
-    contact: number,
-    image_url: string,
-    public_id: string,
-    location_type: string,
-    location_name: string,
-    is_team_event?: boolean,
-    max_participants?: number,
-  ) {
-    return await pool.query(
-      `
-    UPDATE events
-    SET
-      title = $1,
-      description = $2,
-      location_id = $3,
-      event_date = $4,
-      end_at = $5,
-      registration_deadline = $6,
-      entry_fee = $7,
-      contact = $8,
-      image_url = $9,
-      public_id = $10,
-      location_type = $11,
-      location_name = $12,
-      is_team_event = $13,
-      max_participants = $14,
-      updated_at = NOW()
-    WHERE id = $15
-    RETURNING *;
-    `,
-      [
-        title,
-        description,
-        location_id,
-        event_date,
-        end_at,
-        registration_deadline,
-        entry_fee,
-        contact,
-        image_url,
-        public_id,
-        location_type,
-        location_name,
-        is_team_event,
-        max_participants,
-        eventId,
-      ],
-    );
-  },
+  // async updateEvent(
+  //   title: string,
+  //   description: string,
+  //   location_id: string,
+  //   location_type: string,
+  //   location_name: string,
+  //   event_date: string,
+  //   end_at: string,
+  //   registration_deadline: string,
+  //   entry_fee: number,
+  //   contact: number,
+  //   image_url: string | null,
+  //   public_id: string | null,
+  //   is_team_event: boolean,
+  //   max_participants: number,
+  //   eventId: string,
+  //   userId: string,
+  // ) {
+  //   return await pool.query(
+  //     `
+  //   UPDATE events
+  //   SET
+  //     title = $1,
+  //     description = $2,
+  //     location_id = $3,
+  //     location_type = $4,
+  //     location = $5,
+  //     event_date = $6,
+  //     end_at = $7,
+  //     registration_deadline = $8,
+  //     entry_fee = $9,
+  //     contact = $10,
+  //     image_url = COALESCE($11, image_url),
+  //     public_id = COALESCE($12, public_id),
+  //     is_team_event = $13,
+  //     max_participants = $14,
+  //     updated_at = NOW()
+  //   WHERE id = $15
+  //   AND created_by = $16
+  //   RETURNING id
+  //   `,
+  //     [
+  //       title,
+  //       description,
+  //       location_id,
+  //       location_type,
+  //       location_name,
+  //       event_date,
+  //       end_at,
+  //       registration_deadline,
+  //       entry_fee,
+  //       contact,
+  //       image_url,
+  //       public_id,
+  //       is_team_event,
+  //       max_participants,
+  //       eventId,
+  //       userId,
+  //     ],
+  //   );
+  // },
 };

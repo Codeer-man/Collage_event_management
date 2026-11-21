@@ -3,7 +3,6 @@ import asyncHandler from "../../utils/asyncHandler.js";
 import { numberRequires, textRequired } from "../../utils/helper.js";
 import { pool } from "../../config/pool.js";
 import { AppError } from "../../utils/AppError.js";
-import { generateParticipantPdf } from "../../lib/pdf.js";
 import { ok } from "../../utils/envolve.js";
 import { uploadImage } from "../../utils/cloudinary.js";
 import { studentService } from "../../service/student.service.js";

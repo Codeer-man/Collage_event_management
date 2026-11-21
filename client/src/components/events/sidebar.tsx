@@ -1,10 +1,4 @@
-import {
-  LayoutDashboard,
-  Users,
-  Pencil,
-  RefreshCw,
-  Newspaper,
-} from "lucide-react";
+import { LayoutDashboard, Users, Newspaper } from "lucide-react";
 
 import AppSidebar from "../common/app-sidebar";
 import type { AppNavItem } from "../common/app-sidebar";
@@ -25,16 +19,6 @@ export default function EventSidebar({ mobile = false }: { mobile?: boolean }) {
       label: "Participants",
       href: `${base}/participants`,
       icon: Users,
-    },
-    {
-      label: "Edit Event",
-      href: `${base}/edit`,
-      icon: Pencil,
-    },
-    {
-      label: "Event Updates",
-      href: `${base}/updates`,
-      icon: RefreshCw,
     },
     {
       label: "Event News",
